@@ -15,6 +15,7 @@ const Table:React.FC<TablePropType> = ({thead, tbody}) => {
             </tr>
           </thead>
           <tbody className='bg-white'>
+            {tbody && ""}
             <tr className='text-gray-700 border-b'>
               <td className='px-4 py-3 text-xs font-normal'>1</td>
               <td className='px-4 py-3 text-xs font-normal'>

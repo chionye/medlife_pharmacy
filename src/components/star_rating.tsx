@@ -2,41 +2,49 @@
 
 import { useState } from "react";
 
-const StarRating = () => {
+const StarRating: React.FC = () => {
   const starsArr = [1, 2, 3, 4, 5];
+  const [rating, setRating] = useState<number>(0);
 
-  const [rating, setRating] = useState(0);
-
-  const showHoverEffect = (e) => {
-    const id = e.target.id;
-    if (id <= rating) return;
-    for (let i = rating + 1; i <= id; i++) {
-      const ele = document.getElementById(i);
-      ele.style.fill = "#00C2C2";
-    }
-  };
-
-  const removeHoverEffect = (e) => {
-    const id = parseInt(e.target.id);
+  const showHoverEffect = (e: React.MouseEvent<SVGPolygonElement>) => {
+    const id = parseInt(e.currentTarget.id);
     if (id <= rating) return;
 
     for (let i = rating + 1; i <= id; i++) {
-      const ele = document.getElementById(i);
-      ele.style.fill = "none";
+      const ele = document.getElementById(i.toString());
+      if (ele instanceof SVGPolygonElement) {
+        ele.style.fill = "#00C2C2";
+      }
     }
   };
 
-  const giveRating = (e) => {
-    const id = parseInt(e.target.id);
+  const removeHoverEffect = (e: React.MouseEvent<SVGPolygonElement>) => {
+    const id = parseInt(e.currentTarget.id);
+    if (id <= rating) return;
+
+    for (let i = rating + 1; i <= id; i++) {
+      const ele = document.getElementById(i.toString());
+      if (ele instanceof SVGPolygonElement) {
+        ele.style.fill = "none";
+      }
+    }
+  };
+
+  const giveRating = (e: React.MouseEvent<SVGPolygonElement>) => {
+    const id = parseInt(e.currentTarget.id);
     if (id > rating) {
       for (let i = rating + 1; i <= id; i++) {
-        const ele = document.getElementById(i);
-        ele.style.fill = "#00C2C2";
+        const ele = document.getElementById(i.toString());
+        if (ele instanceof SVGPolygonElement) {
+          ele.style.fill = "#00C2C2";
+        }
       }
     } else {
       for (let i = id + 1; i <= rating; i++) {
-        const ele = document.getElementById(i);
-        ele.style.fill = "none";
+        const ele = document.getElementById(i.toString());
+        if (ele instanceof SVGPolygonElement) {
+          ele.style.fill = "none";
+        }
       }
     }
     setRating(id);
@@ -54,7 +62,7 @@ const StarRating = () => {
             viewBox='200 0 500 500'>
             <polygon
               fill='none'
-              id={id}
+              id={id.toString()}
               stroke='#33333366'
               onClick={giveRating}
               onMouseOver={showHoverEffect}
@@ -69,5 +77,6 @@ const StarRating = () => {
       ))}
     </div>
   );
-}
+};
+
 export default StarRating;

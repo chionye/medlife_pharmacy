@@ -1,30 +1,30 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import BottomNav from "@/components/bottom_nav";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
 // import { getLocalStorage } from "@/services/storage";
-import { QueryClient } from "@tanstack/react-query";
+// import { QueryClient } from "@tanstack/react-query";
 // import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+// import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import camera from "@/assets/camera.svg";
 import { ChakraProvider } from "@chakra-ui/react";
 import FullModal from "@/components/full_modal";
 import AppointmentForm from "@/components/appointment_form";
 // import { encodeIfURL } from "../../services/helpers";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: 1000 * 60 * 60 * 24,
-    },
-  },
-});
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       gcTime: 1000 * 60 * 60 * 24,
+//     },
+//   },
+// });
 
-const persister = createSyncStoragePersister({
-  storage: window.localStorage,
-});
+// const persister = createSyncStoragePersister({
+//   storage: window.localStorage,
+// });
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   //   const [profilePicture, setProfilePicture] = useState<string>("");

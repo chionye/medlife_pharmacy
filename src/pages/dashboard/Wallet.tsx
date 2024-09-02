@@ -2,13 +2,13 @@
 
 import { Card } from "@/components/ui/card";
 import eyeslash from "@/assets/eyeslash.svg";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import plus_red from "@/assets/plus_red.svg";
-import Dropdown from "@/components/dropdown";
-import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+// import Dropdown from "@/components/dropdown";
+// import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
+// import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { NavLink } from "react-router-dom";
-import { EmptyWallet } from "@/components/empty";
+// import { EmptyWallet } from "@/components/empty";
 import WalletTransaction from "@/components/wallet_transaction";
 
 const Wallet = () => {

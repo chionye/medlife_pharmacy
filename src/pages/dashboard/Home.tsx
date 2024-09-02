@@ -10,8 +10,6 @@ import speedometer from "@/assets/speedometer.svg";
 import height from "@/assets/height.svg";
 import gauge from "@/assets/gauge.svg";
 import glucose from "@/assets/glucose.svg";
-import doctor from "@/assets/doctor.svg";
-import star from "@/assets/star.svg";
 import user from "@/assets/user.svg";
 import calendar from "@/assets/calendar.svg";
 import clock from "@/assets/clock.svg";

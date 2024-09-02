@@ -43,7 +43,7 @@ export interface TitleBarPropType {
 
 export interface TablePropType {
   thead: string[];
-  tbody: Record<string, string>[];
+  tbody?: Record<string, string>[];
 }
 
 export interface UploadPropType {

@@ -1,5 +1,5 @@
 import { Card } from './ui/card';
-import { EmptyWallet } from './empty';
+// import { EmptyWallet } from './empty';
 import { NavLink } from 'react-router-dom';
 import Dropdown from './dropdown';
 import { DropdownMenuGroup, DropdownMenuItem } from './ui/dropdown-menu';

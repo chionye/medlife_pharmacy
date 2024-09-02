@@ -1,8 +1,8 @@
 /** @format */
 
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import StarRating from "@/components/star_rating";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { FormInput, FormSelect } from "@/components/form_input";
 import minus from "@/assets/minus.svg";
@@ -10,15 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const Performance = () => {
-  const [satisfaction, setSatisfaction] = useState<number>(0);
-  const [communication, setCommunication] = useState<number>(0);
-  const [knowledge, setKnowledge] = useState<number>(0);
-  const [manners, setManners] = useState<number>(0);
-
-  // Optinal callback functions
-  const onPointerEnter = () => console.log("Enter");
-  const onPointerLeave = () => console.log("Leave");
-  const onPointerMove = (value: number, index: number) => console.log(value, index);
+  
 
   const physician_medic_sector: string[] = [
     "Cardiologist",
@@ -26,10 +18,6 @@ const Performance = () => {
     "Anesthesiologist",
     "Chiropractor",
   ];
-
-  const handleRating = (rate: number) => {
-    setSatisfaction(rate);
-  };
 
   return (
     <>

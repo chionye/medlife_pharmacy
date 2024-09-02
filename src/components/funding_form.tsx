@@ -2,8 +2,6 @@
 
 import { FormInput, FormSelect } from "./form_input";
 import { Button } from "./ui/button";
-import Upload from "./upload";
-import plus from "@/assets/plus.svg";
 
 const FundingForm = () => {
   const payment_method: string[] = [

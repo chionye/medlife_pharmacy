@@ -12,7 +12,7 @@ const BottomNavItem = ({
 }: {
   to: string;
   icon: React.ReactNode;
-  label: string;
+  label?: string;
   location: string;
 }) => (
   <NavLink
@@ -21,7 +21,7 @@ const BottomNavItem = ({
       location.indexOf(to) !== -1 && "text-[#D20606]"
     }`}>
     {icon}
-    {/* <span>{label}</span> */}
+    <span className="hidden">{label}</span>
   </NavLink>
 );
 

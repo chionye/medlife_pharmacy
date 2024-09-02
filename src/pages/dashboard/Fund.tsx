@@ -1,4 +1,4 @@
-import { EmptyWallet } from "@/components/empty";
+// import { EmptyWallet } from "@/components/empty";
 import FundingForm from "@/components/funding_form";
 import WalletTransaction from "@/components/wallet_transaction";
 import { ChevronLeft } from "lucide-react";

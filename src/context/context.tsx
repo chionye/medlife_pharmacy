@@ -1,7 +1,7 @@
 /** @format */
 
 import { createContext } from "react";
-import { ContextValue } from "../types/types";
+import { ContextValue } from "@/types/";
 
 const MyContext = createContext<ContextValue>({
     updateData: function (): void {

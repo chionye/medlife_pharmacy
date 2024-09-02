@@ -12,6 +12,7 @@ import Transactions from "@/pages/dashboard/Transactions";
 import Medication from "@/pages/dashboard/Medication";
 import ProtectedRoute from "./protectedroute";
 import Messages from "@/pages/dashboard/Messages";
+import { Navigate } from "react-router-dom";
 
 const Routes = [
   // {
@@ -32,6 +33,10 @@ const Routes = [
   //     },
   //   ],
   // },
+  {
+    path: "/",
+    element: <Navigate to='/dashboard/home' />,
+  },
   {
     path: "/dashboard",
     element: <ProtectedRoute />,

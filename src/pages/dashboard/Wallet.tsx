@@ -31,10 +31,10 @@ const Wallet = () => {
               </button>
             </div>
             <div className='mt-8 flex items-center justify-between'>
-              <p className='text-5xl font-semibold text-white'>&#8358;0.00</p>
+              <p className='md:text-5xl text-4xl font-semibold text-white'>&#8358;0.00</p>
               <NavLink
                 to={"/dashboard/wallet/fund-wallet"}
-                className='bg-white text-[#D20606] md:text-2xl text-lg flex justify-center py-2 md:w-56 rounded-lg'>
+                className='bg-white text-[#D20606] md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg'>
                 <span className='flex items-center'>
                   <img src={plus_red} alt='plus' />
                   <span>Fund Wallet</span>

@@ -49,14 +49,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className='sm:col-span-10'>
             <Header image={""} />
             <div className='sm:col-span-12 px-2'>
-              <div className='overflow-x-scroll h-screen pb-44'>{children}</div>
+              <div className='overflow-x-scroll h-screen pb-42'>{children}</div>
             </div>
           </div>
         </div>
         <FullModal
           icon={<img src={camera} alt='open modal' />}
           cn={
-            "fixed md:bottom-10 bottom-32 right-10 bg-[#D20606CC] w-16 h-16 flex justify-center items-center rounded-full"
+            "fixed md:bottom-10 bottom-20 right-10 bg-[#D20606CC] w-16 h-16 flex justify-center items-center rounded-full"
           }>
           <div className='py-4 border-[#00C2C2] border bg-[#F3FCFC] flex items-center px-2'>
             <p className='font-normal text-sm'>Book Appointment</p>

@@ -16,6 +16,7 @@ import clock from "@/assets/clock.svg";
 import MedicationHistory from "@/components/medication_history";
 import TopDoctors from "@/components/top_doctors";
 import TitleBar from "@/components/title_bar";
+import { PatientPropType } from "@/types";
 // import { getCookieData } from "../../services/storage";
 // import moment from "moment";
 // import { Skeleton } from "@/components/ui/skeleton";
@@ -23,6 +24,32 @@ import TitleBar from "@/components/title_bar";
 // import Query from "../../api/query";
 
 function Home() {
+  const vitals: PatientPropType[] = [
+    {
+      title: "My Weight",
+      icon: speedometer,
+      value: "47",
+      unit: "kg",
+    },
+    {
+      title: "My Height",
+      icon: height,
+      value: "178",
+      unit: "",
+    },
+    {
+      title: "My Blood Pressure",
+      icon: gauge,
+      value: "140/90",
+      unit: "",
+    },
+    {
+      title: "Glucose Level",
+      icon: glucose,
+      value: "89 - 72",
+      unit: "",
+    },
+  ];
   //   const [userData] = useState<any>(getCookieData("user"));
   //   const [productData, setProductData] = useState<any>([]);
   //   const [transactionData, setTransactionData] = useState<any>([]);
@@ -61,7 +88,7 @@ function Home() {
         </NavLink>
       </div>
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='md:w-[60%] w-full'>
+        <div className='md:w-[67%] w-full'>
           <div className='grid md:grid-flow-col gap-2'>
             <div className='md:col-span-3 col-span-3'>
               <Card className='border flex justify-between rounded-xl p-6'>
@@ -70,7 +97,7 @@ function Home() {
                     Chat a Doctor
                   </p>
                   <NavLink
-                    to='/dashboard/shop'
+                    to='/dashboard/message'
                     className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between mt-10 px-8 py-1'>
                     <img src={add} alt='logo' />
                     <strong>Call A Doctor</strong>
@@ -105,46 +132,22 @@ function Home() {
       <div className='flex flex-col space-y-6 mt-5'>
         <div className='w-full'>
           <div className='grid md:grid-flow-col gap-2'>
-            <div className='md:col-span-2 col-span-2'>
-              <Card className='border flex justify-between rounded-xl p-12'>
-                <div>
-                  <p className='text-sm text-[#073131] font-[600]'>My Weight</p>
-                  <p className='text-[26px] mt-3'>47kg</p>
-                </div>
-                <img src={speedometer} alt='logo' className=' rounded-full' />
-              </Card>
-            </div>
-            <div className='md:col-span-2 col-span-2'>
-              <Card className='border flex justify-between rounded-xl p-12'>
-                <div>
-                  <p className='text-sm text-[#073131] font-[600]'>My Height</p>
-                  <p className='text-[26px] mt-3'>178</p>
-                </div>
-                <img src={height} alt='pin icon' />
-              </Card>
-            </div>
-            <div className='md:col-span-2 col-span-2'>
-              <Card className='border flex justify-between rounded-xl p-12'>
-                <div>
-                  <p className='text-sm text-[#073131] font-[600]'>
-                    My Blood Pressure
-                  </p>
-                  <p className='text-[26px] mt-3'>140/90</p>
-                </div>
-                <img src={gauge} alt='logo' className=' rounded-full' />
-              </Card>
-            </div>
-            <div className='md:col-span-2 col-span-2'>
-              <Card className='border flex justify-between rounded-xl p-12'>
-                <div>
-                  <p className='text-sm text-[#073131] font-[600]'>
-                    Glucose Level
-                  </p>
-                  <p className='text-[26px] mt-3'>89 - 72</p>
-                </div>
-                <img src={glucose} alt='pin icon' />
-              </Card>
-            </div>
+            {vitals.map((vital: PatientPropType) => (
+              <div className='md:col-span-2 col-span-2'>
+                <Card className='border flex justify-between rounded-xl px-6 py-8'>
+                  <div>
+                    <p className='text-sm text-[#073131] font-[600]'>
+                      {vital.title}
+                    </p>
+                    <p className='text-[26px] mt-3'>
+                      {vital.value}
+                      {vital.unit}
+                    </p>
+                  </div>
+                  <img src={vital.icon} alt='logo' className=' rounded-full' />
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -156,7 +159,7 @@ function Home() {
         <div className='sm:w-full md:w-1/2'>
           <TitleBar title={"My Medication"} link='/dashboard/medication' />
           <MedicationHistory />
-          <div className="mt-5">
+          <div className='mt-5'>
             <TitleBar title={"Appointment"} link='/dashboard/appointments' />
             <div className='grid md:grid-flow-row gap-2 mt-5'>
               <div className='md:col-span-2 col-span-2'>

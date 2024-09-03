@@ -49,7 +49,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className='sm:col-span-10'>
             <Header image={""} />
             <div className='sm:col-span-12 px-2'>
-              <div className='overflow-x-scroll h-screen pb-42'>{children}</div>
+              <div className='overflow-x-scroll h-screen pb-48'>{children}</div>
             </div>
           </div>
         </div>

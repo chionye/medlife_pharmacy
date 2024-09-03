@@ -51,6 +51,13 @@ export interface LoginPropType {
   password: string;
 }
 
+export interface PatientPropType {
+  title: string;
+  icon: string;
+  value: string;
+  unit: string;
+}
+
 export interface TitleBarPropType {
   title: string;
   link: string;

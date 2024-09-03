@@ -12,30 +12,29 @@ import Transactions from "@/pages/dashboard/Transactions";
 import Medication from "@/pages/dashboard/Medication";
 import ProtectedRoute from "./protectedroute";
 import Messages from "@/pages/dashboard/Messages";
-import { Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Layout from "@/pages/auth/Layout";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
 
 const Routes = [
-  // {
-  //   path: "/",
-  //   element: (
-  //     <Layout>
-  //       <Outlet />
-  //     </Layout>
-  //   ),
-  //   children: [
-  //     {
-  //       path: "/",
-  //       element: <Login />,
-  //     },
-  //     {
-  //       path: "/register",
-  //       element: <Register />,
-  //     },
-  //   ],
-  // },
   {
     path: "/",
-    element: <Navigate to='/dashboard/home' />,
+    element: (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ),
+    children: [
+      {
+        path: "/",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
   },
   {
     path: "/dashboard",

@@ -2,9 +2,9 @@
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState } from "react";
-// import { Toaster } from "./components/ui/toaster";
 import Routes from "./routes";
 import MyContext from '@/context/context';
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const router = createBrowserRouter(Routes);
@@ -40,7 +40,7 @@ function App() {
   return (
     <MyContext.Provider value={{ userData, updateData }}>
       <RouterProvider router={router} />
-      {/* <Toaster /> */}
+      <Toaster />
     </MyContext.Provider>
   );
 }

@@ -1,3 +1,4 @@
+/** @format */
 
 import { Input } from "@chakra-ui/react";
 import { Label } from "./ui/label";
@@ -9,6 +10,8 @@ const FormInput: React.FC<FormInputPropType> = ({
   type,
   name,
   placeholder,
+  value,
+  cn = "border-[#D9D9D9]",
   changeFunction,
 }) => {
   return (
@@ -19,7 +22,9 @@ const FormInput: React.FC<FormInputPropType> = ({
       <Input
         type={type}
         id={name}
-        className='border-[#D9D9D9]'
+        name={name}
+        className={cn}
+        value={value}
         placeholder={placeholder}
         onChange={changeFunction}
         size={"lg"}
@@ -33,6 +38,7 @@ const FormSelect: React.FC<FormSelectPropType> = ({
   name,
   placeholder,
   value,
+  cn,
   options,
   changeFunction,
 }) => {
@@ -43,11 +49,15 @@ const FormSelect: React.FC<FormSelectPropType> = ({
       </Label>
       <Select
         placeholder={placeholder}
-        onChange={changeFunction}
+        className={cn}
+        name={name}
+        onChange={changeFunction as React.ChangeEventHandler<HTMLSelectElement>}
         value={value}
         size='lg'>
-        {options.map((option: string) => (
-          <option value={option}>{option}</option>
+        {options.map((option: string, index: number) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
         ))}
       </Select>
     </div>

@@ -23,8 +23,10 @@ export interface FormInputPropType {
   label: string;
   type: string;
   name: string;
+  cn?: string;
+  value?: string;
   placeholder?:string;
-  changeFunction: () => void;
+  changeFunction: (e: any) => void;
 }
 
 export interface FormSelectPropType {
@@ -32,8 +34,21 @@ export interface FormSelectPropType {
   name: string;
   placeholder?: string;
   value: string;
+  cn?: string;
   options: string[];
-  changeFunction: () => void;
+  changeFunction: (e: any) => void;
+}
+
+export interface RegisterPropType {
+  username: string;
+  email: string;
+  password: string;
+  user_type: string;
+}
+
+export interface LoginPropType {
+  email: string;
+  password: string;
 }
 
 export interface TitleBarPropType {

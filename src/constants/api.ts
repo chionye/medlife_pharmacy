@@ -2,8 +2,8 @@
 
 let api =
   document.location.hostname == "localhost"
-    ? "https://square-hackathon.onrender.com"
-    : "https://square-hackathon.onrender.com";
+    ? "https://api.medlifelink.life"
+    : "https://api.medlifelink.life";
 
 if (document.location.hostname.startsWith("172")) {
   api = "http://" + document.location.hostname + ":2020";
@@ -11,6 +11,6 @@ if (document.location.hostname.startsWith("172")) {
   api = "http://" + document.location.hostname + ":2020";
 }
 
-export const ENDPOINT = "https://square-hackathon.onrender.com";
+export const ENDPOINT = "https://api.medlifelink.life";
 
-export default api + "/v1/api";
+export default api + "/api";

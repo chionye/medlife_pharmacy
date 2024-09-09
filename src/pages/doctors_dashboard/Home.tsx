@@ -78,7 +78,7 @@ function DoctorsHome() {
 
   useEffect(() => {
     if (queries[0].data?.status) setDoctors(queries[0].data.data || []);
-    if (queries[1].data?.status) setAppointments(queries[2].data.data || []);
+    if (queries[1].data?.status) setAppointments(queries[1].data.data || []);
   }, [queries]);
 
   return (

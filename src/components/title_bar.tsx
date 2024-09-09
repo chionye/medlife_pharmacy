@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const TitleBar:React.FC<TitleBarPropType> = ({title, link}) => {
   return (
-    <div className='flex justify-between'>
+    <div className='flex justify-between md:mt-0 mt-5'>
       <h4 className='text-xl font-medium'>{title}</h4>
       <NavLink to={link} className={"text-[#D20606] flex gap-2 items-center"}>
         <span>View all</span>

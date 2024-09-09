@@ -1,6 +1,7 @@
 /** @format */
 
 import { format } from "date-fns";
+import moment from "moment";
 
 export const filterAndSortGraphData = (data: any) => {
   if (!data) {
@@ -27,6 +28,25 @@ export const filterAndSortGraphData = (data: any) => {
         };
       }
     });
+};
+
+export const getDateFormat = (
+  dateString: string = "",
+  divided: string | null = null
+): string => {
+  return !divided
+    ? dateString
+      ? moment(dateString).format("Do MMMM YYYY • hh:mm a")
+      : moment().format("Do MMMM YYYY • hh:mm a")
+    : dateString && divided === "date"
+    ? moment(dateString).format("Do MMMM YYYY ")
+    : dateString && divided === "time"
+    ? moment(dateString).format("hh:mm a")
+    : moment().format("Do MMMM YYYY • hh:mm a");
+};
+
+export const getNestedValue = (obj: any, keyPath: string) => {
+  return keyPath.split(".").reduce((value, key) => value && value[key], obj);
 };
 
 export const getWindowDimensions = () => {
@@ -58,11 +78,6 @@ export const encodeIfURL = (str: string): string => {
   }
 };
 
-export const parseId = (link: string) => {
-  switch (true) {
-    case link.includes("youtube.com/watch?v="):
-      return link.split("?v=")[1].split("&")[0];
-    default:
-      return null;
-  }
+export const toTitleCase = (str: string): string => {
+  return str.replace(/(^[a-z])|(\s+[a-z])/g, (txt) => txt.toUpperCase());
 };

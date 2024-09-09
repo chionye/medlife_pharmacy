@@ -3,6 +3,7 @@
 import { useState, useContext } from "react";
 import clip from "@/assets/clip.svg";
 import doc from "@/assets/doc.svg";
+import edit from "@/assets/edit.svg";
 import upload from "@/assets/upload.svg";
 import MyContext from "@/context/context";
 import { ContextValue, UploadPropType } from "@/types";
@@ -121,6 +122,46 @@ const Upload: React.FC<UploadPropType> = ({
           </>
         )}
       </label>
+    </div>
+  );
+};
+
+export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
+  const handleEditImageClick = () => {
+    document.getElementById("file-input")?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        updatePhotoFunction((prevData: any) => ({
+          ...prevData,
+          photo: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+  return (
+    <div className='flex flex-col items-center gap-3'>
+      <img
+        src={defaultPhoto}
+        alt='user'
+        className='rounded-full w-[170px]'
+      />
+      <input
+        type='file'
+        id='file-input'
+        accept='image/*'
+        className='hidden'
+        onChange={handleImageChange}
+      />
+      <button className='flex gap-1' onClick={handleEditImageClick}>
+        <span className='text-[#00C2C2] text-xl'>Edit</span>
+        <img src={edit} alt='edit image' />
+      </button>
     </div>
   );
 };

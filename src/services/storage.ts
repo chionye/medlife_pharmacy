@@ -1,7 +1,5 @@
 /** @format */
 
-import { useNavigate } from "react-router-dom";
-
 export const setCookie = (name: string, value: string, days: number) => {
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -42,7 +40,6 @@ export const getLocalStorage = (key: string) => {
   return data;
 };
 
-
 export const getCookieData = (dataType: string) => {
   const data = getCookie(dataType === "user" ? "@user" : "@token");
   // console.log(data);
@@ -59,8 +56,16 @@ export const getCookieData = (dataType: string) => {
   return null;
 };
 
-export const Logout = () => {
+export const getConfigByRole = (): "patient" | "doctor" | null => {
+  const user = getCookieData("user");
+  if (!user) {
+    return null;
+  }
+  return user?.role as "patient" | "doctor";
+};
+
+export const LogoutUser = () => {
   clearCookie("@user");
-  const navigate = useNavigate();
-  navigate("/");
+  clearCookie("@token");
+  return true;
 };

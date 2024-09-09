@@ -30,7 +30,7 @@ const Login = () => {
 
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "create_user", formData);
+      const data = await sendRequest("post", "login_user", formData);
       if (data.status) {
         setCookie("@user", JSON.stringify(data.data), 1);
         setCookie("@token", JSON.stringify(data.token), 1);
@@ -39,7 +39,11 @@ const Login = () => {
           description: data.message,
           action: <ToastAction altText='done'>done</ToastAction>,
         });
-        navigate("/dashboard/home");
+        if (data.data.role === "doctor") {
+          navigate("/doctor/home");
+        } else {
+          navigate("/dashboard/home");
+        }
       } else {
         if (data.errors.length > 0) {
           data.errors.forEach((err: string) => {

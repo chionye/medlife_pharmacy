@@ -3,6 +3,7 @@
 import { Card } from "./ui/card";
 import { NavLink, useLocation } from "react-router-dom";
 import { NavbarItems } from "../utils/navbar/navbarItems";
+import { getConfigByRole } from "@/services/storage";
 
 const BottomNavItem = ({
   to,
@@ -27,10 +28,13 @@ const BottomNavItem = ({
 
 function BottomNav() {
   const location = useLocation();
+  const role = getConfigByRole();
+  const settings = role ? NavbarItems[role] : [];
+  
   return (
     <Card className='bg-white text-[#908787] px-5 z-10 w-full rounded-lg py-3'>
       <div className='py-2 text-5x1 flex justify-between'>
-        {NavbarItems.map((item, index) => (
+        {settings.map((item: any, index: number) => (
           <BottomNavItem key={index} {...item} location={location.pathname} />
         ))}
       </div>

@@ -16,14 +16,14 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    user_type: "",
+    role: "patient",
   });
 
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
 
-  const role: string[] = ["Patient", "Doctor"];
+  const roles: string[] = ["patient", "doctor", "hospital"];
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -56,6 +56,12 @@ const Register = () => {
               action: <ToastAction altText='done'>done</ToastAction>,
             });
           });
+        }else{
+            toast({
+              title: "Sorry",
+              description: data.message,
+              action: <ToastAction altText='done'>done</ToastAction>,
+            });
         }
       }
     } catch (error: any) {
@@ -68,9 +74,9 @@ const Register = () => {
       <p className='text-3xl font-bold'>Sign Up</p>
       <div className='mt-5'>
         <FormSelect
-          value={formData.user_type}
-          options={role}
-          name='user_type'
+          value={formData.role}
+          options={roles}
+          name='role'
           cn={"w-full border border-[#000000] py-3 px-2"}
           label=''
           changeFunction={handleFormChange}

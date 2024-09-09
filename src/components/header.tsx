@@ -1,34 +1,50 @@
-/** @format */
 
-// import { Card } from "./ui/card";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import profile from "@/assets/profile.svg";
 import { NavbarItems } from "@/utils/navbar/navbarItems";
+import { getConfigByRole, getCookie } from "@/services/storage";
+import { useEffect, useState } from "react";
+import { toTitleCase } from "@/services/helpers";
 
-const Header = ({ image }: { image: string }) => {
+const Header = () => {
+  const [userData, setUserData] = useState<Record<string, string> | null>(null);
   const location = useLocation();
-  console.log(location.pathname, NavbarItems);
+  const role = getConfigByRole();
+  const settings = role ? NavbarItems[role] : [];
+
+  useEffect(() => {
+    const user = getCookie("@user");
+    if (user) {
+      setUserData(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <div className='pb-5'>
-      <div className='bg-white text-[#000000] px-6 z-10 w-full border-b border-[#0080804D] '>
+      <div className='bg-white text-[#000000] px-6 z-10 w-full border-b border-[#3333331F]'>
         <div className='flex items-center justify-between py-2 text-5x1'>
           <div className='font-bold text-[#000000] text-xl flex items-center'>
-            {NavbarItems.map(
-              (item) =>
+            {settings.map(
+              (item: any) =>
                 location.pathname.indexOf(item.to) !== -1 && (
-                  <>
+                  <div key={item.to} className='flex items-center'>
                     {item.icon}
-                    <span className='ml-2 font-[500] text-sm'>{item.label}</span>
-                  </>
+                    <span className='ml-2 font-[500] text-sm'>
+                      {item.label}
+                    </span>
+                  </div>
                 )
             )}
           </div>
-          <div className='flex items-center text-gray-500'>
-            <span className='ml-2 font-[500] text-sm'>Alex Harthway</span>
+          <div className='flex items-center text-[#000000]'>
+            <span className='ml-2 font-[500] text-sm'>
+              {userData
+                ? toTitleCase(userData.fullname || userData.username)
+                : "Guest"}
+            </span>
             <img
-              className={`bg-center bg-cover bg-no-repeat rounded-full inline-block h-12 w-12 ml-2`}
-              src={image ? image : profile}
+              className='bg-center bg-cover bg-no-repeat rounded-full inline-block h-12 w-12 ml-2'
+              src={userData?.photo || profile}
               alt='avatar'
             />
           </div>

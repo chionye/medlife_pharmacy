@@ -1,7 +1,10 @@
-import empty_appointment from '@/assets/empty_appointment.svg';
-import empty_wallet from '@/assets/empty_wallet.svg';
-import FullModal from './full_modal';
-import AppointmentForm from './appointment_form';
+/** @format */
+
+import empty_appointment from "@/assets/empty_appointment.svg";
+import empty_wallet from "@/assets/empty_wallet.svg";
+import FullModal from "./full_modal";
+import { BookAppointmentForm, CreateAppointmentForm } from "./appointment_form";
+import { getConfigByRole } from "@/services/storage";
 
 const EmptyAppointment = () => {
   return (
@@ -13,13 +16,19 @@ const EmptyAppointment = () => {
           available times with your preferred doctor.
         </p>
         <FullModal
-          cn={"bg-[#D20606] md:w-[400px] w-full mt-6 h-[80px]"}
+          cn={
+            "bg-[#D20606] md:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
+          }
           label='Book Appointment'>
           <div className='py-4 border-[#00C2C2] border bg-[#F3FCFC] flex items-center px-2'>
-            <p className='font-normal text-sm'>Book Appointment</p>
+            <p className='font-normal text-sm'>
+              {getConfigByRole() === "patient"
+                ? "Book Appointment"
+                : "Create Appointment"}
+            </p>
           </div>
           <div className='flex justify-center items-center'>
-            <AppointmentForm />
+            {getConfigByRole() === "patient" ? <BookAppointmentForm /> : <CreateAppointmentForm />}
           </div>
         </FullModal>
       </div>

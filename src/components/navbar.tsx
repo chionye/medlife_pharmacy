@@ -3,7 +3,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { NavbarItems } from "../utils/navbar/navbarItems";
 import logo from "@/assets/logo.svg";
-// import { Logout } from "../services/storage";
+import { getConfigByRole } from "@/services/storage";
 
 const NavbarItem = ({
   to,
@@ -35,6 +35,8 @@ const NavbarItem = ({
 
 const Navbar = () => {
   const location = useLocation();
+  const role = getConfigByRole();
+  const settings = role ? NavbarItems[role] : [];
 
   return (
     <div className='auto-rows-max text-sm md:flex hidden bg-[#F3FCFC] relative h-screen w-full shadow-lg'>
@@ -44,7 +46,7 @@ const Navbar = () => {
             <img src={logo} alt='logo' className='rounded-full' />
           </div>
         </div>
-        {NavbarItems.map((item, index) => (
+        {settings.map((item: any, index: number) => (
           <NavbarItem key={index} {...item} location={location.pathname} />
         ))}
       </div>

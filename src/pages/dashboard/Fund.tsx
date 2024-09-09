@@ -1,10 +1,35 @@
 // import { EmptyWallet } from "@/components/empty";
+import Query from "@/api/query";
+import { EmptyWallet } from "@/components/empty";
 import FundingForm from "@/components/funding_form";
 import WalletTransaction from "@/components/wallet_transaction";
+import { formatAmount } from "@/services/helpers";
+import { getCookie } from "@/services/storage";
+import { QueryProps } from "@/types";
 import { ChevronLeft } from "lucide-react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Fund = () => {
+  const user = getCookie("@user");
+  const userData = user ? JSON.parse(user) : null;
+  const [wallet, setWallet] = useState<any>([]);
+  const queryParamsArray: QueryProps = [
+    {
+      id: "wallet",
+      url: `user/transactions/${userData?.id}`,
+      method: "get",
+      payload: null,
+    },
+  ];
+
+  const { queries } = Query(queryParamsArray);
+  useEffect(() => {
+    if (queries[0].data?.status && queries[0].data.data?.length > 0) {
+      setWallet(queries[0].data.data);
+    }
+  }, []);
+  
   return (
     <>
       <NavLink to={"/dashboard/wallet"} className='flex items-center'>
@@ -16,13 +41,17 @@ const Fund = () => {
         <p className='text-sm font-thin'>
           Current Balance:{" "}
           <span className='text-[#2E8B57] text-[16px] font-extrabold'>
-            &#8358;0.00
+            &#8358;{formatAmount(userData.balance)}
           </span>
         </p>
         <div>
           <FundingForm />
         </div>
-        <WalletTransaction />
+        {wallet.length > 0 ? (
+          <WalletTransaction data={wallet} />
+        ) : (
+          <EmptyWallet />
+        )}
       </div>
     </>
   );

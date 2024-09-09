@@ -1,9 +1,9 @@
 /** @format */
 
-import { Input } from "@chakra-ui/react";
+import { Input, Textarea } from "@chakra-ui/react";
 import { Label } from "./ui/label";
 import { Select } from "@chakra-ui/react";
-import { FormInputPropType, FormSelectPropType } from "@/types";
+import { FormInputPropType, FormSelectPropType, FormTextAreaPropType } from "@/types";
 
 const FormInput: React.FC<FormInputPropType> = ({
   label,
@@ -54,9 +54,9 @@ const FormSelect: React.FC<FormSelectPropType> = ({
         onChange={changeFunction as React.ChangeEventHandler<HTMLSelectElement>}
         value={value}
         size='lg'>
-        {options.map((option: string, index: number) => (
-          <option key={index} value={option}>
-            {option}
+        {options.map((option: any, index: number) => (
+          <option key={index} value={option.id ? option.id : option}>
+            {option.name ? option.name : option}
           </option>
         ))}
       </Select>
@@ -64,4 +64,27 @@ const FormSelect: React.FC<FormSelectPropType> = ({
   );
 };
 
-export { FormInput, FormSelect };
+const FormTextArea: React.FC<FormTextAreaPropType> = ({
+  label,
+  name,
+  value,
+  cn,
+  changeFunction,
+}) => {
+  return (
+    <div className='grid w-full items-center gap-1.5'>
+      <Label htmlFor={name} className='text-sm font-normal'>
+        {label}
+      </Label>
+      <Textarea
+        className={cn}
+        name={name}
+        size={"lg"}
+        onChange={changeFunction}>
+        {value}
+      </Textarea>
+    </div>
+  );
+};
+
+export { FormInput, FormSelect, FormTextArea };

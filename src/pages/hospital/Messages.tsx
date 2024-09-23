@@ -18,7 +18,7 @@ import sort from "@/assets/sort.svg";
 import read_receipt from "@/assets/read_receipt.svg";
 import { Badge } from "@chakra-ui/react";
 
-const Messages = () => {
+const AdminMessages = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
   const [appointments, setAppointments] = useState<any>([]);
@@ -61,7 +61,7 @@ const Messages = () => {
                     Chat a Doctor
                   </p>
                   <NavLink
-                    to='/dashboard/message'
+                    to='/patient/message'
                     className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between mt-10 px-8 py-1'>
                     <img src={add} alt='logo' />
                     <strong>Call A Doctor</strong>
@@ -78,7 +78,7 @@ const Messages = () => {
                   </p>
                   <p className='text-[26px]'>{appointments.length}</p>
                   <NavLink
-                    to='/dashboard/appointments'
+                    to='/patient/appointments'
                     className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1 '>
                     <img src={add} alt='plus icon' />
                     <strong>Book Appointment</strong>
@@ -91,7 +91,7 @@ const Messages = () => {
         </div>
       </div>
       <NavLink
-        to={"/dashboard/home"}
+        to={"/patient/home"}
         className='flex items-center md:gap-5 gap-2 text-[#333333CC] w-fit mt-3'>
         <ChevronLeft size={34} />
         <p className='text-5xl font-normal'>Chats</p>
@@ -154,4 +154,4 @@ const Messages = () => {
   );
 };
 
-export default Messages;
+export default AdminMessages;

@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { WithdrawPropType } from "@/types";
 import { getCookie } from "@/services/storage";
 import { useNotifier } from "@/hooks/useNotifier";
+import Mutation from "@/api/mutation";
 
 const WithdrawForm = () => {
   const payment_method: string[] = [
@@ -18,7 +19,7 @@ const WithdrawForm = () => {
     "GTBank",
     "FCMB",
     "Opay Microfinance Bank",
-    "First Bank of Nigeria"
+    "First Bank of Nigeria",
   ];
 
   const { showNotifier, NotifierComponent } = useNotifier();
@@ -32,7 +33,7 @@ const WithdrawForm = () => {
     amount: "",
   });
 
-  // const { mutation } = Mutation();
+  const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
     console.log("clicked");
@@ -47,17 +48,36 @@ const WithdrawForm = () => {
       });
     }
 
-    // const data = {
-    //   method: "post",
-    //   url: `doctors/withdraw`,
-    //   content: formData,
-    // };
-    // console.log(formData);
-    // mutation.mutate(data);
-    // handleDataUpdate();
-    // if (mutation.isSuccess) {
-    //   console.log("test");
-    // }
+    const data = {
+      method: "post",
+      url: `doctors/withdraw`,
+      content: formData,
+    };
+    mutation.mutate(data);
+    if (mutation.isSuccess) {
+      if (mutation.data.status) {
+        showNotifier({
+          title: "Success",
+          text: "Your withdrawal request was successfully submitted!",
+          status: "success",
+        });
+      } else {
+        const errorMessage = Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
+    } else {
+      showNotifier({
+        title: "Error",
+        text: "Failed to submit withdrawal request. Please try again later.",
+        status: "error",
+      });
+    }
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {

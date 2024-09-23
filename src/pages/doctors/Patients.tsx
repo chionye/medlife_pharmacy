@@ -1,8 +1,6 @@
 /** @format */
 
-import { NavLink } from "react-router-dom";
 import pinned from "@/assets/pinned.svg";
-import bell from "@/assets/bell.svg";
 import add from "@/assets/add.svg";
 import task_done from "@/assets/task_done.svg";
 import search from "@/assets/search.svg";
@@ -13,26 +11,36 @@ import Table from "@/components/table";
 import { useEffect, useMemo, useState } from "react";
 import { QueryProps } from "@/types";
 import Query from "@/api/query";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import { EmptyAppointment } from "@/components/empty";
 import { CardWithButton } from "@/components/custom_cards";
+import { getTotalAddedThisMonthAndYear } from "@/services/helpers";
+import { GreetingSection } from "@/components/section";
+import Pagination from "@/components/pagination";
 
-const DoctorsAppointments = () => {
+const Patients = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
-
-  const [appointments, setAppointments] = useState<any[]>([]);
+  const [patients, setPatients] = useState<any[]>([]);
+  const [patientTotal, setPatientTotal] = useState<any>({
+    thisYear: 0,
+    thisMonth: 0,
+  });
+  const role = getConfigByRole();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(10);
+  const totalPages = Math.ceil(patients.length / itemsPerPage);
 
   const thead = useMemo(
     () => [
       "SN",
       "Name of Patients",
-      "Date and Time",
-      "Address",
-      "Appointment Type",
-      "Appointment Details",
+      "Patient’s Age",
+      "Last Appointment",
+      "Upcoming Appointment",
+      "Appoinment Details",
       "Status",
-      "Response",
+      "View More",
     ],
     []
   );
@@ -40,14 +48,57 @@ const DoctorsAppointments = () => {
   const keys = useMemo(
     () => [
       "SN",
-      "doctor.fullname",
-      "doctor.specialization",
-      "appointment_date",
-      "type",
+      "fullname",
+      "dob",
+      "created_at",
+      "updated_at",
       "description",
       "status",
+      "view_more",
     ],
     []
+  );
+
+  const cardValue = useMemo(
+    () => [
+      {
+        title: "Total Number of Patients",
+        buttonText: "Onboard New Patients",
+        link: "/doctor/appointments",
+        icon: add,
+        secondaryIcon: pinned,
+        count: patients.length,
+        modal: true,
+        type: "patient",
+      },
+      {
+        title: "No of New Patients",
+        icon: add,
+        subtitle: "This Month",
+        secondaryIcon: task_done,
+        count: patientTotal.thisMonth,
+      },
+      {
+        title: "No of New Patients",
+        icon: add,
+        subtitle: "This Year",
+        secondaryIcon: task_done,
+        count: patientTotal.thisYear,
+      },
+    ],
+    [patientTotal.thisMonth, patientTotal.thisYear, patients.length]
+  );
+
+  const queryParamsArray: QueryProps = useMemo(
+    () => [
+      {
+        id: "appointments",
+        url: "patients/doctor",
+        method: "post",
+        payload: { patients_id: userData?.id },
+      },
+    ],
+    [userData?.id]
   );
 
   const appointmentOptions = useMemo(
@@ -77,63 +128,31 @@ const DoctorsAppointments = () => {
     []
   );
 
-  const cardValue = useMemo(
-    () => [
-      {
-        title: "Current Appointment",
-        buttonText: "Create Appointment",
-        link: "/doctor/appointments",
-        icon: add,
-        secondaryIcon: pinned,
-        count: appointments.length,
-      },
-      {
-        title: "No of Appointments",
-        icon: add,
-        subtitle: "This Month",
-        secondaryIcon: task_done,
-        count: appointments.length,
-      },
-      {
-        title: "No of Appointments",
-        icon: add,
-        subtitle: "This Year",
-        secondaryIcon: task_done,
-        count: appointments.length,
-      },
-    ],
-    [appointments.length]
-  );
-
-  const queryParamsArray: QueryProps = useMemo(
-    () => [
-      {
-        id: "appointments",
-        url: "appointment/list",
-        method: "post",
-        payload: { user_id: userData?.id },
-      },
-    ],
-    [userData?.id]
-  );
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return patients.slice(start, end);
+  }, [currentPage, patients, itemsPerPage]);
 
   const { queries } = Query(queryParamsArray);
 
   useEffect(() => {
     if (queries[0].data?.status && queries[0].data.data?.length > 0) {
-      setAppointments(queries[0].data.data);
+      setPatients(queries[0].data.data);
+      const totals = getTotalAddedThisMonthAndYear(queries[0].data.data);
+
+      setPatientTotal((prev: any) => ({
+        ...prev,
+        thisMonth: totals.thisMonth,
+        thisYear: totals.thisYear,
+      }));
     }
-  }, [queries]);
+  }, []);
 
   return (
     <>
       {/* Header */}
-      <div className='flex justify-between items-center'>
-        <Dropdown label='Today' options={timeOptions} />
-        <NavLink to='/dashboard' className='mt-2'>
-          <img src={bell} alt='bell icon' />
-        </NavLink>
-      </div>
+      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>
@@ -146,6 +165,9 @@ const DoctorsAppointments = () => {
               icon={item.icon ? item.icon : ""}
               secondaryIcon={item.secondaryIcon ? item.secondaryIcon : ""}
               count={item.count ? item.count : "0"}
+              modal={item.modal ? item.modal : false}
+              subtitle={item.subtitle ? item.subtitle : ""}
+              type={item.type ? item.type : ""}
             />
           ))}
         </div>
@@ -170,10 +192,17 @@ const DoctorsAppointments = () => {
       </div>
 
       {/* Table or Empty State */}
-      {appointments.length > 0 ? (
-        <div className='mt-10'>
-          <Table thead={thead} tbody={appointments} keys={keys} />
-        </div>
+      {paginatedData.length > 0 ? (
+        <>
+          <div className='mt-10'>
+            <Table thead={thead} tbody={paginatedData} keys={keys} />
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </>
       ) : (
         <EmptyAppointment />
       )}
@@ -181,4 +210,4 @@ const DoctorsAppointments = () => {
   );
 };
 
-export default DoctorsAppointments;
+export default Patients;

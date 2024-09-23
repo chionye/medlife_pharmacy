@@ -1,6 +1,7 @@
 /** @format */
 
-import { format } from "date-fns";
+import { User } from "@/types";
+import { format, subDays } from "date-fns";
 import moment from "moment";
 
 export const filterAndSortGraphData = (data: any) => {
@@ -79,5 +80,57 @@ export const encodeIfURL = (str: string): string => {
 };
 
 export const toTitleCase = (str: string): string => {
-  return str.replace(/(^[a-z])|(\s+[a-z])/g, (txt) => txt.toUpperCase());
+  return str ? str.replace(/(^[a-z])|(\s+[a-z])/g, (txt) => txt.toUpperCase()) : str;
+};
+
+export const getAgeFromDOB = (dob: string): number => {
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  const dayDiff = today.getDate() - birthDate.getDate();
+  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+    age--;
+  }
+
+  return age;
+};
+
+export const getTotalAddedThisMonthAndYear = (
+  users: User[]
+): {
+  thisMonth: number;
+  thisYear: number;
+} => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth(); // 0-based, January is 0
+  const currentYear = currentDate.getFullYear();
+
+  let thisMonthCount = 0;
+  let thisYearCount = 0;
+
+  users.forEach((user) => {
+    const createdAt = new Date(user.created_at);
+    const createdMonth = createdAt.getMonth();
+    const createdYear = createdAt.getFullYear();
+
+    // Check if the record was added this month (regardless of the year)
+    if (createdMonth === currentMonth) {
+      thisMonthCount++;
+    }
+
+    // Check if the record was added this year (regardless of the month)
+    if (createdYear === currentYear) {
+      thisYearCount++;
+    }
+  });
+
+  return {
+    thisMonth: thisMonthCount,
+    thisYear: thisYearCount,
+  };
+};
+
+export const formateDate = (_relative: any, absolute: any) => {
+  return format(subDays(new Date(), absolute), "iii d LLL");
 };

@@ -7,13 +7,14 @@ import eyeslash from "@/assets/eyeslash.svg";
 import plus_red from "@/assets/plus_red.svg";
 import plus_white from "@/assets/plus_white.svg";
 import FullModal from "./full_modal";
-import { OnboardPatientForm } from "./onboard_form";
+import { OnboardDoctorForm, OnboardPatientForm } from "./onboard_form";
 import { getConfigByRole } from "@/services/storage";
 
 export const CardWithButton = ({
   title,
   buttonText,
   modal,
+  type,
   link,
   icon,
   secondaryIcon,
@@ -36,7 +37,7 @@ export const CardWithButton = ({
           <img src={icon} alt='icon' />
           <strong>{buttonText}</strong>
         </NavLink>
-      ) : buttonText && modal ? (
+      ) : buttonText && modal && type === "patient" ? (
         <FullModal
           icon={<img src={icon} alt='open modal' />}
           title={"Onboard a Patient"}
@@ -46,6 +47,18 @@ export const CardWithButton = ({
           }>
           <div className='flex justify-center items-center'>
             <OnboardPatientForm />
+          </div>
+        </FullModal>
+      ) : buttonText && modal && type === "doctor" ? (
+        <FullModal
+          icon={<img src={icon} alt='open modal' />}
+          title={"Onboard a Doctor"}
+          btnTitle='Onboard New Doctor'
+          cn={
+            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+          }>
+          <div className='flex justify-center items-center'>
+            <OnboardDoctorForm />
           </div>
         </FullModal>
       ) : null}
@@ -70,9 +83,11 @@ export const VitalCard = ({ title, value, unit, icon }: any) => (
 export const WalletCard = ({
   balance,
   withdraw,
+  showFund = true,
 }: {
   balance: string;
   withdraw?: boolean;
+  showFund?: boolean;
 }) => (
   <Card className={`bg-[url('/images/bg.png')] mt-4`}>
     <div
@@ -86,21 +101,20 @@ export const WalletCard = ({
             <img src={eyeslash} alt='eye slash' />
           </button>
         </div>
-
-        <NavLink
-          to={`/${
-            getConfigByRole() === "patient" ? "dashboard" : getConfigByRole()
-          }/wallet/fund-wallet`}
-          className={`${
-            withdraw
-              ? "bg-none text-white border border-[#FAFAFA]"
-              : "bg-white text-[#D20606]"
-          } md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
-          <span className='flex items-center'>
-            <img src={withdraw ? plus_white : plus_red} alt='plus' />
-            <span>Fund Wallet</span>
-          </span>
-        </NavLink>
+        {showFund && (
+          <NavLink
+            to={`/${getConfigByRole()}/wallet/fund-wallet`}
+            className={`${
+              withdraw
+                ? "bg-none text-white border border-[#FAFAFA]"
+                : "bg-white text-[#D20606]"
+            } md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
+            <span className='flex items-center'>
+              <img src={withdraw ? plus_white : plus_red} alt='plus' />
+              <span>Fund Wallet</span>
+            </span>
+          </NavLink>
+        )}
       </div>
       <div className='mt-8 flex items-center justify-between'>
         <p className='md:text-5xl text-4xl font-semibold text-white'>
@@ -108,7 +122,7 @@ export const WalletCard = ({
         </p>
         {withdraw && (
           <NavLink
-            to={"/doctor/wallet/withdraw"}
+            to={`/${getConfigByRole()}/wallet/withdraw`}
             className={`bg-white text-[#D20606] md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
             <span className='flex items-center'>
               <img src={plus_red} alt='plus' />

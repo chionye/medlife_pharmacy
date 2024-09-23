@@ -56,12 +56,12 @@ export const getCookieData = (dataType: string) => {
   return null;
 };
 
-export const getConfigByRole = (): "patient" | "doctor" | null => {
+export const getConfigByRole = (): "patient" | "doctor" | "hospital" | null => {
   const user = getCookieData("user");
   if (!user) {
     return null;
   }
-  return user?.role as "patient" | "doctor";
+  return user?.role as "patient" | "doctor" | "hospital";
 };
 
 export const LogoutUser = () => {

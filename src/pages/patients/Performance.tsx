@@ -9,7 +9,7 @@ import { QueryProps } from "@/types";
 import { getCookie } from "@/services/storage";
 import RatingForm from "@/components/rating_form";
 
-const DoctorPerformance = () => {
+const Performance = () => {
   const physician_medic_sector: string[] = [
     "Cardiologist",
     "Physiologist",
@@ -28,22 +28,7 @@ const DoctorPerformance = () => {
     "Overall satisfaction",
     "Communication",
     "Knowledge",
-    "Bedside manner"
-  ];
-  
-  const formAttributes = [
-    {
-      name: "doctor_id",
-      options: doctors,
-      label: "Physician Name",
-      value: formData.doctor_id,
-    },
-    {
-      name: "physician_medic_sector",
-      options: physician_medic_sector,
-      label: "Physician Medic Sector",
-      value: "none",
-    },
+    "Bedside manner",
   ];
 
   const handleSubmit = () => {
@@ -60,9 +45,23 @@ const DoctorPerformance = () => {
     },
   ];
 
+  const formAttributes = [
+    {
+      name: "doctor_id",
+      options: doctors,
+      label: "Physician Name",
+      value: formData.doctor_id,
+    },
+    {
+      name: "physician_medic_sector",
+      options: physician_medic_sector,
+      label: "Physician Medic Sector",
+      value: "none",
+    },
+  ];
+
   const { queries } = Query(queryParamsArray);
   useEffect(() => {
-    console.log(queries[0].data);
     if (queries[0].data?.status && queries[0].data.data?.length > 0) {
       const data = queries[0].data.data.map((item: any) => ({
         id: item.id,
@@ -74,7 +73,7 @@ const DoctorPerformance = () => {
 
   return (
     <>
-      <NavLink to={"/dashboard/settings"} className='flex items-center'>
+      <NavLink to={"/patient/settings"} className='flex items-center'>
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Rate Physician Performance</p>
       </NavLink>
@@ -87,4 +86,4 @@ const DoctorPerformance = () => {
   );
 };
 
-export default DoctorPerformance;
+export default Performance;

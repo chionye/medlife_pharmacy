@@ -1,30 +1,42 @@
 /** @format */
 
-// import { Outlet } from "react-router-dom";
-import Appointments from "@/pages/dashboard/Appointments";
-import Settings from "@/pages/dashboard/Settings";
-import Support from "@/pages/dashboard/Support";
-import Home from "@/pages/dashboard/Home";
-import Performance from "@/pages/dashboard/Performance";
-import Wallet from "@/pages/dashboard/Wallet";
-import Fund from "@/pages/dashboard/Fund";
-import Transactions from "@/pages/dashboard/Transactions";
-import Medication from "@/pages/dashboard/Medication";
-import ProtectedRoute from "./protectedroute";
-import Messages from "@/pages/dashboard/Messages";
 import { Outlet } from "react-router-dom";
+import Appointments from "@/pages/patients/Appointments";
+import Settings from "@/pages/patients/Settings";
+import Support from "@/pages/patients/Support";
+import Home from "@/pages/patients/Home";
+import Performance from "@/pages/patients/Performance";
+import Wallet from "@/pages/patients/Wallet";
+import Fund from "@/pages/patients/Fund";
+import Transactions from "@/pages/patients/Transactions";
+import Medication from "@/pages/patients/Medication";
+import ProtectedRoute from "./protectedroute";
+import Messages from "@/pages/patients/Messages";
 import Layout from "@/pages/auth/Layout";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
-import DoctorsHome from "@/pages/doctors_dashboard/Home";
-import DoctorsAppointments from "@/pages/doctors_dashboard/Appointments";
-import Patients from "@/pages/doctors_dashboard/Patients";
-import DoctorWallet from "@/pages/doctors_dashboard/Wallet";
-import DoctorWithdraw from "@/pages/doctors_dashboard/Withdraw";
-import DoctorSettings from "@/pages/doctors_dashboard/Settings";
-import DoctorTransactions from "@/pages/doctors_dashboard/Transactions";
-import DoctorMessages from "@/pages/doctors_dashboard/Messages";
-import DoctorPerformance from "@/pages/doctors_dashboard/Performance";
+import DoctorsHome from "@/pages/doctors/Home";
+import DoctorsAppointments from "@/pages/doctors/Appointments";
+import Patients from "@/pages/doctors/Patients";
+import DoctorWallet from "@/pages/doctors/Wallet";
+import DoctorWithdraw from "@/pages/doctors/Withdraw";
+import DoctorSettings from "@/pages/doctors/Settings";
+import DoctorTransactions from "@/pages/doctors/Transactions";
+import DoctorMessages from "@/pages/doctors/Messages";
+import DoctorPerformance from "@/pages/doctors/Performance";
+import ResetPassword from "@/pages/auth/ResetPassword";
+import Verify from "@/pages/auth/Verify";
+import ChangePassword from "@/pages/auth/ChangePassword";
+import AdminHome from "@/pages/hospital/Home";
+import AdminAppointments from "@/pages/hospital/Appointments";
+import Users from "@/pages/hospital/Users";
+import AdminSettings from "@/pages/hospital/Settings";
+import AdminPerformance from "@/pages/hospital/Performance";
+import AdminWallet from "@/pages/hospital/Wallet";
+import AdminWithdraw from "@/pages/hospital/Withdraw";
+import AdminTransactions from "@/pages/hospital/Transactions";
+import AdminMessages from "@/pages/hospital/Messages";
+import DoctorNotifications from "@/pages/doctors/Notifications";
 
 const Routes = [
   {
@@ -43,58 +55,70 @@ const Routes = [
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
+      },
+      {
+        path: "/change-password",
+        element: <ChangePassword />,
+      },
     ],
   },
   {
-    path: "/dashboard",
-    element: <ProtectedRoute />,
+    path: "/patient",
+    element: <ProtectedRoute role='patient' />, // Only allow patient
     children: [
       {
-        path: "/dashboard/home",
+        path: "/patient/home",
         element: <Home />,
       },
       {
-        path: "/dashboard/appointments",
+        path: "/patient/appointments",
         element: <Appointments />,
       },
       {
-        path: "/dashboard/settings",
+        path: "/patient/settings",
         element: <Settings />,
       },
       {
-        path: "/dashboard/settings/support-center",
+        path: "/patient/settings/support-center",
         element: <Support />,
       },
       {
-        path: "/dashboard/settings/rate-physicians-performance",
+        path: "/patient/settings/rate-physicians-performance",
         element: <Performance />,
       },
       {
-        path: "/dashboard/wallet",
+        path: "/patient/wallet",
         element: <Wallet />,
       },
       {
-        path: "/dashboard/wallet/fund-wallet",
+        path: "/patient/wallet/fund-wallet",
         element: <Fund />,
       },
       {
-        path: "/dashboard/wallet/transactions",
+        path: "/patient/wallet/transactions",
         element: <Transactions />,
       },
       {
-        path: "/dashboard/medication",
+        path: "/patient/medication",
         element: <Medication />,
       },
 
       {
-        path: "/dashboard/messages",
+        path: "/patient/messages",
         element: <Messages />,
       },
     ],
   },
   {
     path: "/doctor",
-    element: <ProtectedRoute />,
+    element: <ProtectedRoute role='doctor' />, // Only allow doctor
     children: [
       {
         path: "/doctor/home",
@@ -125,6 +149,10 @@ const Routes = [
         element: <DoctorWallet />,
       },
       {
+        path: "/doctor/notifications",
+        element: <DoctorNotifications />,
+      },
+      {
         path: "/doctor/wallet/withdraw",
         element: <DoctorWithdraw />,
       },
@@ -139,6 +167,60 @@ const Routes = [
       {
         path: "/doctor/messages",
         element: <DoctorMessages />,
+      },
+    ],
+  },
+  {
+    path: "/hospital",
+    element: <ProtectedRoute role='hospital' />, // Only allow hospital
+    children: [
+      {
+        path: "/hospital/home",
+        element: <AdminHome />,
+      },
+      {
+        path: "/hospital/appointments",
+        element: <AdminAppointments />,
+      },
+      {
+        path: "/hospital/users",
+        element: <Users />,
+      },
+      {
+        path: "/hospital/settings",
+        element: <AdminSettings />,
+      },
+      {
+        path: "/hospital/settings/support-center",
+        element: <Support />,
+      },
+      {
+        path: "/hospital/settings/rate-patients-performance",
+        element: <AdminPerformance />,
+      },
+      {
+        path: "/hospital/wallet",
+        element: <AdminWallet />,
+      },
+      {
+        path: "/hospital/wallet/withdraw",
+        element: <AdminWithdraw />,
+      },
+      {
+        path: "/hospital/wallet/fund-wallet",
+        element: <Fund />,
+      },
+      {
+        path: "/hospital/wallet/transactions",
+        element: <AdminTransactions />,
+      },
+      {
+        path: "/hospital/performance-metrics",
+        element: <AdminPerformance />,
+      },
+      {
+        path: "/hospital/messages",
+        element: <AdminMessages />,
       },
     ],
   },

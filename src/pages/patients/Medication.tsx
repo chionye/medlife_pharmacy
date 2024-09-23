@@ -19,7 +19,7 @@ const Medication = () => {
       url: "list_medications",
       method: "post",
       payload: { user_id: userData?.id },
-    }
+    },
   ];
   const { queries } = Query(queryParamsArray);
   useEffect(() => {
@@ -30,7 +30,7 @@ const Medication = () => {
 
   return (
     <>
-      <NavLink to={"/dashboard/home"} className='flex items-center'>
+      <NavLink to={"/patient/home"} className='flex items-center'>
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Medications</p>
       </NavLink>

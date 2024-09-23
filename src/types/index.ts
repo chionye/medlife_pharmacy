@@ -1,3 +1,4 @@
+/** @format */
 
 import { Method } from "axios";
 export interface FabPropType {
@@ -25,6 +26,9 @@ export interface DynamicDropdownProps {
   icon?: any;
   cn?: string;
   options: DropdownOption[];
+  value?: string;
+  dropdownType?: string | null;
+  changeFunction?: (e: string) => void;
 }
 
 export interface FullModalPropType {
@@ -94,6 +98,12 @@ export interface FormTextAreaPropType {
   changeFunction: (e: any) => void;
 }
 
+export interface FormPinPropType {
+  label: string;
+  value: string;
+  changeFunction: any;
+}
+
 export interface FundingPropType {
   amount: string;
   user_id: string;
@@ -122,6 +132,21 @@ export interface RegisterPropType {
   role: string;
 }
 
+export interface ResetPasswordPropType {
+  email: string;
+}
+
+export interface ChangePasswordPropType {
+  email: string;
+  password: string;
+  new_password: string;
+}
+
+export interface OTPPropType {
+  email: string;
+  otp: string;
+}
+
 export interface LoginPropType {
   email: string;
   password: string;
@@ -134,6 +159,7 @@ export interface TopDoctorsPropType {
   rating: string;
   photo: string;
   key: number;
+  reviews?: number;
 }
 
 export interface MedicationHistoryPropType {
@@ -180,13 +206,14 @@ export interface PatientPropType {
 
 export interface TitleBarPropType {
   title: string;
-  link: string;
+  link?: string;
 }
 
 export interface TablePropType {
   thead: string[];
   tbody?: any;
   keys: string[];
+  role?: string;
 }
 
 export interface AppointmentPropType {
@@ -198,6 +225,48 @@ export interface AppointmentPropType {
   type: string;
   doctor_id: string;
   patient_id: string;
+}
+
+export interface AppointmentDetailsPropType {
+  title: string;
+  description: string;
+  type: string;
+  appointment_id: string;
+  appointment_time: string;
+  appointment_date: string;
+  link: string;
+}
+
+export interface User {
+  id: number;
+  user_id: string;
+  fullname: string;
+  balance: number;
+  email: string;
+  username: string;
+  phone: string;
+  country_code: string;
+  country: string;
+  gender: string;
+  address: string;
+  specialization: string;
+  verification_code: string | null;
+  email_verified: number;
+  status: string;
+  role: string;
+  created_by: string;
+  rating: string;
+  dob: string;
+  consultation_amount: string;
+  role_id: string;
+  email_verified_at: string | null;
+  weight: string;
+  height: string;
+  blood_pressure: string;
+  glucose_level: string;
+  photo: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface OnboardPatientPropType {
@@ -239,3 +308,31 @@ export type ContextValue = {
   userData?: UserData;
   updateData: (arg0: any) => void;
 };
+
+export interface NotificationPropType {
+  title: string;
+  message: string;
+  timestamp: string;
+}
+
+export interface NotificationCardPropType {
+  notifications: NotificationPropType[];
+}
+
+export interface WebsiteSettingsPropType {
+  id: string;
+  name: string;
+  phone_number: string;
+  email: string;
+  address: string;
+  about_us: string;
+  password: string;
+  created_at: string | null;
+  updated_at: string;
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}

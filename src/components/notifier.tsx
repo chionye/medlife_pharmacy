@@ -64,7 +64,7 @@ const Notifier: React.FC<NotifierPropType> = ({
             </div>
           ) : (
             <div className='text-center text-[#D20606] text-sm'>
-              <NavLink to={"/dashboard/home"}>Back to Dashboard</NavLink>
+              <NavLink to={"/patient/home"}>Back to Dashboard</NavLink>
             </div>
           )}
         </ModalContent>

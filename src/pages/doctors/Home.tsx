@@ -1,6 +1,6 @@
 /** @format */
 import { useEffect, useMemo, useState } from "react";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import { toTitleCase } from "@/services/helpers";
 import Query from "@/api/query";
 import {
@@ -8,11 +8,9 @@ import {
   QueryProps,
   TopDoctorsPropType,
 } from "@/types";
-
 import video_icon from "@/assets/video_icon.svg";
 import pin from "@/assets/pin.svg";
 import add from "@/assets/add.svg";
-import bell from "@/assets/bell.svg";
 import {
   AppointmentSection,
   DoctorPatientSection,
@@ -27,13 +25,14 @@ function DoctorsHome() {
   const [appointments, setAppointments] = useState<
     AppointmentHistoryPropType[]
   >([]);
+  const role = getConfigByRole();
 
   const cardValue = useMemo(
     () => [
       {
         title: "Chat Patient",
         buttonText: "Call A Patient",
-        link: "/doctor/message",
+        link: "/doctor/call",
         icon: add,
         secondaryIcon: video_icon,
       },
@@ -86,7 +85,7 @@ function DoctorsHome() {
       <GreetingSection
         name={user ? toTitleCase(user.fullname || user.username) : "Guest"}
         subtitle={"Welcome back doc!"}
-        bell={bell}
+        role={role}
       />
 
       <div className='flex flex-col space-y-6 mt-5'>
@@ -101,6 +100,7 @@ function DoctorsHome() {
                 secondaryIcon={item.secondaryIcon ? item.secondaryIcon : ""}
                 count={item.count ? item.count : ""}
                 subtitle={item.subtitle ? item.subtitle : null}
+                
               />
             ))}
           </div>

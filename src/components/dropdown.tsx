@@ -1,41 +1,57 @@
-import { DropdownOption, DynamicDropdownProps } from '../types/index';
+/** @format */
+
+import { DropdownOption, DynamicDropdownProps } from "../types/index";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from './ui/button';
-import { ChevronsUpDown } from 'lucide-react';
+import { Button } from "./ui/button";
+import { ChevronsUpDown } from "lucide-react";
 
-const Dropdown: React.FC<DynamicDropdownProps> = ({ label, options, icon, cn }) => {
+const Dropdown: React.FC<DynamicDropdownProps> = ({
+  label,
+  options,
+  icon,
+  cn,
+  value,
+  dropdownType = null,
+  changeFunction,
+}) => {
   const renderDropdownItems = (items: DropdownOption[]) => {
-    return items && items.map((item, index) => {
-      if (item.items) {
-        
-        return (
-          <DropdownMenuSub key={index}>
-            <DropdownMenuSubTrigger>{item.label}</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                {renderDropdownItems(item.items)}
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        );
-      }
+    return (
+      items &&
+      items.map((item, index) => {
+        if (item.items) {
+          return (
+            <DropdownMenuSub key={index}>
+              <DropdownMenuSubTrigger>{item.label}</DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  {renderDropdownItems(item.items)}
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          );
+        }
 
-      return (
-        <DropdownMenuItem key={index} onClick={item.onClick} className={cn}>
-          {item.label}
-        </DropdownMenuItem>
-      );
-    });
+        return dropdownType === "button" || dropdownType === null ? (
+          <DropdownMenuItem className={cn}>{item.label}</DropdownMenuItem>
+        ) : (
+          <DropdownMenuRadioItem value={item.label} className={cn}>
+            {item.label}
+          </DropdownMenuRadioItem>
+        );
+      })
+    );
   };
 
   return (
@@ -50,7 +66,13 @@ const Dropdown: React.FC<DynamicDropdownProps> = ({ label, options, icon, cn }) 
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuGroup>{renderDropdownItems(options)}</DropdownMenuGroup>
+        {dropdownType === "button" || dropdownType === null ? (
+          <DropdownMenuGroup>{renderDropdownItems(options)}</DropdownMenuGroup>
+        ) : (
+          <DropdownMenuRadioGroup value={value} onValueChange={changeFunction}>
+            {renderDropdownItems(options)}
+          </DropdownMenuRadioGroup>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

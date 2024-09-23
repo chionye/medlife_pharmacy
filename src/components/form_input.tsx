@@ -1,9 +1,18 @@
 /** @format */
 
-import { Input, Textarea } from "@chakra-ui/react";
+import {
+  Input,
+  Textarea,
+} from "@chakra-ui/react";
 import { Label } from "./ui/label";
 import { Select } from "@chakra-ui/react";
-import { FormInputPropType, FormSelectPropType, FormTextAreaPropType } from "@/types";
+import {
+  FormInputPropType,
+  FormPinPropType,
+  FormSelectPropType,
+  FormTextAreaPropType,
+} from "@/types";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/input-otp";
 
 const FormInput: React.FC<FormInputPropType> = ({
   label,
@@ -87,4 +96,31 @@ const FormTextArea: React.FC<FormTextAreaPropType> = ({
   );
 };
 
-export { FormInput, FormSelect, FormTextArea };
+const FormPinInput: React.FC<FormPinPropType> = ({
+  label,
+  value,
+  changeFunction,
+}) => {
+  return (
+    <div>
+      <Label className='text-sm font-normal'>{label}</Label>
+      <div className='space-y-2'>
+        <InputOTP
+          maxLength={6}
+          value={value}
+          onChange={(value) => changeFunction(value)}>
+          <InputOTPGroup>
+            <InputOTPSlot index={0} className='p-7' />
+            <InputOTPSlot index={1} className='p-7' />
+            <InputOTPSlot index={2} className='p-7' />
+            <InputOTPSlot index={3} className='p-7' />
+            <InputOTPSlot index={4} className='p-7' />
+            <InputOTPSlot index={5} className='p-7' />
+          </InputOTPGroup>
+        </InputOTP>
+      </div>
+    </div>
+  );
+};
+
+export { FormInput, FormSelect, FormTextArea, FormPinInput };

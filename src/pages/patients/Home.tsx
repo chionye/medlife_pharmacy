@@ -1,6 +1,6 @@
 /** @format */
 import { useEffect, useMemo, useState } from "react";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import { toTitleCase } from "@/services/helpers";
 import Query from "@/api/query";
 import {
@@ -14,7 +14,6 @@ import {
 import video_icon from "@/assets/video_icon.svg";
 import pin from "@/assets/pin.svg";
 import add from "@/assets/add.svg";
-import bell from "@/assets/bell.svg";
 import speedometer from "@/assets/speedometer.svg";
 import height from "@/assets/height.svg";
 import gauge from "@/assets/gauge.svg";
@@ -37,20 +36,21 @@ function Home() {
   const [appointments, setAppointments] = useState<
     AppointmentHistoryPropType[]
   >([]);
+  const role = getConfigByRole();
 
   const cardValue = useMemo(
     () => [
       {
         title: "Chat a Doctor",
         buttonText: "Call A Doctor",
-        link: "/dashboard/message",
+        link: "/patient/call",
         icon: add,
         secondaryIcon: video_icon,
       },
       {
         title: "Current Appointment",
         buttonText: "Book Appointment",
-        link: "/dashboard/appointments",
+        link: "/patient/appointments",
         icon: add,
         secondaryIcon: pin,
         count: appointments.length,
@@ -126,7 +126,7 @@ function Home() {
       <GreetingSection
         name={user ? toTitleCase(user.fullname || user.username) : "Guest"}
         subtitle={"We sure hope you’re having a great day!"}
-        bell={bell}
+        role={role}
       />
 
       <div className='flex flex-col space-y-6 mt-5'>
@@ -168,12 +168,12 @@ function Home() {
         <Section>
           <MedicationSection
             medications={medications}
-            link='/dashboard/medication'
+            link='/patient/medication'
             title='My Medications'
           />
           <AppointmentSection
             appointments={appointments}
-            link='/dashboard/appointments'
+            link='/patient/appointments'
             title='Appointments'
           />
         </Section>

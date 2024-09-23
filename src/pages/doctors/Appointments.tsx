@@ -1,7 +1,6 @@
+/** @format */
 
-import { NavLink } from "react-router-dom";
 import pinned from "@/assets/pinned.svg";
-import bell from "@/assets/bell.svg";
 import add from "@/assets/add.svg";
 import task_done from "@/assets/task_done.svg";
 import search from "@/assets/search.svg";
@@ -12,25 +11,31 @@ import Table from "@/components/table";
 import { useEffect, useMemo, useState } from "react";
 import { QueryProps } from "@/types";
 import Query from "@/api/query";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import { EmptyAppointment } from "@/components/empty";
 import { CardWithButton } from "@/components/custom_cards";
+import { GreetingSection } from "@/components/section";
+import Pagination from "@/components/pagination";
 
-const Appointments = () => {
+const DoctorsAppointments = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
-
+  const role = getConfigByRole();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(10);
   const [appointments, setAppointments] = useState<any[]>([]);
+  const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   const thead = useMemo(
     () => [
       "SN",
-      "Name of Medic",
-      "Role",
+      "Name of Patients",
       "Date and Time",
+      "Address",
       "Appointment Type",
       "Appointment Details",
       "Status",
+      "Response",
     ],
     []
   );
@@ -44,6 +49,7 @@ const Appointments = () => {
       "type",
       "description",
       "status",
+      "response",
     ],
     []
   );
@@ -79,8 +85,8 @@ const Appointments = () => {
     () => [
       {
         title: "Current Appointment",
-        buttonText: "Book Appointment",
-        link: "/dashboard/appointments",
+        buttonText: "Create Appointment",
+        link: "/doctor/appointments",
         icon: add,
         secondaryIcon: pinned,
         count: appointments.length,
@@ -93,7 +99,7 @@ const Appointments = () => {
         count: appointments.length,
       },
       {
-        title: "Appointments",
+        title: "No of Appointments",
         icon: add,
         subtitle: "This Year",
         secondaryIcon: task_done,
@@ -123,15 +129,16 @@ const Appointments = () => {
     }
   }, [queries]);
 
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return appointments.slice(start, end);
+  }, [currentPage, appointments, itemsPerPage]);
+
   return (
     <>
       {/* Header */}
-      <div className='flex justify-between items-center'>
-        <Dropdown label='Today' options={timeOptions} />
-        <NavLink to='/dashboard' className='mt-2'>
-          <img src={bell} alt='bell icon' />
-        </NavLink>
-      </div>
+      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>
@@ -168,10 +175,17 @@ const Appointments = () => {
       </div>
 
       {/* Table or Empty State */}
-      {appointments.length > 0 ? (
-        <div className='mt-10'>
-          <Table thead={thead} tbody={appointments} keys={keys} />
-        </div>
+      {paginatedData.length > 0 ? (
+        <>
+          <div className='mt-10'>
+            <Table thead={thead} tbody={paginatedData} keys={keys} />
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </>
       ) : (
         <EmptyAppointment />
       )}
@@ -179,4 +193,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default DoctorsAppointments;

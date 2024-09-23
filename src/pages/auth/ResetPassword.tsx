@@ -1,29 +1,24 @@
 /** @format */
 
-import { FormInput, FormSelect } from "@/components/form_input";
+import { FormInput } from "@/components/form_input";
 import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import useAxiosRequest from "@/hooks/useAxiosRequest";
 import { setCookie } from "@/services/storage";
-import { RegisterPropType } from "@/types";
+import { ResetPasswordPropType } from "@/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const Register = () => {
-  const [formData, setFormData] = useState<RegisterPropType>({
-    username: "",
+const ResetPassword = () => {
+  const [formData, setFormData] = useState<ResetPasswordPropType>({
     email: "",
-    password: "",
-    role: "patient",
   });
 
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
-
-  const roles: string[] = ["patient", "doctor", "hospital"];
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -37,7 +32,7 @@ const Register = () => {
 
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "create_user", formData);
+      const data = await sendRequest("post", "user/forgotpassword", formData);
       if (data.status) {
         setCookie("@user", JSON.stringify(data.data), 1);
         setCookie("@token", JSON.stringify(data.token), 1);
@@ -46,13 +41,8 @@ const Register = () => {
           description: data.message,
           action: <ToastAction altText='done'>done</ToastAction>,
         });
-        if (data.data.role === "patient") {
-          navigate("/patient/home");
-        } else if (data.data.role === "doctor") {
-          navigate("/doctor/home");
-        } else if (data.data.role === "hospital") {
-          navigate("/hospital/home");
-        }
+        // Pass the email to the verify page via navigate
+        navigate("/verify", { state: { email: formData.email } });
       } else {
         if (data.errors.length > 0) {
           data.errors.forEach((err: string) => {
@@ -76,44 +66,14 @@ const Register = () => {
   };
 
   return (
-    <div className='md:pr-28 md:px-0 px-3 mt-7'>
-      <p className='text-3xl font-bold'>Sign Up</p>
-      <div className='mt-5'>
-        <FormSelect
-          value={formData.role}
-          options={roles}
-          name='role'
-          cn={"w-full border border-[#000000] py-3 px-2"}
-          label=''
-          changeFunction={handleFormChange}
-        />
-      </div>
+    <div className='md:pr-28 md:px-0 px-3 mt-10'>
+      <p className='text-3xl font-bold'>Forgot Password?</p>
       <div className='mt-5'>
         <FormInput
           type='email'
           name='email'
           value={formData.email}
           label='Email Address'
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
-        />
-      </div>
-      <div className='mt-5'>
-        <FormInput
-          type='text'
-          name='username'
-          label='Username'
-          value={formData.username}
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
-        />
-      </div>
-      <div className='mt-5'>
-        <FormInput
-          type='password'
-          name='password'
-          value={formData.password}
-          label='Password'
           cn={"border border-[#000000] py-3 px-2"}
           changeFunction={handleFormChange}
         />
@@ -129,12 +89,15 @@ const Register = () => {
               Please wait
             </>
           ) : (
-            "Sign Up"
+            "Submit"
           )}
         </Button>
+        <div className='text-center text-[#D20606] text-lg mt-10'>
+          <NavLink to={"/"}>Back to Login</NavLink>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default ResetPassword;

@@ -1,13 +1,15 @@
-import Query from "@/api/query";
+
+import { useEffect, useState } from "react";
 import { EmptyWallet } from "@/components/empty";
 import WalletTransaction from "@/components/wallet_transaction";
 import { getCookie } from "@/services/storage";
+import { getDateFormat, toTitleCase } from "@/services/helpers";
 import { QueryProps } from "@/types";
-import { ChevronLeft } from "lucide-react";
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import Query from "@/api/query";
+import { GreetingSection } from "@/components/section";
+import { WalletCard } from "@/components/custom_cards";
 
-const Transactions = () => {
+const AdminWallet = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
   const [wallet, setWallet] = useState<any>([]);
@@ -22,6 +24,7 @@ const Transactions = () => {
 
   const { queries } = Query(queryParamsArray);
   useEffect(() => {
+    console.log(queries[0].data);
     if (queries[0].data?.status && queries[0].data.data?.length > 0) {
       setWallet(queries[0].data.data);
     }
@@ -29,13 +32,18 @@ const Transactions = () => {
 
   return (
     <>
-      <NavLink to={"/dashboard/wallet"} className='flex items-center'>
-        <ChevronLeft size={18} />
-        <p className='text-sm font-normal'>Wallet Dashboard</p>
-      </NavLink>
-      <div className='md:px-20 py-5'>
+      <div className='md:px-20 py-10'>
+        <GreetingSection
+          name={
+            userData
+              ? toTitleCase(userData.fullname || userData.username)
+              : "Guest"
+          }
+          subtitle={getDateFormat()}
+        />
+        <WalletCard balance={userData.balance} withdraw showFund={false}/>
         {wallet.length > 0 ? (
-          <WalletTransaction data={wallet} />
+          <WalletTransaction data={wallet} number={"4"} />
         ) : (
           <EmptyWallet />
         )}
@@ -44,4 +52,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default AdminWallet;

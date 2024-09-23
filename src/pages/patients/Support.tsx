@@ -1,3 +1,5 @@
+/** @format */
+
 import { ChevronRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import logout from "@/assets/logout.svg";
@@ -5,7 +7,6 @@ import envelope from "@/assets/envelope.svg";
 import phone from "@/assets/phone.svg";
 import whatsapp from "@/assets/whatsapp.svg";
 import support from "@/assets/support.svg";
-
 
 const Support = () => {
   const settings = [
@@ -23,7 +24,7 @@ const Support = () => {
     },
     {
       title: "234 703 159 7862",
-      link: "/dashboard/settings/support-center",
+      link: "/patient/settings/support-center",
       icon: whatsapp,
       chevron: true,
     },

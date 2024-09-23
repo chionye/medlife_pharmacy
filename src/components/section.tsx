@@ -8,11 +8,14 @@ import TopDoctors from "./top_doctors";
 import { Card } from "./ui/card";
 import FullModal from "./full_modal";
 import ChangeUserForm from "./settings_form";
-import { toTitleCase } from "@/services/helpers";
 import Mutation from "@/api/mutation";
 import { useNotifier } from "@/hooks/useNotifier";
 import { ReloadIcon } from "@radix-ui/react-icons";
-// import { TopDoctorsPropType } from "@/types";
+import { RescheduleAppointmentForm } from "./appointment_form";
+import Dropdown from "@/components/dropdown";
+import bell from "@/assets/bell.svg";
+import empty_user from "@/assets/empty_user.svg";
+import { NotificationCardPropType, NotificationPropType } from "@/types";
 
 export const Section = ({ children }: any) => (
   <div className='sm:w-full md:w-1/2'>{children}</div>
@@ -65,7 +68,7 @@ export const AppointmentSection = ({
   const handleButtonClick = (status: string, id: string) => {
     const data = {
       method: "post",
-      url: `appointment/status`,
+      url: status === "approve" ? `appointment/status` : "appointment/cancel",
       content: {
         appointment_id: id,
         action: status,
@@ -74,11 +77,23 @@ export const AppointmentSection = ({
 
     mutation.mutate(data);
     if (mutation.isSuccess) {
-      showNotifier({
-        title: "Success",
-        text: "You have approved this appointment",
-        status: "success",
-      });
+      if (mutation.data.status) {
+        const action = status === "approve" ? "approved" : "canceled";
+        showNotifier({
+          title: "Success",
+          text: `You have ${action} this appointment`,
+          status: "success",
+        });
+      } else {
+        const errorMessage = Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
     } else {
       showNotifier({
         title: "Error",
@@ -99,30 +114,42 @@ export const AppointmentSection = ({
               <AppointmentHistory key={index} {...appointment} />
               {buttons && (
                 <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
-                  <button className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-9 py-[11px]'>
-                    Cancel
+                  <button
+                    className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                    onClick={() => handleButtonClick("cancel", appointment.id)}>
+                    {mutation.isPending ? (
+                      <>
+                        <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                        Canceling
+                      </>
+                    ) : (
+                      "Cancel"
+                    )}
                   </button>
                   <button
-                    className='bg-[#4BB543] text-white text-[11px] md:px-14 px-9 py-[11px]'
+                    className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
                     onClick={() =>
                       handleButtonClick("approve", appointment.id)
                     }>
                     {mutation.isPending ? (
                       <>
                         <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-                        Saving
+                        Processing
                       </>
                     ) : (
                       "Approve"
                     )}
                   </button>
-                  <button
-                    className='bg-[#D20606] text-white text-[11px] md:px-14 px-9 py-[11px]'
-                    onClick={() =>
-                      handleButtonClick("approve", appointment.id)
+                  <FullModal
+                    title={"Reschedule Appointment"}
+                    label='Reschedule'
+                    cn={
+                      "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
                     }>
-                    Reschedule
-                  </button>
+                    <div className='flex justify-center items-center'>
+                      <RescheduleAppointmentForm appointment={appointment} />
+                    </div>
+                  </FullModal>
                 </div>
               )}
             </>
@@ -138,163 +165,120 @@ export const AppointmentSection = ({
   );
 };
 
-export const GreetingSection = ({ name, subtitle, bell }: any) => (
-  <div className='flex justify-between'>
-    <div>
-      <h4 className='text-3xl font-bold'>Welcome, {name} 👌🏼</h4>
-      {subtitle && <p className='text-sm font-thin'>{subtitle}</p>}
-    </div>
-    {bell && (
-      <NavLink to='/dashboard' className={"mt-2"}>
-        <img src={bell} alt='notifications' />
+export const GreetingSection = ({
+  name,
+  subtitle,
+  role,
+  dropdown,
+  timeOptions,
+}: {
+  name?: string;
+  subtitle?: string;
+  role?: string | null;
+  dropdown?: boolean;
+  timeOptions?: any;
+}) => {
+  return dropdown ? (
+    <div className='flex justify-between items-center'>
+      <Dropdown label='Today' options={timeOptions} />
+      <NavLink to={`/${role}/notifications`} className='mt-2'>
+        <img src={bell} alt='bell icon' />
       </NavLink>
-    )}
+    </div>
+  ) : (
+    <div className='flex justify-between'>
+      <div>
+        <h4 className='text-3xl font-bold'>Welcome, {name} 👌🏼</h4>
+        {subtitle && <p className='text-sm font-thin'>{subtitle}</p>}
+      </div>
+      {bell && (
+        <NavLink to={`/${role}/notifications`} className={"mt-2"}>
+          <img src={bell} alt='notifications' />
+        </NavLink>
+      )}
+    </div>
+  );
+};
+
+export const ProfileSection = ({ children }: any) => (
+  <div className='flex md:flex-row flex-col px-5 md:gap-20 mt-5'>
+    {children}
   </div>
 );
 
-export const ProfileSection = ({ userData, children }: any) => (
-  <div className='flex md:flex-row flex-col px-5 md:gap-20 mt-5'>
-    {children}
-    <div className='flex md:flex-row flex-col md:justify-between md:gap-32 gap-20 w-full md:pr-24'>
-      <div>
-        <div>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Name
-          </p>
-          <p className='text-[16px] text-[#073131] font-normal mt-2'>
-            {userData
-              ? toTitleCase(userData.fullname || userData.username)
-              : "Guest"}
-          </p>
-          <FullModal
-            label='Change Name'
-            title='Change Name'
-            cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-            <div className='flex justify-center items-center'>
-              <ChangeUserForm
-                fieldName='fullname'
-                label='Name'
-                apiUrl='update_user'
-              />
-            </div>
-          </FullModal>
-        </div>
-        <div className='mt-5'>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Email
-          </p>
-          <p className='text-[16px] text-[#073131] font-normal mt-2'>
-            {userData?.email || "jane.doe@example.com"}
-          </p>
-          <FullModal
-            label='Change Email'
-            title='Change Email'
-            cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-            <div className='flex justify-center items-center'>
-              <ChangeUserForm
-                fieldName='email'
-                label='Change Email'
-                apiUrl='update_user'
-              />
-            </div>
-          </FullModal>
-        </div>
-        <div className='mt-5'>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Gender
-          </p>
-          <p className='text-[16px] text-[#073131] font-normal mt-2'>
-            {toTitleCase(userData?.gender || "male")}
-          </p>
-          <FullModal
-            label='Change Gender'
-            title='Change Gender'
-            cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-            <div className='flex justify-center items-center'>
-              <ChangeUserForm
-                fieldName='gender'
-                label='Change Gender'
-                apiUrl='update_user'
-                formType='select'
-                options={["male", "female"]}
-              />
-            </div>
-          </FullModal>
-        </div>
-      </div>
-      <div>
-        <div>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Phone Number
-          </p>
-          <p className='text-[16px] text-[#073131] font-normal mt-2'>
-            {userData?.phone || "07012345678"}
-          </p>
-          <FullModal
-            label='Change Phone Number'
-            title='Change Phone Number'
-            cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-            <div className='flex justify-center items-center'>
-              <ChangeUserForm
-                fieldName='phone'
-                label='Change Phone Number'
-                apiUrl='update_user'
-              />
-            </div>
-          </FullModal>
-        </div>
-        <div className='mt-5'>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Date of Birth
-          </p>
-          <p className='text-[16px] text-[#073131] font-normal mt-2'>
-            {userData.dob || "10/05/1943"}
-          </p>
-          <FullModal
-            label='Change Date of Birth'
-            title='Change Date of Birth'
-            cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-            <div className='flex justify-center items-center'>
-              <ChangeUserForm
-                fieldName='dob'
-                label='Change Date of Birth'
-                apiUrl='update_user'
-              />
-            </div>
-          </FullModal>
-        </div>
-        <div className='mt-5'>
-          <p className='text-lg text-[#073131] font-semibold text-nowrap'>
-            Password
-          </p>
-          <div>
-            <FullModal
-              label='Change Password'
-              title='Change Password'
-              cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-              <div className='flex justify-center items-center'>
-                <ChangeUserForm
-                  fieldName='password'
-                  label='Change Password'
-                  apiUrl='update_user'
-                />
+export const NotificationSection = ({
+  notifications,
+}: NotificationCardPropType) => (
+  <>
+    {notifications.length > 0 &&
+      notifications.map((notification: NotificationPropType) => (
+        <Card className='mt-2'>
+          <div className='flex justify-between gap-20 items-end p-4'>
+            <div className='flex justify-start items-center gap-2'>
+              <img src={empty_user} alt='user image' />
+              <div className='flex flex-col gap-1'>
+                <p className='text-sm text-[#66676B] font-semibold text-nowrap'>
+                  {notification.title}
+                </p>
+                <p className='text-[16px] text-[#050404] font-normal'>
+                  {notification.message}
+                </p>
+                <p className='text-sm text-[#ADAFB5] font-normal'>
+                  {notification.timestamp}
+                </p>
               </div>
-            </FullModal>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <div className='flex gap-1'>
+                <NavLink
+                  to={"/"}
+                  className='text-xs text-[#14600F] font-normal'>
+                  View More
+                </NavLink>
+              </div>
+            </div>
           </div>
-          {/* <FullModal
-                  label='Enable two-factor authentication'
-                  title='Enable two-factor authentication'
-                  cn={"text-xs text-[#00C2C2] font-normal mt-3"}>
-                  <div className='flex justify-center items-center'>
-                    <ChangeUserForm
-                      fieldName='2fa'
-                      label='Enable two-factor authentication'
-                      apiUrl='update_user'
-                    />
-                  </div>
-                </FullModal> */}
-        </div>
-      </div>
+        </Card>
+      ))}
+  </>
+);
+
+const renderModalForm = (
+  fieldName: string,
+  label: string,
+  apiUrl: string,
+  formType = "text",
+  options?: string[]
+) => (
+  <FullModal
+    label={`Change ${label}`}
+    title={`Change ${label}`}
+    cn='text-xs text-[#00C2C2] font-normal mt-3'>
+    <div className='flex justify-center items-center'>
+      <ChangeUserForm
+        fieldName={fieldName}
+        label={`Change ${label}`}
+        apiUrl={apiUrl}
+        formType={formType}
+        options={options}
+      />
     </div>
+  </FullModal>
+);
+
+export const RenderUserInfo = (
+  label: string,
+  value: string | null,
+  fieldName: string,
+  apiUrl: string,
+  formType = "text",
+  options?: string[]
+) => (
+  <div className='mt-5'>
+    <p className='text-lg text-[#073131] font-semibold'>{label}</p>
+    <p className='text-[16px] text-[#073131] font-normal mt-2'>
+      {value || `Change your ${label}`}
+    </p>
+    {renderModalForm(fieldName, label, apiUrl, formType, options)}
   </div>
 );

@@ -10,7 +10,8 @@ import { useNotifier } from "@/hooks/useNotifier";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { UploadSingle } from "@/components/upload";
-import { ProfileSection } from "@/components/section";
+import { ProfileSection, RenderUserInfo } from "@/components/section";
+import { toTitleCase } from "@/services/helpers";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const Settings = () => {
 
   return (
     <>
-      <NavLink to={"/dashboard/home"} className='flex items-center'>
+      <NavLink to={"/patient/home"} className='flex items-center'>
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>My Profile</p>
       </NavLink>
@@ -56,6 +57,62 @@ const Settings = () => {
             defaultPhoto={userPhoto.photo}
             updatePhotoFunction={setUserPhoto}
           />
+          <div className='flex justify-between items-center mt-10 md:w-4/5 w-full'>
+            <div>
+              <div>
+                {RenderUserInfo(
+                  "Name",
+                  toTitleCase(userData.fullname),
+                  "fullname",
+                  "update_user"
+                )}
+              </div>
+              <div>
+                {RenderUserInfo(
+                  "Email",
+                  toTitleCase(userData.email),
+                  "email",
+                  "update_user"
+                )}
+              </div>
+              <div>
+                {RenderUserInfo(
+                  "Gender",
+                  toTitleCase(userData.gender),
+                  "email",
+                  "update_user",
+                  "select",
+                  ["male", "female"]
+                )}
+              </div>
+            </div>
+            <div>
+              <div>
+                {RenderUserInfo(
+                  "Phone Number",
+                  toTitleCase(userData.phone),
+                  "phone",
+                  "update_user"
+                )}
+              </div>
+              <div>
+                {RenderUserInfo(
+                  "Date of Birth",
+                  toTitleCase(userData.dob),
+                  "dob",
+                  "update_user"
+                )}
+              </div>
+              <div>
+                {RenderUserInfo(
+                  "Password",
+                  toTitleCase(userData.password),
+                  "password",
+                  "update_user"
+                )}
+              </div>
+            </div>
+          </div>
         </ProfileSection>
       </div>
       <div className='mt-14 md:px-10 px-5'>

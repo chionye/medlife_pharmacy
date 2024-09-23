@@ -14,12 +14,17 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
   rating,
   key,
   photo,
+  reviews,
 }) => {
   return (
     <div className='md:col-span-2 col-span-2' key={key}>
       <Card className='border flex justify-between items-end rounded-xl p-4'>
         <div className='flex justify-start items-center gap-2'>
-          <img src={photo || doctor} alt='doctor image' className=" w-16 rounded-full"/>
+          <img
+            src={photo || doctor}
+            alt='doctor image'
+            className=' w-16 rounded-full'
+          />
           <div className='flex flex-col gap-1'>
             <p className='text-xs text-[#073131] font-semibold text-nowrap'>
               {toTitleCase(fullname || username)}
@@ -33,7 +38,7 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
                 {rating}
               </p>
               <p className='text-[8px] text-[#073131] font-normal'>
-                50+ Reviews
+                {reviews && reviews}
               </p>
             </div>
           </div>

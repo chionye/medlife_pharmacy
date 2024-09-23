@@ -20,7 +20,7 @@ const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
     ],
     []
   );
-  
+
   return (
     <Card className='mt-10'>
       <div>
@@ -28,9 +28,9 @@ const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
           <Dropdown label='Today' cn='w-24' options={timeOptions} />
           <div className='flex items-center justify-between  mt-5'>
             <h4 className='text-xl font-medium'>Transaction Details</h4>
-            {pathname === "/dashboard/wallet" && (
+            {pathname === "/patient/wallet" && (
               <NavLink
-                to={"/dashboard/wallet/transactions"}
+                to={"/patient/wallet/transactions"}
                 className={"text-[#D20606] flex gap-2 items-center"}>
                 <span>View all</span>
                 <svg

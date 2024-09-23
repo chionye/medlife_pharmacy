@@ -1,36 +1,31 @@
 /** @format */
 
-import { FormInput } from "@/components/form_input";
+import { FormPinInput } from "@/components/form_input";
 import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import useAxiosRequest from "@/hooks/useAxiosRequest";
 import { setCookie } from "@/services/storage";
-import { LoginPropType } from "@/types";
+import { OTPPropType } from "@/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [formData, setFormData] = useState<LoginPropType>({
-    email: "",
-    password: "",
+const Verify = () => {
+  const location = useLocation();
+  const [formData] = useState<OTPPropType>({
+    email: location.state?.email || "",
+    otp: "",
   });
+  const [value, setValue] = useState<string>("");
+
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    setFormData({
-      ...formData,
-      [target.name]: target.value,
-    });
-  };
-
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "login_user", formData);
+      const data = await sendRequest("post", "otp/confirm", formData);
       if (data.status) {
         setCookie("@user", JSON.stringify(data.data), 1);
         setCookie("@token", JSON.stringify(data.token), 1);
@@ -39,13 +34,7 @@ const Login = () => {
           description: data.message,
           action: <ToastAction altText='done'>done</ToastAction>,
         });
-        if (data.data.role === "patient") {
-          navigate("/patient/home");
-        } else if (data.data.role === "doctor") {
-          navigate("/doctor/home");
-        } else if (data.data.role === "hospital") {
-          navigate("/hospital/home");
-        }
+        navigate("/change-password", { state: { email: formData.email } });
       } else {
         if (data.errors.length > 0) {
           data.errors.forEach((err: string) => {
@@ -55,6 +44,12 @@ const Login = () => {
               action: <ToastAction altText='done'>done</ToastAction>,
             });
           });
+        } else {
+          toast({
+            title: "Sorry",
+            description: data.message,
+            action: <ToastAction altText='done'>done</ToastAction>,
+          });
         }
       }
     } catch (error: any) {
@@ -63,24 +58,13 @@ const Login = () => {
   };
 
   return (
-    <div className='md:pr-28 md:px-0 px-3 mt-7'>
-      <p className='text-3xl font-bold'>Welcome Back</p>
+    <div className='md:pr-28 md:px-0 px-3 mt-10'>
+      <p className='text-3xl font-bold'>Verify OTP</p>
       <div className='mt-5'>
-        <FormInput
-          type='email'
-          name='email'
-          label='Email'
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
-        />
-      </div>
-      <div className='mt-5'>
-        <FormInput
-          type='password'
-          name='password'
-          label='Password'
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
+        <FormPinInput
+          value={value}
+          label='Enter OTP'
+          changeFunction={setValue}
         />
       </div>
       <div className='mt-10'>
@@ -94,15 +78,16 @@ const Login = () => {
               Please wait
             </>
           ) : (
-            "Sign In"
+            "Submit"
           )}
         </Button>
-        <div className='text-center text-[#D20606] text-lg mt-10'>
-          <NavLink to={"/reset-password"}>Reset your password here</NavLink>
+        <div className='text-center text-lg mt-10'>
+          <p className='text-lg font-normal'>Haven’t Received Code?</p>
+          <button className='text-[#D20606]'>Resend</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Verify;

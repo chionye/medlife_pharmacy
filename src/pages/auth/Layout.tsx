@@ -19,24 +19,31 @@ function Layout({ children }: { children: React.ReactNode }) {
         <img src={logo_2} alt='Logo' className=' md:w-16' />
       </div>
       <div className='w-full'>
-        <div className='flex md:justify-end justify-center md:shadow-none shadow-lg'>
-          <div className='flex md:gap-10 gap-10 md:justify-start justify-center items-center md:w-4/6 w-full py-5'>
-            <p className='font-normal text-lg'>
-              {location.pathname === "/"
-                ? "Don’t Have an Account?"
-                : "Already Have an Account?"}
-            </p>
-            <NavLink
-              to={location.pathname === "/" ? "/register" : "/"}
-              className={
-                "bg-[#D20606] py-3 md:px-9 px-5 md:text-lg text-white flex justify-center"
-              }>
-              {location.pathname === "/" ? "Register" : "Login"}
-            </NavLink>
+        {(location.pathname === "/" || location.pathname === "/register") && (
+          <div className='flex md:justify-end justify-center md:shadow-none shadow-lg'>
+            <div className='flex md:gap-10 gap-10 md:justify-start justify-center items-center md:w-4/6 w-full py-5'>
+              <p className='font-normal text-lg'>
+                {location.pathname === "/"
+                  ? "Don’t Have an Account?"
+                  : "Already Have an Account?"}
+              </p>
+              <NavLink
+                to={location.pathname === "/" ? "/register" : "/"}
+                className={
+                  "bg-[#D20606] py-3 md:px-9 px-5 md:text-lg text-white flex justify-center"
+                }>
+                {location.pathname === "/" ? "Register" : "Login"}
+              </NavLink>
+            </div>
           </div>
-        </div>
-        <div className='mt-10'>
-          <div className="md:hidden flex justify-center">
+        )}
+        <div
+          className={`${
+            location.pathname === "/" || location.pathname === "/register"
+              ? "mt-10"
+              : " mt-32"
+          }`}>
+          <div className='md:hidden flex justify-center'>
             <img src={logo} alt='logo' />
           </div>
           {children}

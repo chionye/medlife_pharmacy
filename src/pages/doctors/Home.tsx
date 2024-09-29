@@ -26,13 +26,14 @@ function DoctorsHome() {
     AppointmentHistoryPropType[]
   >([]);
   const role = getConfigByRole();
+  
 
   const cardValue = useMemo(
     () => [
       {
         title: "Chat Patient",
         buttonText: "Call A Patient",
-        link: "/doctor/call",
+        link: "/doctor/patients",
         icon: add,
         secondaryIcon: video_icon,
       },
@@ -100,7 +101,6 @@ function DoctorsHome() {
                 secondaryIcon={item.secondaryIcon ? item.secondaryIcon : ""}
                 count={item.count ? item.count : ""}
                 subtitle={item.subtitle ? item.subtitle : null}
-                
               />
             ))}
           </div>
@@ -112,9 +112,10 @@ function DoctorsHome() {
         <Section>
           <AppointmentSection
             appointments={appointments}
-            link='/doctor/appointments'
+            link='/doctor/appointments-requests'
             title='Appointment Request'
             buttons={true}
+            appointmentRequest={true}
           />
           <AppointmentSection
             appointments={appointments}

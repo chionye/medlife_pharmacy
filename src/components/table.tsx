@@ -15,9 +15,15 @@ import { useMemo } from "react";
 import FullModal from "./full_modal";
 import { AppointmentDetails } from "./appointment_form";
 import video_call from "@/assets/video_call.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
+import Mutation from "@/api/mutation";
+import { getCookie } from "@/services/storage";
+import { useNotifier } from "@/hooks/useNotifier";
 
 const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
+  const user = getCookie("@user");
+  const userData = user ? JSON.parse(user) : null;
   const details = useMemo(
     () => [
       { label: "Create Appointment" },
@@ -28,6 +34,59 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
     ],
     []
   );
+
+  const { mutation } = Mutation();
+  const navigate = useNavigate();
+
+  const { showNotifier, NotifierComponent } = useNotifier();
+
+  const handleStatusCompleted = (id: string) => {
+    const data = {
+      method: "post",
+      url: `appointment/status`,
+      content: {
+        appointment_id: id,
+        action: "completed",
+      },
+    };
+
+    mutation.mutate(data);
+    if (mutation.isSuccess) {
+      if (mutation.data.status) {
+        showNotifier({
+          title: "Success",
+          text: `You have marked this appointment as completed`,
+          status: "success",
+        });
+      } else {
+        const errorMessage = mutation.data.message
+          ? mutation.data.message
+          : Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+        console.log(errorMessage, mutation.data);
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
+    }
+  };
+
+  function createCallSession(patient_id: number) {
+    // Generate or fetch the callId
+    const callId = `call-${Math.random().toString(16).substring(2)}`;
+    const data = {
+      method: "post",
+      url: `call/create`,
+      content: { callId, doctors_id: userData.id, patients_id: patient_id },
+    };
+    mutation.mutate(data);
+
+    // Redirect the patient and doctor to the call page
+    navigate(`/call/${callId}`);
+  }
 
   return (
     <div className='w-full mb-8 overflow-x-scroll rounded-lg shadow-lg'>
@@ -97,9 +156,33 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                       ) : key === "link" ? (
                         <td className='px-4 py-3 text-xs font-normal'>
                           <NavLink
-                            to={item.status === "pending" ? item[key] : "#"} className={"w-full flex justify-center"}>
-                            <img src={video_call} alt='' className='w-5' />
+                            to={item.status === "pending" ? item[key] : "#"}
+                            className={"w-full flex justify-center"}>
+                            {item.status === "pending" ? (
+                              <img src={video_call} alt='' className='w-5' />
+                            ) : (
+                              "Link Expired"
+                            )}
                           </NavLink>
+                        </td>
+                      ) : key === "completed" ? (
+                        <td className='px-4 py-3 text-xs font-normal'>
+                          <Button
+                            onClick={() => handleStatusCompleted(item.id)}
+                            className={
+                              "w-full flex justify-center bg-[#4BB543]"
+                            }>
+                            Completed
+                          </Button>
+                        </td>
+                      ) : key === "call_patient" ? (
+                        <td className='px-4 py-3 text-xs font-normal'>
+                          <Button
+                            variant={"ghost"}
+                            className={"w-full flex justify-center"}
+                            onClick={() => createCallSession(item.id)}>
+                            <img src={video_call} alt='' className='w-5' />
+                          </Button>
                         </td>
                       ) : key.indexOf(".") != -1 ? (
                         <td className='px-4 py-3 text-xs font-normal'>
@@ -155,6 +238,7 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
               ))}
           </tbody>
         </table>
+        {NotifierComponent}
       </div>
     </div>
   );

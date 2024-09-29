@@ -39,6 +39,7 @@ const Patients = () => {
       "Last Appointment",
       "Upcoming Appointment",
       "Appoinment Details",
+      "Call Patient",
       "Status",
       "View More",
     ],
@@ -53,6 +54,7 @@ const Patients = () => {
       "created_at",
       "updated_at",
       "description",
+      "call_patient",
       "status",
       "view_more",
     ],
@@ -93,9 +95,9 @@ const Patients = () => {
     () => [
       {
         id: "appointments",
-        url: "patients/doctor",
+        url: "doctor/patients",
         method: "post",
-        payload: { patients_id: userData?.id },
+        payload: { doctor_id: userData?.id },
       },
     ],
     [userData?.id]

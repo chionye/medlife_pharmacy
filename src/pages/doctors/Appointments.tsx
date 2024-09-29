@@ -34,8 +34,10 @@ const DoctorsAppointments = () => {
       "Date and Time",
       "Address",
       "Appointment Type",
+      "Appointment Link",
       "Appointment Details",
       "Status",
+      "Mark as Completed",
       "Response",
     ],
     []
@@ -48,8 +50,10 @@ const DoctorsAppointments = () => {
       "doctor.specialization",
       "appointment_date",
       "type",
+      "link",
       "description",
       "status",
+      "completed",
       "response",
     ],
     []

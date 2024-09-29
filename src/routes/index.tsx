@@ -39,6 +39,7 @@ import AdminMessages from "@/pages/hospital/Messages";
 import DoctorNotifications from "@/pages/doctors/Notifications";
 import Doctors from "@/pages/patients/Doctors";
 import VideoCall from "@/pages/call/Call";
+import AppointmentRequests from "@/pages/doctors/AppointmentRequests";
 
 const Routes = [
   {
@@ -133,6 +134,10 @@ const Routes = [
       {
         path: "/doctor/appointments",
         element: <DoctorsAppointments />,
+      },
+      {
+        path: "/doctor/appointments-requests",
+        element: <AppointmentRequests />,
       },
       {
         path: "/doctor/patients",

@@ -483,18 +483,20 @@ const AppointmentDetails = ({ appointment }: any) => {
           disabled={role === "patient"}
         />
       </div>
-      <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
-        onClick={handleFormSubmit}>
-        {mutation.isPending ? (
-          <>
-            <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-            Updating
-          </>
-        ) : (
-          "Update"
-        )}
-      </Button>
+      {role !== "patient" && (
+        <Button
+          className='bg-[#D20606] w-full mt-6 p-7'
+          onClick={handleFormSubmit}>
+          {mutation.isPending ? (
+            <>
+              <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+              Updating
+            </>
+          ) : (
+            "Update"
+          )}
+        </Button>
+      )}
       {NotifierComponent}
     </div>
   );

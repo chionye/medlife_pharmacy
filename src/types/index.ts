@@ -190,6 +190,7 @@ export interface AppointmentHistoryPropType {
   appointment_date: string;
   appointment_time: string;
   type: string;
+  status?: string;
   description: string;
 }
 

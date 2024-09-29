@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import AppointmentHistory from "./appointment_history";
 import MedicationHistory from "./medication_history";
 import TitleBar from "./title_bar";
-import {TopDoctors} from "./top_doctors";
+import { TopDoctors } from "./top_doctors";
 import { Card } from "./ui/card";
 import FullModal from "./full_modal";
 import ChangeUserForm from "./settings_form";
@@ -70,6 +70,7 @@ export const AppointmentSection = ({
   title,
   link,
   buttons,
+  appointmentRequest = false,
 }: any) => {
   const { showNotifier, NotifierComponent } = useNotifier();
 
@@ -95,21 +96,18 @@ export const AppointmentSection = ({
           status: "success",
         });
       } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
+        const errorMessage = mutation.data.message
+          ? mutation.data.message
+          : Array.isArray(mutation.data.errors)
           ? mutation.data.errors.join("\n")
           : mutation.data.errors;
+        console.log(errorMessage, mutation.data);
         showNotifier({
           title: "Error",
           text: errorMessage,
           status: "error",
         });
       }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to update appointment data. Please try again later.",
-        status: "error",
-      });
     }
   };
 
@@ -117,53 +115,109 @@ export const AppointmentSection = ({
     <>
       <TitleBar title={title} link={link} />
       <div
-        className={`grid md:grid-flow-row mt-5 space-y-2 ${buttons && "rounded-none"}`}>
+        className={`grid md:grid-flow-row mt-5 space-y-2 ${
+          buttons && "rounded-none"
+        }`}>
         {appointments.length ? (
-          appointments.slice(0, 5).map((appointment: any, index: number) => (
-            <Card>
-              <AppointmentHistory key={index} {...appointment} />
-              {buttons && (
-                <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
-                  <button
-                    className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
-                    onClick={() => handleButtonClick("cancel", appointment.id)}>
-                    {mutation.isPending ? (
-                      <>
-                        <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-                        Canceling
-                      </>
-                    ) : (
-                      "Cancel"
-                    )}
-                  </button>
-                  <button
-                    className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
-                    onClick={() =>
-                      handleButtonClick("approve", appointment.id)
-                    }>
-                    {mutation.isPending ? (
-                      <>
-                        <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-                        Processing
-                      </>
-                    ) : (
-                      "Approve"
-                    )}
-                  </button>
-                  <FullModal
-                    title={"Reschedule Appointment"}
-                    label='Reschedule'
-                    cn={
-                      "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
-                    }>
-                    <div className='flex justify-center items-center'>
-                      <RescheduleAppointmentForm appointment={appointment} />
-                    </div>
-                  </FullModal>
-                </div>
-              )}
-            </Card>
-          ))
+          appointments.slice(0, 5).map((appointment: any, index: number) => {
+            return appointmentRequest && appointment.status !== "cancelled" ? (
+              <Card>
+                <AppointmentHistory key={index} {...appointment} />
+                {buttons && (
+                  <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
+                    <button
+                      className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                      onClick={() =>
+                        handleButtonClick("cancel", appointment.id)
+                      }>
+                      {mutation.isPending ? (
+                        <>
+                          <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                          Canceling
+                        </>
+                      ) : (
+                        "Cancel"
+                      )}
+                    </button>
+                    <button
+                      className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
+                      onClick={() =>
+                        handleButtonClick("approve", appointment.id)
+                      }>
+                      {mutation.isPending ? (
+                        <>
+                          <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                          Processing
+                        </>
+                      ) : (
+                        "Approve"
+                      )}
+                    </button>
+                    <FullModal
+                      title={"Reschedule Appointment"}
+                      label='Reschedule'
+                      cn={
+                        "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
+                      }>
+                      <div className='flex justify-center items-center'>
+                        <RescheduleAppointmentForm appointment={appointment} />
+                      </div>
+                    </FullModal>
+                  </div>
+                )}
+              </Card>
+            ) : !appointmentRequest ? (
+              <Card>
+                <AppointmentHistory key={index} {...appointment} />
+                {buttons && (
+                  <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
+                    <button
+                      className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                      onClick={() =>
+                        handleButtonClick("cancel", appointment.id)
+                      }>
+                      {mutation.isPending ? (
+                        <>
+                          <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                          Canceling
+                        </>
+                      ) : (
+                        "Cancel"
+                      )}
+                    </button>
+                    <button
+                      className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
+                      onClick={() =>
+                        handleButtonClick("approve", appointment.id)
+                      }>
+                      {mutation.isPending ? (
+                        <>
+                          <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                          Processing
+                        </>
+                      ) : (
+                        "Approve"
+                      )}
+                    </button>
+                    <FullModal
+                      title={"Reschedule Appointment"}
+                      label='Reschedule'
+                      cn={
+                        "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
+                      }>
+                      <div className='flex justify-center items-center'>
+                        <RescheduleAppointmentForm appointment={appointment} />
+                      </div>
+                    </FullModal>
+                  </div>
+                )}
+              </Card>
+            ) : (
+              <p className='text-xs text-[#073131] font-semibold'>
+                No Appointments requests yet
+              </p>
+            );
+          })
         ) : (
           <p className='text-xs text-[#073131] font-semibold'>
             No Appointments yet

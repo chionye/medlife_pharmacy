@@ -86,10 +86,12 @@ const Appointments = () => {
       {
         title: "Current Appointment",
         buttonText: "Book Appointment",
-        link: "/patient/appointments",
+        link: "/",
         icon: add,
         secondaryIcon: pinned,
         count: appointments.length,
+        modal: true,
+        type: "user"
       },
       {
         title: "No of Appointments",
@@ -152,11 +154,13 @@ const Appointments = () => {
           {cardValue.map((item: any) => (
             <CardWithButton
               title={item.title ? item.title : ""}
+              type={item.type ? item.type : ""}
               buttonText={item.buttonText ? item.buttonText : ""}
               link={item.link ? item.link : ""}
               icon={item.icon ? item.icon : ""}
               secondaryIcon={item.secondaryIcon ? item.secondaryIcon : ""}
               count={item.count ? item.count : "0"}
+              modal={item.modal && item.modal}
             />
           ))}
         </div>

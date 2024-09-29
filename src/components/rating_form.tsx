@@ -1,7 +1,7 @@
 /** @format */
 
 import { FormSelect } from "./form_input";
-import StarRating from "./star_rating";
+import { Rating } from "react-simple-star-rating";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useState } from "react";
@@ -17,28 +17,42 @@ const RatingForm: React.FC<RatingFormProps> = ({
   formAttributes,
   onSubmit,
 }: any) => {
-  const [formData, setFormData] = useState<any>({});
+  // Initialize formData to store both ratings and FormSelect values
+  const [formData, setFormData] = useState<any>({
+    ratings: criteria.reduce((acc: any, criterion: any) => {
+      acc[criterion] = 0; // Initialize each criterion rating with 0
+      return acc;
+    }, {}),
+    formSelects: formAttributes.reduce((acc: any, form: any) => {
+      acc[form.name] = "";
+      return acc;
+    }, {}),
+  });
 
-  const handleRatingChange = (criterion: string, rating: number) => {
+  const handleRating = (rate: number, criterion: string) => {
     setFormData((prevData: any) => ({
       ...prevData,
       ratings: {
         ...prevData.ratings,
-        [criterion]: rating,
+        [criterion]: rate, // Update the rating for the specific criterion
       },
     }));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
+    console.log(name, value)
     setFormData((prevData: any) => ({
       ...prevData,
-      [name]: value,
+      formSelects: {
+        ...prevData.formSelects,
+        [name]: value, // Update the selected value for the FormSelect
+      },
     }));
   };
 
   const handleSubmit = () => {
-    onSubmit(formData);
+    onSubmit(formData); // Submit the form with both the ratings and FormSelect values
   };
 
   return (
@@ -47,11 +61,12 @@ const RatingForm: React.FC<RatingFormProps> = ({
         <div className='flex md:flex-row flex-col justify-between gap-3 md:w-2/3'>
           {formAttributes.map((form: any) => (
             <FormSelect
-              value={formData[form.name]}
+              key={form.name}
+              value={formData.formSelects[form.name]} // Get the value from formData
               options={form.options}
               name={form.name}
               label={form.label}
-              changeFunction={handleChange}
+              changeFunction={handleChange} // Handle changes for FormSelect
             />
           ))}
         </div>
@@ -60,19 +75,20 @@ const RatingForm: React.FC<RatingFormProps> = ({
         <p className='text-sm font-normal'>Rating Metrics</p>
         <div className='flex md:flex-row flex-col justify-between gap-3 mt-4'>
           <Card className='px-10 py-10 shadow-lg md:w-1/2'>
-            {criteria.map((criterion: any, index: number) => (
+            {criteria.map((criterion: string, index: number) => (
               <div
-                className='flex md:flex-row flex-col justify-between items-center'
+                className='flex md:flex-row flex-col justify-between items-center mb-4'
                 key={index}>
                 <span className='flex items-center gap-2'>
                   <span>{criterion}</span>
                 </span>
-                <StarRating
-                  label={criterion}
-                  onRatingChange={(rating) =>
-                    handleRatingChange(criterion, rating)
-                  }
-                />
+                <div>
+                  <Rating
+                    onClick={(rate) => handleRating(rate, criterion)}
+                    initialValue={formData.ratings[criterion]} // Set the initial value for each criterion
+                    size={24} // Adjust the star size if needed
+                  />
+                </div>
               </div>
             ))}
             <div className='flex justify-center'>

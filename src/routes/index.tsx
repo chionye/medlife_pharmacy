@@ -37,6 +37,7 @@ import AdminWithdraw from "@/pages/hospital/Withdraw";
 import AdminTransactions from "@/pages/hospital/Transactions";
 import AdminMessages from "@/pages/hospital/Messages";
 import DoctorNotifications from "@/pages/doctors/Notifications";
+import Doctors from "@/pages/patients/Doctors";
 
 const Routes = [
   {
@@ -76,6 +77,10 @@ const Routes = [
       {
         path: "/patient/home",
         element: <Home />,
+      },
+      {
+        path: "/patient/top-doctors",
+        element: <Doctors />,
       },
       {
         path: "/patient/appointments",

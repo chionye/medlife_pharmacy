@@ -1,7 +1,7 @@
 import { TitleBarPropType } from '@/types';
 import { NavLink } from 'react-router-dom';
 
-const TitleBar:React.FC<TitleBarPropType> = ({title, link}) => {
+const TitleBar:React.FC<TitleBarPropType> = ({title, link = null}) => {
   return (
     <div className='flex justify-between md:mt-0 mt-5'>
       <h4 className='text-xl font-medium'>{title}</h4>

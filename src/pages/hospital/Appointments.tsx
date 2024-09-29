@@ -83,32 +83,56 @@ const AdminAppointments = () => {
     []
   );
 
+  // Function to count appointments based on their status
+  const countAppointmentsByStatus = (appointments: any[], status: string) => {
+    return appointments.filter((appointment) => appointment.status === status)
+      .length;
+  };
+
+  // Example of usage:
+  const pendingCount = countAppointmentsByStatus(appointments, "pending");
+  const activeCount = countAppointmentsByStatus(appointments, "active");
+  const completedCount = countAppointmentsByStatus(appointments, "completed");
+  const canceledCount = countAppointmentsByStatus(appointments, "canceled");
+
   const cardValue = useMemo(
     () => [
       {
-        title: "Current Appointment",
-        buttonText: "Create Appointment",
-        link: "/doctor/appointments",
+        title: "Total Number of Appointments",
         icon: add,
         secondaryIcon: pinned,
         count: appointments.length,
       },
       {
-        title: "No of Appointments",
+        title: "Upcoming Appointments",
         icon: add,
         subtitle: "This Month",
         secondaryIcon: task_done,
-        count: appointments.length,
+        count: pendingCount,
       },
       {
-        title: "No of Appointments",
+        title: "Past Appointments",
         icon: add,
         subtitle: "This Year",
         secondaryIcon: task_done,
-        count: appointments.length,
+        count: completedCount,
+      },
+      {
+        title: "Resheduled Appointments",
+        icon: add,
+        subtitle: "This Year",
+        secondaryIcon: task_done,
+        count: activeCount,
+      },
+      {
+        title: "Cancelled Appointment",
+        icon: add,
+        subtitle: "This Year",
+        secondaryIcon: task_done,
+        count: canceledCount,
       },
     ],
-    [appointments.length]
+    [activeCount, appointments.length, canceledCount, completedCount, pendingCount]
   );
 
   const queryParamsArray: QueryProps = useMemo(

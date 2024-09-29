@@ -154,11 +154,16 @@ export interface LoginPropType {
 
 export interface TopDoctorsPropType {
   username: string;
-  fullname: string;
-  specialization: string;
-  rating: string;
-  photo: string;
-  key: number;
+  fullname?: string;
+  phone?: string;
+  gender?: string;
+  specialization?: string;
+  email?: string;
+  rating?: string;
+  dob?: string;
+  created_at?: string;
+  photo?: string;
+  key?: number;
   reviews?: number;
 }
 

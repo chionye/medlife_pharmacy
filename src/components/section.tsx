@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import AppointmentHistory from "./appointment_history";
 import MedicationHistory from "./medication_history";
 import TitleBar from "./title_bar";
-import TopDoctors from "./top_doctors";
+import {TopDoctors} from "./top_doctors";
 import { Card } from "./ui/card";
 import FullModal from "./full_modal";
 import ChangeUserForm from "./settings_form";
@@ -17,12 +17,12 @@ import bell from "@/assets/bell.svg";
 import empty_user from "@/assets/empty_user.svg";
 import { NotificationCardPropType, NotificationPropType } from "@/types";
 
-export const Section = ({ children }: any) => (
-  <div className='sm:w-full md:w-1/2'>{children}</div>
+export const Section = ({ children, cn = null }: any) => (
+  <div className={`${cn ? cn : "sm:w-full md:w-1/2"}`}>{children}</div>
 );
 
-export const DoctorPatientSection = ({ doctors, title, link }: any) => (
-  <Section>
+export const DoctorPatientSection = ({ doctors, title, link, cn = null }: any) => (
+  <Section cn={cn}>
     <TitleBar title={title} link={link} />
     <div className='grid md:grid-flow-row col-span-4 gap-2 mt-5'>
       {doctors.length ? (

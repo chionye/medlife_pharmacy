@@ -9,11 +9,12 @@ import plus_white from "@/assets/plus_white.svg";
 import FullModal from "./full_modal";
 import { OnboardDoctorForm, OnboardPatientForm } from "./onboard_form";
 import { getConfigByRole } from "@/services/storage";
+import { BookAppointmentForm } from "./appointment_form";
 
 export const CardWithButton = ({
   title,
   buttonText,
-  modal,
+  modal = false,
   type,
   link,
   icon,
@@ -47,6 +48,18 @@ export const CardWithButton = ({
           }>
           <div className='flex justify-center items-center'>
             <OnboardPatientForm />
+          </div>
+        </FullModal>
+      ) : modal && buttonText && type === "user" ? (
+        <FullModal
+          icon={<img src={icon} alt='open modal' />}
+          title={"Book Appointment"}
+          btnTitle='Book Appointment'
+          cn={
+            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+          }>
+          <div className='flex justify-center items-center'>
+            <BookAppointmentForm />
           </div>
         </FullModal>
       ) : buttonText && modal && type === "doctor" ? (

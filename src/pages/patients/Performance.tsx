@@ -8,6 +8,8 @@ import Query from "@/api/query";
 import { QueryProps } from "@/types";
 import { getCookie } from "@/services/storage";
 import RatingForm from "@/components/rating_form";
+import Mutation from "@/api/mutation";
+import { useNotifier } from "@/hooks/useNotifier";
 
 const Performance = () => {
   const physician_medic_sector: string[] = [
@@ -30,10 +32,46 @@ const Performance = () => {
     "Knowledge",
     "Bedside manner",
   ];
+  const { showNotifier, NotifierComponent } = useNotifier();
 
-  const handleSubmit = () => {
-    console.log("Submitted Ratings: ");
-    // Handle form submission logic here
+  const { mutation } = Mutation();
+
+  const handleSubmit = (dataValues: any) => {
+    const formValues = {
+      ...dataValues.ratings,
+      ratee: dataValues.formSelects.doctor_id,
+      rater: formData.patient_id,
+    };
+    const data = {
+      method: "post",
+      url: `rate/doctor`,
+      content: formValues,
+    };
+    mutation.mutate(data);
+    if (mutation.isSuccess) {
+      if (mutation.data.status) {
+        showNotifier({
+          title: "Success",
+          text: "Your feedback was successfully submitted!",
+          status: "success",
+        });
+      } else {
+        const errorMessage = Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
+    } else {
+      showNotifier({
+        title: "Error",
+        text: "Failed to save feedback. Please try again later.",
+        status: "error",
+      });
+    }
   };
 
   const queryParamsArray: QueryProps = [
@@ -82,6 +120,7 @@ const Performance = () => {
         criteria={criteria}
         onSubmit={handleSubmit}
       />
+      {NotifierComponent}
     </>
   );
 };

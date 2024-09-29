@@ -13,10 +13,10 @@ const AppointmentHistory: React.FC<AppointmentHistoryPropType> = (data) => {
           <img src={user} alt='user image' />
           <div className='flex flex-col gap-1'>
             <p className='text-xs text-[#073131] font-semibold text-nowrap'>
-              {data.doctor.fullname}
+              {data.doctor.fullname || data.doctor.username}
             </p>
             <p className='text-xs text-[#073131] font-normal'>
-              {data.doctor.specialization}
+              {data.doctor.specialization || "Physician"}
             </p>
           </div>
         </div>

@@ -33,9 +33,11 @@ const Appointments = () => {
       "SN",
       "Name of Medic",
       "Role",
-      "Date and Time",
+      "Appointment Date",
+      "Appointment Time",
       "Appointment Type",
       "Appointment Details",
+      "Appointment Link",
       "Status",
     ],
     []
@@ -47,8 +49,10 @@ const Appointments = () => {
       "doctor.fullname",
       "doctor.specialization",
       "appointment_date",
+      "appointment_time",
       "type",
       "description",
+      "link",
       "status",
     ],
     []
@@ -91,7 +95,7 @@ const Appointments = () => {
         secondaryIcon: pinned,
         count: appointments.length,
         modal: true,
-        type: "user"
+        type: "user",
       },
       {
         title: "No of Appointments",
@@ -123,25 +127,31 @@ const Appointments = () => {
     [userData?.id]
   );
 
+  const filteredData = useMemo(() => {
+    if (searchQuery) {
+      return appointments.filter((item) =>
+        (item.fullname || item.username)
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase())
+      );
+    }
+    return appointments;
+  }, [appointments, searchQuery]);
+
+  const paginatedData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage; // Starting index
+    const end = start + itemsPerPage; // Ending index
+    return filteredData.slice(start, end); // Slicing the filtered data
+  }, [currentPage, filteredData, itemsPerPage]);
+
   const { queries } = Query(queryParamsArray);
 
   useEffect(() => {
     if (queries[0].data?.status && queries[0].data.data?.length > 0) {
       setAppointments(queries[0].data.data);
+      console.log(queries[0].data.data);
     }
   }, [queries]);
-
-  const filteredData = useMemo(() => {
-    return appointments.filter((item) =>
-      item.fullname.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [appointments, searchQuery]);
-
-  const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return filteredData.slice(start, end);
-  }, [currentPage, filteredData, itemsPerPage]);
 
   return (
     <>

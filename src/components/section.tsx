@@ -21,12 +21,22 @@ export const Section = ({ children, cn = null }: any) => (
   <div className={`${cn ? cn : "sm:w-full md:w-1/2"}`}>{children}</div>
 );
 
-export const DoctorPatientSection = ({ doctors, title, link, cn = null }: any) => (
+export const DoctorPatientSection = ({
+  doctors,
+  title,
+  link,
+  patient_id,
+  cn = null,
+}: any) => (
   <Section cn={cn}>
     <TitleBar title={title} link={link} />
     <div className='grid md:grid-flow-row col-span-4 gap-2 mt-5'>
       {doctors.length ? (
-        doctors.slice(0, 5).map((doctor: any) => <TopDoctors {...doctor} />)
+        doctors
+          .slice(0, 5)
+          .map((doctor: any) => (
+            <TopDoctors patient_id={patient_id} {...doctor} />
+          ))
       ) : (
         <p className='text-xs text-[#073131] font-semibold'>
           No {title.indexOf("doctor") != -1 ? "Doctors" : "Patients"} yet
@@ -106,11 +116,11 @@ export const AppointmentSection = ({
   return (
     <>
       <TitleBar title={title} link={link} />
-      <Card
-        className={`grid md:grid-flow-row mt-5 ${buttons && "rounded-none"}`}>
+      <div
+        className={`grid md:grid-flow-row mt-5 space-y-2 ${buttons && "rounded-none"}`}>
         {appointments.length ? (
           appointments.slice(0, 5).map((appointment: any, index: number) => (
-            <>
+            <Card>
               <AppointmentHistory key={index} {...appointment} />
               {buttons && (
                 <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
@@ -152,7 +162,7 @@ export const AppointmentSection = ({
                   </FullModal>
                 </div>
               )}
-            </>
+            </Card>
           ))
         ) : (
           <p className='text-xs text-[#073131] font-semibold'>
@@ -160,7 +170,7 @@ export const AppointmentSection = ({
           </p>
         )}
         {NotifierComponent}
-      </Card>
+      </div>
     </>
   );
 };

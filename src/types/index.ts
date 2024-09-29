@@ -75,6 +75,7 @@ export interface FormInputPropType {
   type: string;
   name: string;
   cn?: string;
+  disabled?: boolean;
   value?: string;
   placeholder?: string;
   changeFunction: (e: any) => void;
@@ -87,6 +88,7 @@ export interface FormSelectPropType {
   value: string;
   cn?: string;
   options: any;
+  disabled?: boolean;
   changeFunction: (e: any) => void;
 }
 
@@ -95,6 +97,7 @@ export interface FormTextAreaPropType {
   name: string;
   value: string;
   cn?: string;
+  disabled?: boolean;
   changeFunction: (e: any) => void;
 }
 
@@ -165,6 +168,8 @@ export interface TopDoctorsPropType {
   photo?: string;
   key?: number;
   reviews?: number;
+  id?: number;
+  patient_id?: number;
 }
 
 export interface MedicationHistoryPropType {
@@ -176,6 +181,7 @@ export interface MedicationHistoryPropType {
 
 export interface DoctorPropType {
   fullname: string;
+  username: string;
   specialization: string;
 }
 

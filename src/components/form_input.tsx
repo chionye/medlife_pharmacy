@@ -20,6 +20,7 @@ const FormInput: React.FC<FormInputPropType> = ({
   name,
   placeholder,
   value,
+  disabled = false,
   cn = "border-[#D9D9D9]",
   changeFunction,
 }) => {
@@ -36,6 +37,7 @@ const FormInput: React.FC<FormInputPropType> = ({
         value={value}
         placeholder={placeholder}
         onChange={changeFunction}
+        disabled={disabled}
         size={"lg"}
       />
     </div>
@@ -78,6 +80,7 @@ const FormTextArea: React.FC<FormTextAreaPropType> = ({
   name,
   value,
   cn,
+  disabled = false,
   changeFunction,
 }) => {
   return (
@@ -89,6 +92,7 @@ const FormTextArea: React.FC<FormTextAreaPropType> = ({
         className={cn}
         name={name}
         size={"lg"}
+        disabled={disabled}
         onChange={changeFunction}>
         {value}
       </Textarea>

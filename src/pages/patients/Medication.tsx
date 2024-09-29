@@ -16,7 +16,7 @@ const Medication = () => {
   const queryParamsArray: QueryProps = [
     {
       id: "medications",
-      url: "list_medications",
+      url: "medications/list",
       method: "post",
       payload: { user_id: userData?.id },
     },

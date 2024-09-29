@@ -14,6 +14,8 @@ import Dropdown from "./dropdown";
 import { useMemo } from "react";
 import FullModal from "./full_modal";
 import { AppointmentDetails } from "./appointment_form";
+import video_call from "@/assets/video_call.svg";
+import { NavLink } from "react-router-dom";
 
 const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
   const details = useMemo(
@@ -50,7 +52,8 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                           {item[key] === "completed" ||
                           item[key] === "active" ? (
                             <img src={check} alt='status' />
-                          ) : item[key] === "approve" ? (
+                          ) : item[key] === "approve" ||
+                            item[key] === "pending" ? (
                             <img src={redo} alt='status' />
                           ) : (
                             <img src={denied} alt='status' />
@@ -90,6 +93,13 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                               <AppointmentDetails appointment={item} />
                             </div>
                           </FullModal>
+                        </td>
+                      ) : key === "link" ? (
+                        <td className='px-4 py-3 text-xs font-normal'>
+                          <NavLink
+                            to={item.status === "pending" ? item[key] : "#"} className={"w-full flex justify-center"}>
+                            <img src={video_call} alt='' className='w-5' />
+                          </NavLink>
                         </td>
                       ) : key.indexOf(".") != -1 ? (
                         <td className='px-4 py-3 text-xs font-normal'>

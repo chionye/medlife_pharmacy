@@ -24,6 +24,7 @@ const DoctorsAppointments = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage] = useState<number>(10);
   const [appointments, setAppointments] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   const thead = useMemo(
@@ -129,11 +130,22 @@ const DoctorsAppointments = () => {
     }
   }, [queries]);
 
+  const filteredData = useMemo(() => {
+    if (searchQuery) {
+      return appointments.filter((item) =>
+        (item.fullname || item.username)
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase())
+      );
+    }
+    return appointments;
+  }, [appointments, searchQuery]);
+
   const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return appointments.slice(start, end);
-  }, [currentPage, appointments, itemsPerPage]);
+    const start = (currentPage - 1) * itemsPerPage; // Starting index
+    const end = start + itemsPerPage; // Ending index
+    return filteredData.slice(start, end); // Slicing the filtered data
+  }, [currentPage, filteredData, itemsPerPage]);
 
   return (
     <>
@@ -164,6 +176,7 @@ const DoctorsAppointments = () => {
             type='text'
             placeholder='Search'
             className='border-0 bg-transparent shadow-none outline-none focus:outline-none'
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <Dropdown

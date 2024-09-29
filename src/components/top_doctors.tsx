@@ -8,6 +8,10 @@ import { TopDoctorsPropType } from "@/types";
 import { toTitleCase } from "@/services/helpers";
 import FullModal from "./full_modal";
 import { Divider } from "@chakra-ui/react";
+import video_call from "@/assets/video_call.svg";
+import { Button } from "./ui/button";
+import Mutation from "@/api/mutation";
+import { useNavigate } from "react-router-dom";
 
 const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
   username,
@@ -19,11 +23,12 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
   rating,
   photo,
 }) => {
+  
   return (
     <div className='mt-5 w-full'>
       {/* Adjust the margin here */}
       <p className='text-[#008080] text-[16px] font-semibold mb-3'>
-        Personal Information
+        Demographic Details
       </p>
       <div className='flex gap-2 justify-center items-start'>
         {" "}
@@ -104,7 +109,26 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
   photo,
   reviews,
   email,
+  id,
+  patient_id
 }) => {
+  const { mutation } = Mutation();
+  const navigate = useNavigate();
+  
+  function createCallSession() {
+    // Generate or fetch the callId
+    const callId = `call-${Math.random().toString(16).substring(2)}`;
+    const data = {
+      method: "post",
+      url: `call/create`,
+      content: {callId, doctors_id: id, patients_id: patient_id},
+    };
+    mutation.mutate(data);
+
+    // Redirect the patient and doctor to the call page
+    navigate(`/call/${callId}`);
+  }
+
   return (
     <div className='md:col-span-2 col-span-2'>
       <Card className='border flex justify-between items-end rounded-xl p-4'>
@@ -132,23 +156,28 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
             </div>
           </div>
         </div>
-        <FullModal
-          title='Doctors Details'
-          label='View Profile'
-          cn='underline text-[#333333]'>
-          <div className='flex justify-center items-center'>
-            <DoctorsDetails
-              username={username}
-              fullname={fullname}
-              specialization={specialization}
-              phone={phone}
-              gender={gender}
-              rating={rating}
-              email={email}
-              photo={photo}
-            />
-          </div>
-        </FullModal>
+        <div className='flex gap-3'>
+          <Button variant={"ghost"} onClick={createCallSession}>
+            <img src={video_call} alt='' className='w-5' />
+          </Button>
+          <FullModal
+            title='Doctors Details'
+            label='View Profile'
+            cn='text-[#D20606] text-xs'>
+            <div className='flex justify-center items-center'>
+              <DoctorsDetails
+                username={username}
+                fullname={fullname}
+                specialization={specialization}
+                phone={phone}
+                gender={gender}
+                rating={rating}
+                email={email}
+                photo={photo}
+              />
+            </div>
+          </FullModal>
+        </div>
       </Card>
     </div>
   );

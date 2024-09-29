@@ -11,11 +11,15 @@ const ProtectedRoute = ({ role }: { role: string }) => {
 
   if (userDataString && user) {
     // Check if the user's role matches the required role for this route
-    if (user?.role === role) {
+    if (user?.role === role || role === "all") {
       return role === "patient" ? (
         <Layout>
           <Outlet />{" "}
         </Layout>
+      ) : role === "all" ? (
+        <>
+          <Outlet />{" "}
+        </>
       ) : (
         <DoctorsLayout>
           <Outlet />{" "}

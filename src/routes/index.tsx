@@ -38,6 +38,7 @@ import AdminTransactions from "@/pages/hospital/Transactions";
 import AdminMessages from "@/pages/hospital/Messages";
 import DoctorNotifications from "@/pages/doctors/Notifications";
 import Doctors from "@/pages/patients/Doctors";
+import VideoCall from "@/pages/call/Call";
 
 const Routes = [
   {
@@ -79,7 +80,7 @@ const Routes = [
         element: <Home />,
       },
       {
-        path: "/patient/top-doctors",
+        path: "/patient/doctors",
         element: <Doctors />,
       },
       {
@@ -226,6 +227,16 @@ const Routes = [
       {
         path: "/hospital/messages",
         element: <AdminMessages />,
+      },
+    ],
+  },
+  {
+    path: "/call",
+    element: <ProtectedRoute role='all' />, // allow all
+    children: [
+      {
+        path: "/call/:callId",
+        element: <VideoCall />,
       },
     ],
   },

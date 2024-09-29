@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { appointment_type_options } from "@/utils/forms/selectitems";
 import Mutation from "@/api/mutation";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import Query from "@/api/query";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNotifier } from "@/hooks/useNotifier";
@@ -23,6 +23,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import { FRONTEND_URL } from "@/constants/api";
 
 type ValuePiece = Date | null;
 
@@ -70,12 +71,6 @@ const BookAppointmentForm = () => {
           status: "error",
         });
       }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to book appointment. Please try again later.",
-        status: "error",
-      });
     }
   };
 
@@ -113,6 +108,31 @@ const BookAppointmentForm = () => {
     }
   }, []);
 
+  const createCallSession = () => {
+    const callId = `call-${Math.random().toString(16).substring(2)}`;
+    const callLink = `${FRONTEND_URL}/call/${callId}`;
+
+    console.log(callId, formData.patient_id);
+
+    // Post the call session to the backend
+    // const data = {
+    //   method: "post",
+    //   url: `call/create`,
+    //   content: {
+    //     callId,
+    //     doctors_id: formData.doctor_id,
+    //     patients_id: formData.patient_id,
+    //   },
+    // };
+    // mutation.mutate(data);
+
+    // Set the generated call link in the form data
+    setFormData({
+      ...formData,
+      link: callLink,
+    });
+  };
+
   return (
     <div className='mt-10 w-full'>
       <div className='flex justify-between gap-3'>
@@ -131,7 +151,7 @@ const BookAppointmentForm = () => {
           changeFunction={handleFormChange}
         />
       </div>
-      <div className='mt-4'>
+      <div className='mt-4 flex items-center gap-3'>
         <FormInput
           type='text'
           name='link'
@@ -139,6 +159,9 @@ const BookAppointmentForm = () => {
           value={formData.link}
           changeFunction={handleFormChange}
         />
+        <Button onClick={createCallSession} className='bg-[#D20606] mt-6'>
+          Generate Link
+        </Button>
       </div>
       <div className='mt-4'>
         <FormInput
@@ -174,21 +197,6 @@ const BookAppointmentForm = () => {
           changeFunction={handleFormChange}
         />
       </div>
-      {/* <div className='mt-4'>
-        <Upload
-          uploadType='inline'
-          tag='Upload  Document (Optional)'
-          id='attachment'
-        />
-      </div>
-      <div className='mt-4'>
-        <Upload
-          uploadType='inline'
-          tag='Upload more Documents'
-          id='attachment'
-          icon={plus}
-        />
-      </div> */}
       <Button
         className='bg-[#D20606] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
@@ -379,6 +387,7 @@ const AppointmentDetails = ({ appointment }: any) => {
     appointment_date: appointment.appointment_date,
     link: appointment.link,
   });
+  const role = getConfigByRole();
 
   const { showNotifier, NotifierComponent } = useNotifier();
   const { mutation } = Mutation();
@@ -451,6 +460,7 @@ const AppointmentDetails = ({ appointment }: any) => {
           label='Appointment Title:'
           value={formData.title}
           changeFunction={handleFormChange}
+          disabled={role === "patient"}
         />
       </div>
       <div className='mt-4'>
@@ -460,6 +470,7 @@ const AppointmentDetails = ({ appointment }: any) => {
           label='Appointment Type:'
           value={formData.type}
           changeFunction={handleFormChange}
+          disabled={role === "patient"}
         />
       </div>
       <div className='mt-4'>
@@ -469,6 +480,7 @@ const AppointmentDetails = ({ appointment }: any) => {
           value={formData.description}
           cn={"h-[600px]"}
           changeFunction={handleFormChange}
+          disabled={role === "patient"}
         />
       </div>
       <Button

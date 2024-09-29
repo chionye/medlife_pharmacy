@@ -41,9 +41,9 @@ function Home() {
   const cardValue = useMemo(
     () => [
       {
-        title: "Chat a Doctor",
+        title: "Call a Doctor",
         buttonText: "Call A Doctor",
-        link: "/patient/call",
+        link: "/patient/doctors",
         icon: add,
         secondaryIcon: video_icon,
       },
@@ -99,7 +99,7 @@ function Home() {
       },
       {
         id: "medications",
-        url: "list_medications",
+        url: "medications/list",
         method: "post",
         payload: { user_id: user?.id },
       },
@@ -168,6 +168,7 @@ function Home() {
           doctors={doctors}
           link='/patient/top-doctors'
           title='Top Doctors'
+          patient_id={user.id}
         />
         <Section>
           <MedicationSection

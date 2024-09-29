@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import axios, { Method } from "axios";
-import api from "../constants/api";
+import { ENDPOINT } from "../constants/api";
 
 interface AxiosHookResponse<T> {
   loading: boolean;
   error: any;
-  sendRequest: (method: Method, url: string, data?: any, token?: any) => Promise<T>;
+  sendRequest: (
+    method: Method,
+    url: string,
+    data?: any,
+    token?: any
+  ) => Promise<T>;
 }
 
 const useAxiosRequest = <T>(): AxiosHookResponse<T> => {
@@ -22,21 +27,21 @@ const useAxiosRequest = <T>(): AxiosHookResponse<T> => {
   ): Promise<T> => {
     setLoading(true);
     setError(null);
-    
+
     try {
       let response;
       switch (method.toLowerCase()) {
         case "get":
-          response = await axios.get<T>(`${api}/${url}`, token);
+          response = await axios.get<T>(`${ENDPOINT}/${url}`, token);
           break;
         case "post":
-          response = await axios.post<T>(`${api}/${url}`, data, token);
+          response = await axios.post<T>(`${ENDPOINT}/${url}`, data, token);
           break;
         case "patch":
-          response = await axios.patch<T>(`${api}/${url}`, data, token);
+          response = await axios.patch<T>(`${ENDPOINT}/${url}`, data, token);
           break;
         case "delete":
-          response = await axios.delete<T>(`${api}/${url}`, token);
+          response = await axios.delete<T>(`${ENDPOINT}/${url}`, token);
           break;
         default:
           throw new Error("Invalid HTTP method");

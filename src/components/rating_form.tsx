@@ -5,6 +5,7 @@ import { Rating } from "react-simple-star-rating";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useState } from "react";
+import { toTitleCase } from "@/services/helpers";
 
 interface RatingFormProps {
   formAttributes: any;
@@ -41,7 +42,6 @@ const RatingForm: React.FC<RatingFormProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    console.log(name, value)
     setFormData((prevData: any) => ({
       ...prevData,
       formSelects: {
@@ -59,7 +59,7 @@ const RatingForm: React.FC<RatingFormProps> = ({
     <>
       <div className='flex md:flex-row flex-col mt-20 px-5 md:gap-20'>
         <div className='flex md:flex-row flex-col justify-between gap-3 md:w-2/3'>
-          {formAttributes.map((form: any) => (
+          {formAttributes.length > 0 && formAttributes.map((form: any) => (
             <FormSelect
               key={form.name}
               value={formData.formSelects[form.name]} // Get the value from formData
@@ -71,7 +71,7 @@ const RatingForm: React.FC<RatingFormProps> = ({
           ))}
         </div>
       </div>
-      <div className='mt-20 px-5'>
+      <div className='mt-10 px-5'>
         <p className='text-sm font-normal'>Rating Metrics</p>
         <div className='flex md:flex-row flex-col justify-between gap-3 mt-4'>
           <Card className='px-10 py-10 shadow-lg md:w-1/2'>
@@ -80,7 +80,7 @@ const RatingForm: React.FC<RatingFormProps> = ({
                 className='flex md:flex-row flex-col justify-between items-center mb-4'
                 key={index}>
                 <span className='flex items-center gap-2'>
-                  <span>{criterion}</span>
+                  <span>{toTitleCase(criterion.split("_").join(" "))}</span>
                 </span>
                 <div>
                   <Rating

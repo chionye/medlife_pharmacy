@@ -11,32 +11,43 @@ import {
 } from "@/services/helpers";
 import options from "@/assets/options.svg";
 import Dropdown from "./dropdown";
-import { useMemo } from "react";
+import { useRef, useState } from "react";
 import FullModal from "./full_modal";
 import { AppointmentDetails } from "./appointment_form";
 import video_call from "@/assets/video_call.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import Mutation from "@/api/mutation";
-import { getCookie } from "@/services/storage";
+import { getConfigByRole, getCookie } from "@/services/storage";
 import { useNotifier } from "@/hooks/useNotifier";
+import { PatientsDetails } from "./top_patients";
+import CustomModal from "./custom_modal";
+import { DoctorsDetails } from "@/components/top_doctors";
+import { EditDoctorForm } from "./onboard_form";
 
 const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
-  const details = useMemo(
-    () => [
-      { label: "Create Appointment" },
-      { label: "Update Patient’s Appointment" },
-      { label: "View Patient’s Profile" },
-      { label: "Medicine Prescription" },
-      { label: "Rate Patient’s Performance" },
-    ],
-    []
-  );
+  const role = getConfigByRole();
 
   const { mutation } = Mutation();
   const navigate = useNavigate();
+  // State to manage the selected patient for modal
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  // Ref to trigger FullModal programmatically
+  const modalRef = useRef<HTMLButtonElement>(null);
+  const doctorModalRef = useRef<HTMLButtonElement>(null);
+
+  const handleViewPatientProfile = (patient: any) => {
+    setSelectedPatient(patient); // Set the selected patient details
+    modalRef.current?.click(); // Trigger modal opening programmatically
+  };
+
+  const handleViewDoctorDetails = (doctor: any) => {
+    setSelectedDoctor(doctor); // Set the selected doctor details
+    doctorModalRef.current?.click(); // Trigger doctor modal opening programmatically
+  };
 
   const { showNotifier, NotifierComponent } = useNotifier();
 
@@ -50,28 +61,39 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
       },
     };
 
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: `You have marked this appointment as completed`,
-          status: "success",
-        });
-      } else {
-        const errorMessage = mutation.data.message
-          ? mutation.data.message
-          : Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
-        console.log(errorMessage, mutation.data);
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: `You have marked this appointment as completed`,
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting feedback:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your feedback. Please try again.",
           status: "error",
         });
-      }
-    }
+      },
+    });
   };
 
   function createCallSession(patient_id: number) {
@@ -121,14 +143,6 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                       ) : key === "description" ? (
                         <td className='px-4 py-3 text-xs font-normal'>
                           <p className='truncate w-24'>{item[key]}</p>
-                          <FullModal
-                            title={"Appointment Details"}
-                            label='Read More'
-                            cn={"underline text-[#333333]"}>
-                            <div className='flex justify-center items-center'>
-                              <AppointmentDetails appointment={item} />
-                            </div>
-                          </FullModal>
                         </td>
                       ) : key === "SN" ? (
                         <td className='px-4 py-3 text-xs font-normal'>
@@ -188,14 +202,36 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                         <td className='px-4 py-3 text-xs font-normal'>
                           {getNestedValue(item, key)}
                         </td>
-                      ) : key === "view_more" ? (
+                      ) : key === "view" ? (
                         <td className='px-4 py-3 text-xs font-normal text-center'>
                           <div className='flex w-full justify-center'>
                             <Dropdown
-                              label='View More'
-                              cn='w-full h-13'
+                              label=''
+                              cn='h-13'
+                              showArrow={false}
                               icon={<img src={options} alt='View More' />}
-                              options={details}
+                              options={[
+                                {
+                                  label: "View Patient’s Profile",
+                                  child: (
+                                    <div
+                                      onClick={() =>
+                                        handleViewPatientProfile(item)
+                                      }>
+                                      View Patient’s Profile
+                                    </div>
+                                  ),
+                                },
+                                {
+                                  label: "Medicine Prescription",
+                                  child: (
+                                    <NavLink
+                                      to={`/${role}/medication/${item.id}`}>
+                                      Medicine Prescription
+                                    </NavLink>
+                                  ),
+                                },
+                              ]}
                             />
                           </div>
                         </td>
@@ -204,12 +240,23 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                           <div className='flex w-full justify-center'>
                             <Dropdown
                               label=''
-                              cn='w-full h-13'
+                              cn='h-13'
+                              showArrow={false}
                               icon={
                                 <img src={options} alt='Manage Physician' />
                               }
                               options={[
-                                { label: "Edit Physicain’s Profile" },
+                                {
+                                  label: "Edit Physicain’s Profile",
+                                  child: (
+                                    <div
+                                      onClick={() =>
+                                        handleViewDoctorDetails(item)
+                                      }>
+                                      Edit Physicain’s Profile
+                                    </div>
+                                  ),
+                                },
                                 { label: "Activate Physician" },
                                 { label: "Deactivate Physician" },
                               ]}
@@ -222,9 +269,10 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                           <FullModal
                             title={"Doctors Details"}
                             label='View more'
+                            scrollBehavior='outside'
                             cn={"underline text-[#333333]"}>
                             <div className='flex justify-center items-center'>
-                              <AppointmentDetails appointment={item} />
+                              <DoctorsDetails {...item} />
                             </div>
                           </FullModal>
                         </td>
@@ -239,6 +287,37 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
           </tbody>
         </table>
         {NotifierComponent}
+        {/* Hidden buttons to trigger modals programmatically */}
+        <button ref={modalRef} style={{ display: "none" }}>
+          Open Patient Modal
+        </button>
+        <button ref={doctorModalRef} style={{ display: "none" }}>
+          Open Doctor Modal
+        </button>
+
+        {/* FullModal for viewing patient details */}
+        {selectedPatient && (
+          <CustomModal
+            title={"Patient’s Profile"}
+            isOpen={!!selectedPatient}
+            onClose={() => setSelectedPatient(null)}>
+            <div className='flex justify-center items-center'>
+              <PatientsDetails {...selectedPatient} />
+            </div>
+          </CustomModal>
+        )}
+
+        {/* FullModal for viewing doctor details */}
+        {selectedDoctor && (
+          <CustomModal
+            title={"Edit Doctor’s Profile"}
+            isOpen={!!selectedDoctor}
+            onClose={() => setSelectedDoctor(null)}>
+            <div className='flex justify-center items-center'>
+              <EditDoctorForm doctor={selectedDoctor} />
+            </div>
+          </CustomModal>
+        )}
       </div>
     </div>
   );

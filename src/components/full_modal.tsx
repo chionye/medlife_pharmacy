@@ -21,6 +21,8 @@ const FullModal: React.FC<FullModalPropType> = ({
   title = null,
   btnTitle = "",
   footer = false,
+  overlayClose = true,
+  scrollBehavior = 'outside',
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -29,9 +31,24 @@ const FullModal: React.FC<FullModalPropType> = ({
         {label ? label : icon} {btnTitle}
       </button>
 
-      <Modal isOpen={isOpen} size={"xl"} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent className='pb-5'>
+      <Modal
+        isOpen={isOpen}
+        size={"xl"}
+        onClose={onClose}
+        motionPreset='slideInBottom'
+        closeOnOverlayClick={overlayClose}
+        scrollBehavior={scrollBehavior as "inside" | "outside"}
+        isCentered>
+        <ModalOverlay
+          bg='blackAlpha.300'
+          backdropFilter='blur(10px) hue-rotate(90deg)'
+          zIndex='2000'
+        />
+        <ModalContent
+          className='pb-5'
+          containerProps={{
+            zIndex: "2000",
+          }}>
           <ModalHeader>&nbsp;</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

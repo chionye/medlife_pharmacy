@@ -40,6 +40,8 @@ import DoctorNotifications from "@/pages/doctors/Notifications";
 import Doctors from "@/pages/patients/Doctors";
 import VideoCall from "@/pages/call/Call";
 import AppointmentRequests from "@/pages/doctors/AppointmentRequests";
+import DoctorMedication from "@/pages/doctors/Medication";
+import AdminMedication from "@/pages/hospital/Medication";
 
 const Routes = [
   {
@@ -136,6 +138,10 @@ const Routes = [
         element: <DoctorsAppointments />,
       },
       {
+        path: "/doctor/prescribe-medicine",
+        element: <DoctorMedication />,
+      },
+      {
         path: "/doctor/appointments-requests",
         element: <AppointmentRequests />,
       },
@@ -196,6 +202,10 @@ const Routes = [
       {
         path: "/hospital/users",
         element: <Users />,
+      },
+      {
+        path: "/hospital/medication/:id",
+        element: <AdminMedication />,
       },
       {
         path: "/hospital/settings",

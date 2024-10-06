@@ -1,6 +1,6 @@
 /** @format */
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AppointmentHistory from "./appointment_history";
 import MedicationHistory from "./medication_history";
 import TitleBar from "./title_bar";
@@ -25,7 +25,6 @@ export const DoctorPatientSection = ({
   doctors,
   title,
   link,
-  patient_id,
   cn = null,
 }: any) => (
   <Section cn={cn}>
@@ -35,7 +34,7 @@ export const DoctorPatientSection = ({
         doctors
           .slice(0, 5)
           .map((doctor: any) => (
-            <TopDoctors patient_id={patient_id} {...doctor} />
+            <TopDoctors {...doctor} />
           ))
       ) : (
         <p className='text-xs text-[#073131] font-semibold'>
@@ -73,6 +72,7 @@ export const AppointmentSection = ({
   appointmentRequest = false,
 }: any) => {
   const { showNotifier, NotifierComponent } = useNotifier();
+  const navigate = useNavigate();
 
   const { mutation } = Mutation();
 
@@ -86,29 +86,41 @@ export const AppointmentSection = ({
       },
     };
 
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        const action = status === "approve" ? "approved" : "canceled";
-        showNotifier({
-          title: "Success",
-          text: `You have ${action} this appointment`,
-          status: "success",
-        });
-      } else {
-        const errorMessage = mutation.data.message
-          ? mutation.data.message
-          : Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
-        console.log(errorMessage, mutation.data);
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          const action = status === "approve" ? "approved" : "canceled";
+          showNotifier({
+            title: "Success",
+            text: `You have ${action} this appointment`,
+            status: "success",
+          });
+          navigate("/doctor/home");
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting feedback:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your feedback. Please try again.",
           status: "error",
         });
-      }
-    }
+      },
+    });
   };
 
   return (

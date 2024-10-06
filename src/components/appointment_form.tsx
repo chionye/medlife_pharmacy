@@ -53,25 +53,39 @@ const BookAppointmentForm = () => {
       url: `appointment/create`,
       content: formData,
     };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your appointment was successfully booked!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: "Your appointment was successfully booked!",
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting the data. Please try again.",
           status: "error",
         });
-      }
-    }
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,16 +129,16 @@ const BookAppointmentForm = () => {
     console.log(callId, formData.patient_id);
 
     // Post the call session to the backend
-    // const data = {
-    //   method: "post",
-    //   url: `call/create`,
-    //   content: {
-    //     callId,
-    //     doctors_id: formData.doctor_id,
-    //     patients_id: formData.patient_id,
-    //   },
-    // };
-    // mutation.mutate(data);
+    const data = {
+      method: "post",
+      url: `callogs/create`,
+      content: {
+        call_id: callId,
+        doctors_id: formData.doctor_id,
+        patients_id: formData.patient_id,
+      },
+    };
+    mutation.mutate(data);
 
     // Set the generated call link in the form data
     setFormData({
@@ -238,31 +252,39 @@ const CreateAppointmentForm = () => {
       url: `appointment/create`,
       content: formData,
     };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your appointment was successfully created!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: "Your appointment was successfully created!",
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your data. Please try again.",
           status: "error",
         });
-      }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to created appointment. Please try again later.",
-        status: "error",
-      });
-    }
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -398,31 +420,38 @@ const AppointmentDetails = ({ appointment }: any) => {
       url: `appointment/update`,
       content: formData,
     };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your appointment was successfully updated!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: "Your appointment was successfully updated!",
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your data. Please try again.",
           status: "error",
         });
-      }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to update appointment. Please try again later.",
-        status: "error",
-      });
-    }
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -446,11 +475,17 @@ const AppointmentDetails = ({ appointment }: any) => {
         </p>
         <p className='text-[12px] font-normal'>
           Date of Birth:
-          <br /> {getDateFormat(appointment.patient.dob, "date")}
+          <br />{" "}
+          {appointment.patient?.dob &&
+            getDateFormat(appointment.patient.dob, "date")}
         </p>
         <p className='text-[12px] font-normal'>
           Date and Time:
-          <br /> {getDateFormat(appointment.patient.created_at, "date")}
+          <br />{" "}
+          {appointment.patient?.created_at && getDateFormat(
+            appointment.patient.created_at,
+            "date"
+          )}
         </p>
       </div>
       <div className='mt-4'>
@@ -528,31 +563,38 @@ const RescheduleAppointmentForm = ({ appointment }: any) => {
         appointment_date: theDate,
       },
     };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your appointment was successfully created!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: "Your appointment was successfully rescheduled!",
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your data. Please try again.",
           status: "error",
         });
-      }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to created appointment. Please try again later.",
-        status: "error",
-      });
-    }
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,13 +6,14 @@ import { useState } from "react";
 import Mutation from "@/api/mutation";
 import { getCookie } from "@/services/storage";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useNotifier } from "@/hooks/useNotifier";
 
 const ChangeUserForm = ({
   fieldName,
   label,
   apiUrl,
   formType,
-  options
+  options,
 }: {
   fieldName: string;
   label: string;
@@ -26,16 +27,49 @@ const ChangeUserForm = ({
     [fieldName]: userData?.[fieldName] || "",
   });
 
+  const { showNotifier, NotifierComponent } = useNotifier();
   const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
+    const updateData = { ...userData, ...formData, user_id: userData.id };
+    console.log(updateData);
     const data = {
       method: "post",
       url: apiUrl,
-      content: formData,
+      content: updateData,
     };
-    console.log(formData);
-    mutation.mutate(data);
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: `Your ${fieldName} has been successfully updated!`,
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
+        showNotifier({
+          title: "Error",
+          text: "There was an error submitting your data. Please try again.",
+          status: "error",
+        });
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +113,9 @@ const ChangeUserForm = ({
           "Save"
         )}
       </Button>
+      {NotifierComponent}
     </div>
   );
 };
 
-export default ChangeUserForm
+export default ChangeUserForm;

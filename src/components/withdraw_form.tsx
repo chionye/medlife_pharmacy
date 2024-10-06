@@ -7,6 +7,7 @@ import { WithdrawPropType } from "@/types";
 import { getCookie } from "@/services/storage";
 import { useNotifier } from "@/hooks/useNotifier";
 import Mutation from "@/api/mutation";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const WithdrawForm = () => {
   const payment_method: string[] = [
@@ -53,31 +54,39 @@ const WithdrawForm = () => {
       url: `doctors/withdraw`,
       content: formData,
     };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your withdrawal request was successfully submitted!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: "Your withdrawal request was successfully submitted!",
+            status: "success",
+          });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your data. Please try again.",
           status: "error",
         });
-      }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to submit withdrawal request. Please try again later.",
-        status: "error",
-      });
-    }
+      },
+    });
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,10 +101,19 @@ const WithdrawForm = () => {
     <div className='mt-2 w-full'>
       <div className='flex justify-between gap-3'>
         <FormSelect
-          value={formData.acc_name}
+          value={formData.bank_name}
           options={payment_method}
-          name='acc_name'
+          name='bank_name'
           label='Bank Name'
+          changeFunction={handleFormChange}
+        />
+      </div>
+      <div className='mt-4'>
+        <FormInput
+          type='text'
+          name='acc_name'
+          label='Account Name'
+          value={formData.acc_name}
           changeFunction={handleFormChange}
         />
       </div>
@@ -120,7 +138,14 @@ const WithdrawForm = () => {
       <Button
         className='bg-[#D20606] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
-        Proceed
+        {mutation.isPending ? (
+          <>
+            <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+            Please wait
+          </>
+        ) : (
+          "Proceed"
+        )}
       </Button>
       {NotifierComponent}
     </div>

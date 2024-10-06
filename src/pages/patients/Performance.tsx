@@ -21,56 +21,68 @@ const Performance = () => {
 
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
-  const [formData] = useState<any>({
+  const [formData, setFormData] = useState<any>({
     doctor_id: "",
     patient_id: userData?.id,
   });
   const [doctors, setDoctors] = useState<any>([]);
   const criteria = [
-    "Overall satisfaction",
-    "Communication",
-    "Knowledge",
-    "Bedside manner",
+    "overall_satisfaction",
+    "communication",
+    "knowledge",
+    "bedside_manner",
   ];
   const { showNotifier, NotifierComponent } = useNotifier();
 
   const { mutation } = Mutation();
 
   const handleSubmit = (dataValues: any) => {
-    const formValues = {
-      ...dataValues.ratings,
-      ratee: dataValues.formSelects.doctor_id,
-      rater: formData.patient_id,
-    };
-    const data = {
-      method: "post",
-      url: `rate/doctor`,
-      content: formValues,
-    };
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      if (mutation.data.status) {
-        showNotifier({
-          title: "Success",
-          text: "Your feedback was successfully submitted!",
-          status: "success",
-        });
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
-        showNotifier({
-          title: "Error",
-          text: errorMessage,
-          status: "error",
-        });
-      }
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to save feedback. Please try again later.",
-        status: "error",
+    try {
+      const formValues = {
+        ...dataValues.ratings,
+        ratee: dataValues.formSelects.doctor_id || formData.doctor_id,
+        rater: formData.patient_id,
+      };
+      const data = {
+        method: "post",
+        url: `rate/doctor`,
+        content: formValues,
+      };
+      mutation.mutate(data, {
+        onSuccess: (data) => {
+          console.log(data);
+          if (data.status) {
+            showNotifier({
+              title: "Success",
+              text: "Your feedback was successfully submitted!",
+              status: "success",
+            });
+          } else if (data.error || data.errors || data.message) {
+            const errorMessage = data.message
+              ? data.message
+              : data.error
+              ? data.error
+              : Array.isArray(data.errors)
+              ? data.errors.join("\n")
+              : data.errors;
+            showNotifier({
+              title: "Error",
+              text: errorMessage,
+              status: "error",
+            });
+          }
+        },
+        onError: (error) => {
+          console.log("Error submitting feedback:", error);
+          showNotifier({
+            title: "Error",
+            text: "There was an error submitting your feedback. Please try again.",
+            status: "error",
+          });
+        },
       });
+    } catch (err: any) {
+      console.log(err);
     }
   };
 
@@ -100,14 +112,19 @@ const Performance = () => {
 
   const { queries } = Query(queryParamsArray);
   useEffect(() => {
+    console.log(queries[0].data, queries[0].isPending);
     if (queries[0].data?.status && queries[0].data.data?.length > 0) {
       const data = queries[0].data.data.map((item: any) => ({
         id: item.id,
         name: item.fullname || item.username,
       }));
       setDoctors(data);
+      setFormData({
+        ...formData,
+        doctor_id: data[0].id,
+      });
     }
-  }, []);
+  }, [queries[0].isPending]);
 
   return (
     <>

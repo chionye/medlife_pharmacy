@@ -104,9 +104,9 @@ const Users = () => {
         "SN",
         "Name of Patients",
         "Patient’s Age",
-        "Last Appointment",
-        "Upcoming Appointment",
-        "Appointment Details",
+        "Patients Email",
+        "Username",
+        "Gender",
         "Status",
         "View More",
       ]);
@@ -114,11 +114,11 @@ const Users = () => {
         "SN",
         "fullname",
         "dob",
-        "created_at",
-        "updated_at",
-        "description",
+        "email",
+        "username",
+        "gender",
         "status",
-        "view_more",
+        "view",
       ]);
       setData(patient);
     } else if (userType === "Doctor") {

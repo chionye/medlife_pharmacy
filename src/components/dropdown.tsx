@@ -23,8 +23,11 @@ const Dropdown: React.FC<DynamicDropdownProps> = ({
   icon,
   cn,
   value,
+  showArrow = true,
   dropdownType = null,
   changeFunction,
+  openChange,
+  dropDownClickFn,
 }) => {
   const renderDropdownItems = (items: DropdownOption[]) => {
     return (
@@ -44,7 +47,9 @@ const Dropdown: React.FC<DynamicDropdownProps> = ({
         }
 
         return dropdownType === "button" || dropdownType === null ? (
-          <DropdownMenuItem className={cn}>{item.label}</DropdownMenuItem>
+          <DropdownMenuItem className={cn} onClick={dropDownClickFn}>
+            {item.child ? item.child : item.label}
+          </DropdownMenuItem>
         ) : (
           <DropdownMenuRadioItem value={item.label} className={cn}>
             {item.label}
@@ -55,14 +60,16 @@ const Dropdown: React.FC<DynamicDropdownProps> = ({
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={openChange}>
       <DropdownMenuTrigger asChild>
         <Button variant='outline' className={`flex justify-between ${cn}`}>
           <span className='flex items-center gap-2'>
             {icon && icon}
             {label}
           </span>
-          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          {showArrow && (
+            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

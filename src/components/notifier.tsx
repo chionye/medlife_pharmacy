@@ -30,8 +30,16 @@ const Notifier: React.FC<NotifierPropType> = ({
         isOpen={isModalOpen}
         size={"xl"}
         onClose={() => closeFunction(!isModalOpen)}>
-        <ModalOverlay />
-        <ModalContent className='pb-5'>
+        <ModalOverlay
+          bg='blackAlpha.300'
+          backdropFilter='blur(10px) hue-rotate(90deg)'
+          zIndex='3000'
+        />
+        <ModalContent
+          className='pb-5'
+          containerProps={{
+            zIndex: "3000",
+          }}>
           <ModalHeader>&nbsp;</ModalHeader>
           <ModalCloseButton onClick={() => closeFunction(!isModalOpen)} />
           <ModalBody>

@@ -17,6 +17,7 @@ export interface DropdownPropType {
 export interface DropdownOption {
   label: string;
   value?: string;
+  child?: React.ReactNode;
   items?: DropdownOption[];
   onClick?: () => void;
 }
@@ -27,8 +28,11 @@ export interface DynamicDropdownProps {
   cn?: string;
   options: DropdownOption[];
   value?: string;
+  showArrow?: boolean;
   dropdownType?: string | null;
   changeFunction?: (e: string) => void;
+  openChange?: (open: boolean) => void;
+  dropDownClickFn?: (e: any) => void;
 }
 
 export interface FullModalPropType {
@@ -39,6 +43,8 @@ export interface FullModalPropType {
   cn?: string;
   icon?: React.ReactNode;
   footer?: boolean;
+  overlayClose?: boolean;
+  scrollBehavior?: "inside" | "outside";
 }
 
 export interface StarRatingProps {
@@ -170,6 +176,14 @@ export interface TopDoctorsPropType {
   reviews?: number;
   id?: number;
   patient_id?: number;
+  allergies?: string[];
+  family_history?: string;
+  social_history?: string;
+  sogical_history?: string;
+  certifications?: string[];
+  languages?: string[];
+  clinic_affiliation?: string;
+  years_of_experience?: string;
 }
 
 export interface MedicationHistoryPropType {
@@ -347,4 +361,14 @@ export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+}
+
+export interface PrescriptionFormProps {
+  user_id:string;
+  prescribed_by: string;
+  medicine_name:string;
+  dosage:string;
+  frequency:string;
+  start_date:string;
+  note:string;
 }

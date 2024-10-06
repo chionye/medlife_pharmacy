@@ -56,6 +56,7 @@ const EmptyPatients = () => {
         <FullModal
           title={"Onboard a Patient"}
           btnTitle='Onboard New Patients'
+          scrollBehavior="outside"
           cn={
             "bg-[#D20606] md:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
           }>

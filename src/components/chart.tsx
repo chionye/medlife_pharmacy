@@ -12,16 +12,24 @@ import {
 import { filterAndSortGraphData } from "@/services/helpers";
 import { WindowDimensions } from "@/hooks/windowDimensions";
 
-const Chart = ({ data }: { data: any }) => {
+const Chart = ({
+  data,
+  xaxis,
+  yaxis,
+}: {
+  data: any;
+  xaxis: string;
+  yaxis: string;
+}) => {
   const filteredData = filterAndSortGraphData(data);
   const { width } = WindowDimensions();
-  const chartWidth = width > 500 ? width / 3 + 35 : width - 25;
+  const chartWidth = width > 500 ? width - 400 : width - 25;
 
   return (
     <div>
       <BarChart width={chartWidth} height={257} data={filteredData}>
-        <XAxis dataKey='name' stroke='#8884d8' />
-        <YAxis />
+        <XAxis dataKey={xaxis} stroke='#8884d8' />
+        <YAxis dataKey={yaxis} />
         <Tooltip wrapperStyle={{ width: 100, backgroundColor: "#ccc" }} />
         <Legend
           width={100}

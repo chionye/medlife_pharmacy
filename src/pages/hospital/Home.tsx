@@ -18,7 +18,13 @@ function AdminHome() {
   const user = JSON.parse(getCookie("@user") || "{}");
   const [patient, setPatient] = useState<any>([]);
   const [doctor, setDoctor] = useState<TopDoctorsPropType[]>([]);
-  // const [transactions, setTransactions] = useState<any>([]);
+  const [transactions, setTransactions] = useState<any>([]);
+  // const [topPatients, setTopPatients] = useState<
+  //   { name: string; count: number }[]
+  // >([]);
+  // const [topDoctors, setTopDoctors] = useState<
+  //   { name: string; count: number }[]
+  // >([]);
   const role = getConfigByRole();
 
   const cardValue = useMemo(
@@ -75,6 +81,12 @@ function AdminHome() {
         method: "get",
         payload: null,
       },
+      {
+        id: "appointments",
+        url: "appointment/list",
+        method: "post",
+        payload: { user_id: user?.id },
+      },
     ],
     []
   );
@@ -100,7 +112,29 @@ function AdminHome() {
     ) {
       setDoctor(queries[1].data[0].data || []);
     }
-  }, [queries]);
+    if (
+      queries[2] &&
+      queries[2].data &&
+      queries[2].data[0] &&
+      queries[2].data[0].status
+    ) {
+      console.log(queries[2].data);
+      setTransactions(queries[2].data[0].data || []);
+    }
+    if (
+      queries[3] &&
+      queries[3].data &&
+      queries[3].data[0] &&
+      queries[3].data[0].status
+    ) {
+      console.log(queries[3].data, transactions);
+    }
+  }, [
+    queries[0].isPending,
+    queries[1].isPending,
+    queries[2].isPending,
+    queries[2].isPending,
+  ]);
 
   return (
     <>
@@ -122,33 +156,40 @@ function AdminHome() {
 
       <div className='flex flex-col md:flex-row flex-wrap sm:px-0 md:px-8 sm:gap-5 md:gap-20 mt-5'>
         <div>
-          <TitleBar title={"Frequent Patient"} link={"/admin/home"} />
+          <TitleBar title={"Transactions"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} />
+            <Chart data={undefined} xaxis={"newUsers"} yaxis={"month"} />
           </Card>
         </div>
         <div>
-          <TitleBar title={"Top Physician"} link={"/admin/home"} />
+          <TitleBar title={"Top Patient"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} />
+            <Chart data={undefined} xaxis={"name"} yaxis={"count"} />
           </Card>
         </div>
         <div>
+          <TitleBar title={"Top Physician"} />
+          <Divider className='mt-5' />
+          <Card className='mt-5'>
+            <Chart data={undefined} xaxis={"name"} yaxis={"count"} />
+          </Card>
+        </div>
+        {/* <div>
           <TitleBar title={"Medication"} link={"/admin/home"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} />
+            <Chart data={undefined} xaxis={"name"} />
           </Card>
         </div>
         <div>
           <TitleBar title={"Top Patients Category"} link={"/admin/home"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} />
+            <Chart data={undefined} xaxis={"name"} />
           </Card>
-        </div>
+        </div> */}
       </div>
     </>
   );

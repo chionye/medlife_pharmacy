@@ -38,7 +38,7 @@ const DoctorsAppointments = () => {
       "Appointment Details",
       "Status",
       "Mark as Completed",
-      "Response",
+      "Update Appointment",
     ],
     []
   );

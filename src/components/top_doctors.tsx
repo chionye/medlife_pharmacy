@@ -1,17 +1,20 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "./ui/card";
 import doctor from "@/assets/doctor.svg";
 import star from "@/assets/star.svg";
 import { TopDoctorsPropType } from "@/types";
 import { toTitleCase } from "@/services/helpers";
 import FullModal from "./full_modal";
-import { Divider } from "@chakra-ui/react";
+import { Badge, Divider } from "@chakra-ui/react";
 import video_call from "@/assets/video_call.svg";
 import { Button } from "./ui/button";
 import Mutation from "@/api/mutation";
 import { useNavigate } from "react-router-dom";
+import { useNotifier } from "@/hooks/useNotifier";
+import { getCookie } from "@/services/storage";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
   username,
@@ -22,8 +25,11 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
   gender,
   rating,
   photo,
+  certifications,
+  languages,
+  clinic_affiliation,
+  years_of_experience,
 }) => {
-  
   return (
     <div className='mt-5 w-full'>
       {/* Adjust the margin here */}
@@ -48,7 +54,7 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
               <p className='text-[16px] text-[#073131] font-normal mt-1'>
                 {fullname || username}
               </p>
-            </div>
+            </div>  
             <div className='mt-3'>
               <p className='text-lg text-[#073131] font-semibold'>Specialty</p>
               <p className='text-[16px] text-[#073131] font-normal mt-1'>
@@ -80,6 +86,56 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
           </div>
         </div>
       </div>
+      <Divider className='mt-5' orientation='horizontal' variant='solid' />
+      <div>
+        <p className='text-[#008080] text-[16px] font-semibold mt-5'>
+          Professional Details
+        </p>
+        <div>
+          <p className='text-[#008080] text-[16px] font-semibold mt-5'>
+            Certifications
+          </p>
+          {certifications ? (
+            <div className='flex gap-2 items-center flex-warp'>
+              {certifications.map((certification: string, index: number) => (
+                <Badge key={index}>{certification}</Badge>
+              ))}
+            </div>
+          ) : (
+            "N/A"
+          )}
+        </div>
+        <div>
+          <p className='text-[#008080] text-[16px] font-semibold mt-5'>
+            Certifications
+          </p>
+          {languages ? (
+            <div className='flex gap-2 items-center flex-warp'>
+              {languages.map((language: string, index: number) => (
+                <Badge key={index}>{language}</Badge>
+              ))}
+            </div>
+          ) : (
+            "N/A"
+          )}
+        </div>
+        <Card className='bg-[#FFFFF0] w-full mt-3 px-3 py-3'>
+          <p className='text-lg text-[#073131] font-semibold'>
+            Clinic Affiliation
+          </p>
+          <p className='text-[16px] text-[#073131] font-normal mt-2'>
+            {clinic_affiliation || "N/A"}
+          </p>
+        </Card>
+        <Card className='bg-[#FFFFF0] w-full mt-3 px-3 py-3'>
+          <p className='text-lg text-[#073131] font-semibold'>
+            Years of experience
+          </p>
+          <p className='text-[16px] text-[#073131] font-normal mt-2'>
+            {years_of_experience || "N/A"}
+          </p>
+        </Card>
+      </div>
       {/* Reduced the margin here */}
       <Divider className='mt-5' orientation='horizontal' variant='solid' />
       <p className='text-[#008080] text-[16px] font-semibold mt-5'>
@@ -110,23 +166,45 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
   reviews,
   email,
   id,
-  patient_id
 }) => {
+  const user = getCookie("@user");
+  const userData = user ? JSON.parse(user) : null;
+  const [loadingButtonIndex, setLoadingButtonIndex] = useState<
+    number | undefined
+  >(undefined);
+
   const { mutation } = Mutation();
   const navigate = useNavigate();
-  
-  function createCallSession() {
+  const { showNotifier, NotifierComponent } = useNotifier();
+
+  function createCallSession(index: number | undefined) {
+    setLoadingButtonIndex(index);
     // Generate or fetch the callId
     const callId = `call-${Math.random().toString(16).substring(2)}`;
     const data = {
       method: "post",
-      url: `call/create`,
-      content: {callId, doctors_id: id, patients_id: patient_id},
+      url: `callogs/create`,
+      content: { call_id: callId, doctor_id: id, patient_id: userData.id },
     };
+    // console.log(data);
     mutation.mutate(data);
-
+    if (mutation.isSuccess) {
+      console.log(mutation.data);
+      if (mutation.data.status) {
+        navigate(`/call/${callId}`);
+      } else {
+        const errorMessage = Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+          // console.log(errorMessage)
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
+    }
     // Redirect the patient and doctor to the call page
-    navigate(`/call/${callId}`);
   }
 
   return (
@@ -157,8 +235,14 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
           </div>
         </div>
         <div className='flex gap-3'>
-          <Button variant={"ghost"} onClick={createCallSession}>
-            <img src={video_call} alt='' className='w-5' />
+          <Button variant={"ghost"} onClick={() => createCallSession(id)}>
+            {mutation.isPending && loadingButtonIndex === id ? (
+              <>
+                <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+              </>
+            ) : (
+              <img src={video_call} alt='' className='w-5' />
+            )}
           </Button>
           <FullModal
             title='Doctors Details'
@@ -179,8 +263,9 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
           </FullModal>
         </div>
       </Card>
+      {NotifierComponent}
     </div>
   );
 };
 
-export { TopDoctors };
+export { TopDoctors, DoctorsDetails };

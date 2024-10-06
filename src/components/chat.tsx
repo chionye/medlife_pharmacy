@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import user from "@/assets/user.svg";
 
 const Chat = () => {
+
   return (
     <div>
       <NavLink

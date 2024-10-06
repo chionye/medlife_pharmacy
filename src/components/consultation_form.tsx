@@ -34,22 +34,35 @@ const ConsultationForm = () => {
     const data = {
       method: "post",
       url: `user/update_prof_info`,
-      content: formData,
+      content: {
+        ...formData,
+        user_id: userData.id,
+        address: userData.address,
+        photo: userData.photo,
+      },
     };
 
     mutation.mutate(data);
     if (mutation.isSuccess) {
-      showNotifier({
-        title: "Success",
-        text: "Your consultation and rates was successfully updated!",
-        status: "success",
-      });
-    } else {
-      showNotifier({
-        title: "Error",
-        text: "Failed to update consultation data. Please try again later.",
-        status: "error",
-      });
+      console.log(mutation.data);
+      if (mutation.data.status) {
+        if (mutation.isSuccess) {
+          showNotifier({
+            title: "Success",
+            text: "Your consultation and rates was successfully updated!",
+            status: "success",
+          });
+        }
+      } else {
+        const errorMessage = Array.isArray(mutation.data.errors)
+          ? mutation.data.errors.join("\n")
+          : mutation.data.errors;
+        showNotifier({
+          title: "Error",
+          text: errorMessage,
+          status: "error",
+        });
+      }
     }
   };
 

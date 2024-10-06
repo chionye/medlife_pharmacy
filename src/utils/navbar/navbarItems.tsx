@@ -185,6 +185,21 @@ export const NavbarItems: any = {
       label: "My Patients",
     },
     {
+      to: "/doctor/prescribe-medicine",
+      icon: (
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='1.3em'
+          height='1.3em'
+          viewBox='0 0 512 512'>
+          <path
+            fill='currentColor'
+            d='M217.4 27.43c-27.9.47-53.1 17.11-64.5 42.84l136.5 41.23c6-35.79-15.5-70.49-50.1-81.02c-6.2-1.88-12.7-2.91-19.2-3.05zm-69.7 60.08c-6.1 35.89 15.4 70.69 50.1 81.19c34.8 10.5 71.9-6.7 86.5-40zm265.5 44.29c-25.3.1-52.2 12.3-72.5 41L215.9 349.7c-33.5 47.4-18.9 97 14.1 120.4c33.1 23.5 84.6 20.8 118.1-26.6l124.7-176.8c33.5-47.5 18.9-97-14.1-120.5c-12.4-8.8-27.3-13.9-43-14.4zm-1.8 17.3c1.3 0 2.6 0 3.8.1c12.1.5 23.5 4.8 33.1 11.7c25.7 18.2 38.6 54.5 9.7 95.4l-64.5 91.5c-35.8-9.6-81.8-42.3-102.7-73l64.7-91.6c16.9-23.9 37-33.7 55.9-34.1M91.25 225.3c-9.62.1-19.11 2.1-27.93 6c-33.11 14.5-50.34 51.5-40.24 86.3l130.72-57.1c-13.1-22.1-36.9-35.5-62.55-35.2m69.65 51.6L30.2 334.1c18.45 31.4 57.3 44 90.6 29.5c33.2-14.6 50.4-51.8 40.1-86.7'></path>
+        </svg>
+      ),
+      label: "Prescriptions",
+    },
+    {
       to: "/doctor/wallet",
       icon: (
         <svg
@@ -199,21 +214,6 @@ export const NavbarItems: any = {
       ),
       label: "Wallet",
     },
-    // {
-    //   to: "/doctor/messages",
-    //   icon: (
-    //     <svg
-    //       xmlns='http://www.w3.org/2000/svg'
-    //       width='1.5em'
-    //       height='1.5em'
-    //       viewBox='-2 -2.5 24 24'>
-    //       <path
-    //         fill='currentColor'
-    //         d='M3.656 17.979A1 1 0 0 1 2 17.243V15a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8.003zm.844-3.093a.54.54 0 0 0 .26-.069l2.355-1.638A1 1 0 0 1 7.686 13H12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v5c0 .54.429.982 1 1c.41.016.707.083.844.226c.128.134.135.36.156.79c.003.063.003.177 0 .37a.5.5 0 0 0 .5.5m11.5-4.87a7 7 0 0 0 0 .37zc.02-.43.028-.656.156-.79c.137-.143.434-.21.844-.226c.571-.018 1-.46 1-1V3a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1H5V2a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2v2.243a1 1 0 0 1-1.656.736L16 13.743z'></path>
-    //     </svg>
-    //   ),
-    //   label: "Messages",
-    // },
     {
       to: "/doctor/settings",
       icon: (
@@ -300,25 +300,25 @@ export const NavbarItems: any = {
       ),
       label: "Appointments",
     },
-    // {
-    //   to: "/hospital/performance-metrics",
-    //   icon: (
-    //     <svg
-    //       xmlns='http://www.w3.org/2000/svg'
-    //       width='1.3em'
-    //       height='1.3em'
-    //       viewBox='0 0 24 24'>
-    //       <g fill='none' stroke='currentColor' strokeWidth={1.5}>
-    //         <path d='M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z'></path>
-    //         <path
-    //           strokeLinecap='round'
-    //           strokeLinejoin='round'
-    //           d='m7 14l2.293-2.293a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 0 1.414 0L17 10m0 0v2.5m0-2.5h-2.5'></path>
-    //       </g>
-    //     </svg>
-    //   ),
-    //   label: "Performance Metrics",
-    // },
+    {
+      to: "/hospital/performance-metrics",
+      icon: (
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='1.3em'
+          height='1.3em'
+          viewBox='0 0 24 24'>
+          <g fill='none' stroke='currentColor' strokeWidth={1.5}>
+            <path d='M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z'></path>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='m7 14l2.293-2.293a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 0 1.414 0L17 10m0 0v2.5m0-2.5h-2.5'></path>
+          </g>
+        </svg>
+      ),
+      label: "Performance Metrics",
+    },
     {
       to: "/hospital/wallet",
       icon: (

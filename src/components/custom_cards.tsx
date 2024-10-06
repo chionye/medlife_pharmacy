@@ -6,6 +6,7 @@ import { formatAmount } from "@/services/helpers";
 import eyeslash from "@/assets/eyeslash.svg";
 import plus_red from "@/assets/plus_red.svg";
 import plus_white from "@/assets/plus_white.svg";
+import stars from "@/assets/stars.svg";
 import FullModal from "./full_modal";
 import { OnboardDoctorForm, OnboardPatientForm } from "./onboard_form";
 import { getConfigByRole } from "@/services/storage";
@@ -21,10 +22,14 @@ export const CardWithButton = ({
   secondaryIcon,
   subtitle,
   count = 0,
+  star = false,
 }: any) => (
   <Card className='border flex justify-between rounded-xl p-6'>
     <div>
       <p className='text-sm text-[#073131] font-[600]'>{title}</p>
+      {star && (
+        <img src={stars} alt='icon' />
+      )}
       {count ? (
         <p className='text-[26px]'>{count}</p>
       ) : (
@@ -67,6 +72,7 @@ export const CardWithButton = ({
           icon={<img src={icon} alt='open modal' />}
           title={"Onboard a Doctor"}
           btnTitle='Onboard New Doctor'
+          scrollBehavior="outside"
           cn={
             "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
           }>

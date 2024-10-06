@@ -94,7 +94,7 @@ const Patients = () => {
   const queryParamsArray: QueryProps = useMemo(
     () => [
       {
-        id: "appointments",
+        id: "patients",
         url: "doctor/patients",
         method: "post",
         payload: { doctor_id: userData?.id },

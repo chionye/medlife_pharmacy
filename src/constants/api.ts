@@ -2,7 +2,7 @@
 
 // Set the API endpoint based on the hostname or IP address
 let api = "https://api.medlifelink.life";
-let url = "https://medlife-frontend-ten.vercel.app";
+let url = "https://medlife-dashboard.vercel.app";
 
 // Check if the current hostname is "localhost" for local development
 if (document.location.hostname === "localhost") {

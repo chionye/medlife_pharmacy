@@ -1,4 +1,3 @@
-/** @format */
 
 // Set the API endpoint based on the hostname or IP address
 let api = "https://api.medlifelink.life";

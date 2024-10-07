@@ -170,13 +170,9 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                       ) : key === "link" ? (
                         <td className='px-4 py-3 text-xs font-normal'>
                           <NavLink
-                            to={item.status === "pending" ? item[key] : "#"}
+                            to={item[key]}
                             className={"w-full flex justify-center"}>
-                            {item.status === "pending" ? (
-                              <img src={video_call} alt='' className='w-5' />
-                            ) : (
-                              "Link Expired"
-                            )}
+                            <img src={video_call} alt='' className='w-5' />
                           </NavLink>
                         </td>
                       ) : key === "completed" ? (

@@ -114,19 +114,19 @@ const AdminSettings = () => {
                   "Website Name",
                   toTitleCase(websiteSettings?.name),
                   "name",
-                  "website/settings"
+                  "website/updateany"
                 )}
                 {RenderUserInfo(
                   "Email",
                   websiteSettings?.email,
                   "email",
-                  "website/settings"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "About Us",
                   toTitleCase(websiteSettings?.about_us),
                   "about_us",
-                  "website/settings"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -134,19 +134,19 @@ const AdminSettings = () => {
                   "Website Phone Number",
                   websiteSettings?.phone_number,
                   "phone_number",
-                  "website/settings"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Location",
                   websiteSettings?.address,
                   "address",
-                  "website/settings"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Password",
                   websiteSettings?.password,
                   "password",
-                  "website/settings"
+                  "user/updateany"
                 )}
               </div>
             </div>
@@ -183,7 +183,7 @@ const AdminSettings = () => {
                     {RenderUserInfo(
                       "Gender",
                       toTitleCase(userData?.gender),
-                      "email",
+                      "gender",
                       "user/updateany",
                       "select",
                       ["male", "female"]

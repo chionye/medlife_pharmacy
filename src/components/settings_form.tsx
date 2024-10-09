@@ -33,7 +33,10 @@ const ChangeUserForm = ({
   const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
-    const updateData = { ...formData, user_id: userData.id };
+    const updateData =
+      apiUrl === "user/updateany"
+        ? { ...formData, user_id: userData.id }
+        : { settings: { ...formData }, id: userData.id };
     const data = {
       method: "post",
       url: apiUrl,
@@ -50,7 +53,7 @@ const ChangeUserForm = ({
           if (apiUrl === "user/updateany") {
             setCookie("@user", JSON.stringify(data.data), 1);
           }
-          navigate(0);
+          // navigate(0);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message
@@ -83,7 +86,7 @@ const ChangeUserForm = ({
       ...formData,
       [target.name]: target.value,
     });
-  }
+  };
 
   return (
     <div className='mt-10 w-full'>

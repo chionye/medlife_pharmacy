@@ -79,7 +79,7 @@ const Settings = () => {
                 {RenderUserInfo(
                   "Gender",
                   toTitleCase(userData.gender),
-                  "email",
+                  "gender",
                   "user/updateany",
                   "select",
                   ["male", "female"]

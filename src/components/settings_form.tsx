@@ -53,7 +53,7 @@ const ChangeUserForm = ({
           if (apiUrl === "user/updateany") {
             setCookie("@user", JSON.stringify(data.data), 1);
           }
-          // navigate(0);
+          navigate(0);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message

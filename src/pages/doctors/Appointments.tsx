@@ -25,14 +25,15 @@ const DoctorsAppointments = () => {
   const [itemsPerPage] = useState<number>(10);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterSelect, setFilterSelect] = useState<string>("Patient");
   const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   const thead = useMemo(
     () => [
       "SN",
       "Name of Patients",
-      "Date and Time",
-      "Address",
+      "Appointment Date",
+      "Appointment Time",
       "Appointment Type",
       "Appointment Link",
       "Appointment Details",
@@ -47,8 +48,8 @@ const DoctorsAppointments = () => {
     () => [
       "SN",
       "doctor.fullname",
-      "doctor.specialization",
       "appointment_date",
+      "appointment_time",
       "type",
       "link",
       "description",
@@ -61,17 +62,11 @@ const DoctorsAppointments = () => {
 
   const appointmentOptions = useMemo(
     () => [
-      { label: "Successful Appointments" },
-      { label: "Cancelled/Missed Appointments" },
-      {
-        label: "Role",
-        items: [
-          { label: "Cardiologist" },
-          { label: "Psychiatrist" },
-          { label: "Dietician" },
-        ],
-      },
-      { label: "Next Week" },
+      { label: "All" },
+      { label: "Completed" },
+      { label: "Pending" },
+      { label: "Cancelled" },
+      { label: "Active" },
     ],
     []
   );
@@ -126,6 +121,11 @@ const DoctorsAppointments = () => {
     [userData?.id]
   );
 
+  const handleFilterChange = (selectedValue: string) => {
+    setFilterSelect(selectedValue);
+    setSearchQuery(selectedValue);
+  };
+
   const { queries } = Query(queryParamsArray);
 
   useEffect(() => {
@@ -135,11 +135,18 @@ const DoctorsAppointments = () => {
   }, [queries]);
 
   const filteredData = useMemo(() => {
-    if (searchQuery) {
-      return appointments.filter((item) =>
-        (item.fullname || item.username)
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase())
+    if (searchQuery !== "All") {
+      return appointments.filter(
+        (item) =>
+          item.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.appointment_date
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.appointment_time
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.type.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     return appointments;
@@ -188,6 +195,9 @@ const DoctorsAppointments = () => {
           cn='w-full h-13'
           icon={<img src={filter} alt='filter icon' />}
           options={appointmentOptions}
+          value={filterSelect}
+          changeFunction={handleFilterChange}
+          dropdownType='radio'
         />
       </div>
 

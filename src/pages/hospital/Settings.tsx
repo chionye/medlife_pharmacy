@@ -61,24 +61,24 @@ const AdminSettings = () => {
   const role = getConfigByRole();
   const settings = role ? SettingsItems[role] : [];
 
-    const queryParamsArray: QueryProps = useMemo(
-      () => [
-        {
-          id: "website",
-          url: "website/settings",
-          method: "post",
-          payload: { user_id: userData.id },
-        },
-      ],
-      []
-    );
+  const queryParamsArray: QueryProps = useMemo(
+    () => [
+      {
+        id: "website",
+        url: "website/settings",
+        method: "post",
+        payload: { user_id: userData.id },
+      },
+    ],
+    []
+  );
 
-    const { queries } = Query(queryParamsArray);
+  const { queries } = Query(queryParamsArray);
 
-    useEffect(() => {
-      console.log(queries[0].data);
-      if (queries[0].data) setWebsiteSettings(queries[0].data.data);
-    }, [queries]);
+  useEffect(() => {
+    console.log(queries[0].data);
+    if (queries[0].data) setWebsiteSettings(queries[0].data.data);
+  }, [queries]);
 
   return (
     <>
@@ -168,7 +168,7 @@ const AdminSettings = () => {
                       "Name",
                       toTitleCase(userData?.fullname),
                       "fullname",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -176,7 +176,7 @@ const AdminSettings = () => {
                       "Email",
                       userData?.email,
                       "email",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -184,7 +184,7 @@ const AdminSettings = () => {
                       "Gender",
                       toTitleCase(userData?.gender),
                       "email",
-                      "update_user",
+                      "user/updateany",
                       "select",
                       ["male", "female"]
                     )}
@@ -196,7 +196,7 @@ const AdminSettings = () => {
                       "Phone Number",
                       toTitleCase(userData.phone),
                       "phone",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -204,7 +204,7 @@ const AdminSettings = () => {
                       "Date of Birth",
                       toTitleCase(userData.dob),
                       "dob",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -212,7 +212,7 @@ const AdminSettings = () => {
                       "Password",
                       toTitleCase(userData.password),
                       "password",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                 </div>

@@ -4,12 +4,10 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  BarChart,
-  Bar,
   CartesianGrid,
-  Legend,
+  Line,
+  LineChart,
 } from "recharts";
-import { filterAndSortGraphData } from "@/services/helpers";
 import { WindowDimensions } from "@/hooks/windowDimensions";
 
 const Chart = ({
@@ -21,30 +19,27 @@ const Chart = ({
   xaxis: string;
   yaxis: string;
 }) => {
-  const filteredData = filterAndSortGraphData(data);
   const { width } = WindowDimensions();
-  const chartWidth = width > 500 ? width - 400 : width - 25;
+  const chartWidth =
+    width > 500 && width <= 1024
+      ? width / 2 - 200
+      : width > 1024
+      ? width / 2 - 210
+      : width - 25;
 
   return (
     <div>
-      <BarChart width={chartWidth} height={257} data={filteredData}>
-        <XAxis dataKey={xaxis} stroke='#8884d8' />
-        <YAxis dataKey={yaxis} />
-        <Tooltip wrapperStyle={{ width: 100, backgroundColor: "#ccc" }} />
-        <Legend
-          width={100}
-          wrapperStyle={{
-            top: 40,
-            right: 20,
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #d5d5d5",
-            borderRadius: 3,
-            lineHeight: "40px",
-          }}
-        />
+      <LineChart
+        width={chartWidth}
+        height={257}
+        data={data}
+        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+        <Line type='monotone' dataKey={yaxis} stroke='#8884d8' />
         <CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
-        <Bar dataKey='uv' fill='#8884d8' barSize={30} />
-      </BarChart>
+        <XAxis dataKey={xaxis} />
+        <YAxis />
+        <Tooltip />
+      </LineChart>
     </div>
   );
 };

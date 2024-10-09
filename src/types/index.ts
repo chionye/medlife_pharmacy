@@ -136,6 +136,7 @@ export interface WithdrawPropType {
 
 export interface RegisterPropType {
   username: string;
+  fullname: string;
   email: string;
   password: string;
   role: string;
@@ -372,3 +373,99 @@ export interface PrescriptionFormProps {
   start_date:string;
   note:string;
 }
+
+export type Transaction = {
+  id: number;
+  user_id: string;
+  status: string;
+  amount: string;
+  title: string;
+  description: string;
+  credited_to: string;
+  gateway: string;
+  reference: string;
+  type: string;
+  bank_name: string | null;
+  acc_number: string | null;
+  acc_name: string | null;
+  old_balance: string;
+  new_balance: string;
+  created_at: string;
+  updated_at: string;
+  username: string;
+};
+
+type UserDetails = {
+  id: number;
+  user_id: string;
+  fullname: string;
+  balance: number;
+  email: string;
+  username: string;
+  phone: string;
+  country_code: string;
+  country: string;
+  gender: string;
+  address: string;
+  specialization: string;
+  verification_code: string | null;
+  email_verified: number;
+  status: string;
+  role: string;
+  created_by: string;
+  rating: string;
+  dob: string;
+  consultation_amount: string;
+  role_id: string;
+  email_verified_at: string | null;
+  weight: string;
+  height: string;
+  blood_pressure: string;
+  glucose_level: string;
+  photo: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Rating = {
+  id: number;
+  rater: number;
+  ratee: number;
+  feedback: string;
+  overall_satisfaction: number;
+  communication: number;
+  knowledge: number;
+  bedside_manner: number;
+  appointment_cancellation: number;
+  no_show: number;
+  waiting_time: number;
+  adherence_to_treatment: number;
+  average: number;
+  created_at: string;
+  updated_at: string;
+  ratee_details: UserDetails;
+  rater_details: UserDetails;
+};
+
+export type Appointment = {
+  id: number;
+  doctor_id: string;
+  patient_id: string;
+  appointment_time: string;
+  appointment_date: string;
+  price: string;
+  title: string;
+  link: string;
+  type: string;
+  status: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  doctor: UserDetails;
+  patient: UserDetails;
+};
+
+export type MonthlyAppointmentSummary = {
+  month: string;
+  total: number;
+};

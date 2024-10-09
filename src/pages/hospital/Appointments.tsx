@@ -26,14 +26,16 @@ const AdminAppointments = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage] = useState<number>(10);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterSelect, setFilterSelect] = useState<string>("Patient");
   const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   const thead = useMemo(
     () => [
       "SN",
       "Name of Patients",
-      "Date and Time",
-      "Address",
+      "Date",
+      "Time",
+      "Appointment Link",
       "Appointment Type",
       "Appointment Details",
       "Status",
@@ -45,9 +47,10 @@ const AdminAppointments = () => {
   const keys = useMemo(
     () => [
       "SN",
-      "doctor.fullname",
-      "doctor.specialization",
+      "patient.fullname",
       "appointment_date",
+      "appointment_time",
+      "link",
       "type",
       "description",
       "status",
@@ -58,17 +61,11 @@ const AdminAppointments = () => {
 
   const appointmentOptions = useMemo(
     () => [
-      { label: "Successful Appointments" },
-      { label: "Cancelled/Missed Appointments" },
-      {
-        label: "Role",
-        items: [
-          { label: "Cardiologist" },
-          { label: "Psychiatrist" },
-          { label: "Dietician" },
-        ],
-      },
-      { label: "Next Week" },
+      { label: "All" },
+      { label: "Completed" },
+      { label: "Pending" },
+      { label: "Cancelled" },
+      { label: "Active" },
     ],
     []
   );
@@ -139,19 +136,48 @@ const AdminAppointments = () => {
     () => [
       {
         id: "appointments",
-        url: "appointment/list",
-        method: "post",
-        payload: { user_id: userData?.id },
+        url: `appointment/all/${userData?.id}`,
+        method: "get",
+        payload: null,
       },
     ],
     [userData?.id]
   );
 
+  const handleFilterChange = (selectedValue: string) => {
+    setFilterSelect(selectedValue);
+    setSearchQuery(selectedValue);
+  };
+
+  const filteredData = useMemo(() => {
+    if (searchQuery !== "All") {
+      return appointments.filter(
+        (item) =>
+          item.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.patient.fullname
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.doctor.fullname
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.appointment_date
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.appointment_time
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          item.type.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    return appointments;
+  }, [appointments, searchQuery]);
+
   const paginatedData = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return appointments.slice(start, end);
-  }, [currentPage, appointments, itemsPerPage]);
+    const start = (currentPage - 1) * itemsPerPage; // Starting index
+    const end = start + itemsPerPage; // Ending index
+    return filteredData.slice(start, end); // Slicing the filtered data
+  }, [currentPage, filteredData, itemsPerPage]);
 
   const { queries } = Query(queryParamsArray);
 
@@ -199,6 +225,9 @@ const AdminAppointments = () => {
           cn='w-full h-13'
           icon={<img src={filter} alt='filter icon' />}
           options={appointmentOptions}
+          value={filterSelect}
+          changeFunction={handleFilterChange}
+          dropdownType='radio'
         />
       </div>
 

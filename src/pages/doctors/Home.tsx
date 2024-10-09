@@ -108,7 +108,7 @@ function DoctorsHome() {
       </div>
 
       <div className='flex flex-col md:flex-row sm:px-0 md:px-8 sm:gap-5 md:gap-20 mt-5'>
-        <DoctorPatientSection doctors={doctors} title='Top Patients' link='/' />
+        <DoctorPatientSection doctors={doctors} title='Top Patients' link='/doctor/patients' />
         <Section>
           <AppointmentSection
             appointments={appointments}

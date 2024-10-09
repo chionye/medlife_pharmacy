@@ -64,7 +64,7 @@ const Settings = () => {
                   "Name",
                   toTitleCase(userData.fullname),
                   "fullname",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -72,7 +72,7 @@ const Settings = () => {
                   "Email",
                   toTitleCase(userData.email),
                   "email",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -80,7 +80,7 @@ const Settings = () => {
                   "Gender",
                   toTitleCase(userData.gender),
                   "email",
-                  "update_user",
+                  "user/updateany",
                   "select",
                   ["male", "female"]
                 )}
@@ -92,7 +92,7 @@ const Settings = () => {
                   "Phone Number",
                   toTitleCase(userData.phone),
                   "phone",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -100,7 +100,7 @@ const Settings = () => {
                   "Date of Birth",
                   toTitleCase(userData.dob),
                   "dob",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -108,7 +108,7 @@ const Settings = () => {
                   "Password",
                   toTitleCase(userData.password),
                   "password",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
             </div>

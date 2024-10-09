@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [formData, setFormData] = useState<RegisterPropType>({
     username: "",
+    fullname: "",
     email: "",
     password: "",
     role: "patient",
@@ -94,6 +95,16 @@ const Register = () => {
           name='email'
           value={formData.email}
           label='Email Address'
+          cn={"border border-[#000000] py-3 px-2"}
+          changeFunction={handleFormChange}
+        />
+      </div>
+      <div className='mt-5'>
+        <FormInput
+          type='text'
+          name='fullname'
+          label='Fullname'
+          value={formData.fullname}
           cn={"border border-[#000000] py-3 px-2"}
           changeFunction={handleFormChange}
         />

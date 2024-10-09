@@ -1,35 +1,8 @@
 /** @format */
 
-import { User } from "@/types";
+import { Appointment, MonthlyAppointmentSummary, Rating, Transaction, User } from "@/types";
 import { format, subDays } from "date-fns";
 import moment from "moment";
-
-export const filterAndSortGraphData = (data: any) => {
-  if (!data) {
-    return "";
-  }
-  console.log(data);
-  return data
-    .map((transaction: any) => ({
-      date: new Date(transaction.createdAt),
-      amount: transaction.amount,
-    }))
-    .sort((a: any, b: any) => a.date.getTime() - b.date.getTime())
-    .map((transaction: any, index: 0) => {
-      if (index == 0 || data.length - 1 == index) {
-        console.log(transaction);
-        return {
-          date: format(transaction.date, "MMM d yyyy"),
-          amount: transaction.amount,
-        };
-      }
-      if (index > 0 && index < data.length) {
-        return {
-          amount: transaction.amount,
-        };
-      }
-    });
-};
 
 export const getDateFormat = (
   dateString: string = "",
@@ -209,4 +182,122 @@ export const getTopPatientsAndDoctors = (appointments: any[]) => {
     .slice(0, 10); // Get top 10 doctors
 
   return { topPatients: sortedPatients, topDoctors: sortedDoctors };
+};
+
+// Helper function to parse and get the month/year from a date string
+export const getMonthYear = (dateString: string) => {
+  const date = new Date(dateString);
+  return {
+    month: date.getMonth(), // 0 for January, 11 for December
+    year: date.getFullYear(),
+  };
+};
+
+// Function to calculate total amount for a specific month
+export const getTotalForMonth = (
+  transactions: Transaction[],
+  month: number,
+  year: number
+): number => {
+  return transactions
+    .filter(
+      (t) =>
+        getMonthYear(t.created_at).month === month &&
+        getMonthYear(t.created_at).year === year
+    )
+    .reduce((total, t) => total + parseFloat(t.amount), 0);
+};
+
+// Function to calculate total amount for a specific year
+export const getTotalForYear = (
+  transactions: Transaction[],
+  year: number
+): number => {
+  return transactions
+    .filter((t) => getMonthYear(t.created_at).year === year)
+    .reduce((total, t) => total + parseFloat(t.amount), 0);
+};
+
+// Function to calculate the total amount for all time
+export const getTotalForAllTime = (transactions: Transaction[]): number => {
+  return transactions.reduce((total, t) => total + parseFloat(t.amount), 0);
+};
+
+// Function to get totals for all months in the current year
+export const getMonthlyTotalsForYear = (transactions: Transaction[], year: number): { month: string, total: number }[] => {
+  const monthsAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const monthlyTotals = Array.from({ length: 12 }, (_, i) => {
+    const total = getTotalForMonth(transactions, i, year);
+    return {
+      month: monthsAbbr[i],
+      total: total,
+    };
+  });
+
+  return monthlyTotals;
+};
+
+export const calculatePatientAverageRating = (ratings: Rating[], user: string): number => {
+  // Filter only the raters whose role is "patient"
+  const patientRaters = ratings.filter(
+    (rating) => rating.rater_details.role === user
+  );
+
+  // Sum up the ratings of all patient raters
+  const totalRating = patientRaters.reduce((sum, rating) => {
+    return sum + parseFloat(rating.rater_details.rating);
+  }, 0);
+
+  // Calculate the average
+  const averageRating =
+    patientRaters.length > 0 ? totalRating / patientRaters.length : 0;
+
+  return averageRating;
+};
+
+export const getMonthlyAppointmentSummary = (
+  appointments: Appointment[]
+): MonthlyAppointmentSummary[] => {
+  // Map to store appointment counts per month
+  const monthlySummary: { [key: string]: number } = {};
+
+  // Array to store month abbreviations
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Loop through each appointment
+  appointments.forEach((appointment) => {
+    const appointmentDate = new Date(appointment.appointment_date);
+    const monthIndex = appointmentDate.getUTCMonth(); // 0 = Jan, 11 = Dec
+    const month = monthNames[monthIndex]; // Get the month abbreviation
+
+    // Increment count for the month
+    if (monthlySummary[month]) {
+      monthlySummary[month]++;
+    } else {
+      monthlySummary[month] = 1;
+    }
+  });
+
+  // Convert the monthlySummary object into an array of objects
+  const result: MonthlyAppointmentSummary[] = Object.keys(monthlySummary).map(
+    (month) => ({
+      month,
+      total: monthlySummary[month],
+    })
+  );
+
+  return result;
 };

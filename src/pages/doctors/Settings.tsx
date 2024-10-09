@@ -84,7 +84,7 @@ const DoctorSettings = () => {
                       "Name",
                       toTitleCase(userData.fullname),
                       "fullname",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -92,7 +92,7 @@ const DoctorSettings = () => {
                       "Email",
                       toTitleCase(userData.email),
                       "email",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -100,7 +100,7 @@ const DoctorSettings = () => {
                       "Gender",
                       toTitleCase(userData.gender),
                       "email",
-                      "update_user",
+                      "user/updateany",
                       "select",
                       ["male", "female"]
                     )}
@@ -112,7 +112,7 @@ const DoctorSettings = () => {
                       "Phone Number",
                       toTitleCase(userData.phone),
                       "phone",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -120,7 +120,7 @@ const DoctorSettings = () => {
                       "Date of Birth",
                       toTitleCase(userData.dob),
                       "dob",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                   <div>
@@ -128,7 +128,7 @@ const DoctorSettings = () => {
                       "Password",
                       toTitleCase(userData.password),
                       "password",
-                      "update_user"
+                      "user/updateany"
                     )}
                   </div>
                 </div>
@@ -150,19 +150,19 @@ const DoctorSettings = () => {
                   "Specialty",
                   toTitleCase(userData?.specialization),
                   "specialization",
-                  "update_user"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Board certifications",
                   userData?.email,
                   "certifications",
-                  "update_user"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Years of experience",
                   toTitleCase(userData?.gender),
                   "experience",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
               <div>
@@ -170,19 +170,19 @@ const DoctorSettings = () => {
                   "Hospital/Clinic affiliation",
                   userData?.phone,
                   "clinic",
-                  "update_user"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Educational background",
                   userData?.dob,
                   "background",
-                  "update_user"
+                  "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Language Spoken",
                   "Change Language Spoken",
                   "language_spoken",
-                  "update_user"
+                  "user/updateany"
                 )}
               </div>
             </div>

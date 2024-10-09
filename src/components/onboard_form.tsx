@@ -12,6 +12,7 @@ import { UploadSingle } from "./upload";
 import checker from "@/assets/checker.svg";
 import { Plus } from "lucide-react";
 import { Badge } from "./ui/badge";
+
 const OnboardPatientForm = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
@@ -606,7 +607,6 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
   // Initial states
   const [certifications, setCertifications] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
-  const [specialization, setSpecialization] = useState<string[]>([]);
   const [formInput, setFormInput] = useState({
     certification: "",
     language: "",
@@ -622,17 +622,23 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
     role: "doctor",
     email: doctor.email || "",
     clinic_affiliation: doctor.clinic_affiliation,
+    specialization: doctor.specialization,
     years_of_experience: doctor.years_of_experience,
     dob: doctor.dob,
-    password: doctor.password,
     fullname: doctor.fullname,
-    country_code: doctor.country_code,
-    country: doctor.country,
+    country_code: doctor.country_code || "+234",
+    country: doctor.country || "Nigeria",
     gender: doctor.gender || "male",
     address: doctor.address,
     phone: doctor.phone,
     username: doctor.username,
-    photo: doctor.photo,
+    photo:
+      doctor.photo ||
+      `https://api.dicebear.com/7.x/initials/svg?seed=${
+        doctor.fullname || doctor.username
+      }`,
+    about: doctor.about || "",
+    user_id: doctor.id,
   });
 
   const { showNotifier, NotifierComponent } = useNotifier();
@@ -641,27 +647,67 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
   const handleFormSubmit = () => {
     const data = {
       method: "post",
-      url: `website/settings`,
+      url: `user/updateany`,
       content: {
         ...formData,
         certifications,
         languages,
-        specialization,
-        photo: userPhoto.photo,
       },
     };
-    console.log(data);
 
     mutation.mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
         if (data.status) {
-          showNotifier({
-            title: "Success",
-            text: "Doctor was successfully updated!",
-            status: "success",
+          const professionalData = {
+            method: "post",
+            url: `doctors/update_professional_details`,
+            content: {
+              certifications,
+              languages,
+              specialization: formData.specialization,
+              about: formData.about,
+              clinic_affiliation: formData.clinic_affiliation,
+              years_of_experience: formData.years_of_experience,
+              doctor_id: doctor.id,
+            },
+          };
+          mutation.mutate(professionalData, {
+            onSuccess: (professionalData) => {
+              if (professionalData.status) {
+                showNotifier({
+                  title: "Success",
+                  text: "Doctor's details were successfully updated!",
+                  status: "success",
+                });
+              } else if (
+                professionalData.error ||
+                professionalData.errors ||
+                professionalData.message
+              ) {
+                const errorMessage = professionalData.message
+                  ? professionalData.message
+                  : professionalData.error
+                  ? professionalData.error
+                  : Array.isArray(professionalData.errors)
+                  ? professionalData.errors.join("\n")
+                  : professionalData.errors;
+                showNotifier({
+                  title: "Error",
+                  text: errorMessage,
+                  status: "error",
+                });
+              }
+            },
+            onError: (error) => {
+              console.log("Error submitting data:", error);
+              showNotifier({
+                title: "Error",
+                text: "There was an error submitting your data. Please try again.",
+                status: "error",
+              });
+            },
           });
-        } else if (data.error || data.errors || data.message) {
+        } else {
           const errorMessage = data.message
             ? data.message
             : data.error
@@ -696,7 +742,7 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
 
   // Function to handle array input updates
   const handleAddArrayItem = (
-    field: "certification" | "language" | "specialization"
+    field: "certification" | "language"
   ) => {
     const inputValue = formInput[field];
     if (inputValue.trim() === "") return;
@@ -707,9 +753,6 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
         break;
       case "language":
         setLanguages([...languages, inputValue]);
-        break;
-      case "specialization":
-        setSpecialization([...specialization, inputValue]);
         break;
       default:
         break;
@@ -725,9 +768,6 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
         break;
       case "language":
         setLanguages(languages.filter((_, i) => i !== index));
-        break;
-      case "specialization":
-        setSpecialization(specialization.filter((_, i) => i !== index));
         break;
       default:
         break;
@@ -762,13 +802,13 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
             />
           </div>
           <div className='flex gap-2 mt-3'>
-            <FormInput
+            {/* <FormInput
               type='password'
               name='password'
               label='Password'
               value={formData.password}
               changeFunction={handleFormChange}
-            />
+            /> */}
             <FormInput
               type='text'
               name='phone'
@@ -814,8 +854,34 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
       <div className='mt-3'>
         <FormInput
           type='text'
+          name='address'
+          label='Address'
+          value={formData.address}
+          changeFunction={handleFormChange}
+        />
+      </div>
+      <div className='flex gap-2 mt-3'>
+        <FormTextArea
+          name='about'
+          label='about'
+          value={formData.about}
+          changeFunction={handleFormChange}
+        />
+      </div>
+      <div className='mt-3'>
+        <FormInput
+          type='text'
+          name='specialization'
+          label='Specialization'
+          value={formData.specialization}
+          changeFunction={handleFormChange}
+        />
+      </div>
+      <div className='mt-3'>
+        <FormInput
+          type='text'
           name='clinic_affiliation'
-          label='clinic_affiliation'
+          label='Clinic Affiliation'
           value={formData.clinic_affiliation}
           changeFunction={handleFormChange}
         />
@@ -888,41 +954,6 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
         </div>
       </div>
 
-      {/* Specialization */}
-      <div className='mt-4'>
-        <div className='flex gap-2 items-end'>
-          <FormInput
-            type='text'
-            name='specialization'
-            label='Specialization'
-            value={formInput.specialization}
-            changeFunction={(e) =>
-              setFormInput({ ...formInput, specialization: e.target.value })
-            }
-          />
-          <Button
-            onClick={() => handleAddArrayItem("specialization")}
-            className='mb-2'>
-            <Plus color='#ffffff' />
-          </Button>
-        </div>
-        <div className='mt-2 flex flex-wrap gap-2'>
-          {specialization.map((item, index) => (
-            <Badge variant='outline'>
-              <span key={index} className='flex gap-3'>
-                <span>{item}</span>
-                <span
-                  className='badge-remove'
-                  onClick={() =>
-                    handleRemoveArrayItem("specialization", index)
-                  }>
-                  x
-                </span>
-              </span>
-            </Badge>
-          ))}
-        </div>
-      </div>
       {/* Submit Button */}
       <Button
         className='bg-[#D20606] w-full mt-6 p-7'
@@ -934,7 +965,7 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
             Saving
           </>
         ) : (
-          "Onboard Doctor"
+          "Edit Doctor"
         )}
       </Button>
 

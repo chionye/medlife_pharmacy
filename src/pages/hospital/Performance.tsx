@@ -8,13 +8,15 @@ import { QueryProps } from "@/types";
 import Query from "@/api/query";
 import { getConfigByRole, getCookie } from "@/services/storage";
 import { CardWithButton } from "@/components/custom_cards";
-import { getTotalAddedThisMonthAndYear } from "@/services/helpers";
+import { calculatePatientAverageRating, getTotalAddedThisMonthAndYear } from "@/services/helpers";
 import { GreetingSection } from "@/components/section";
 
 const AdminPerformance = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
   const [patients, setPatients] = useState<any[]>([]);
+  const [ratings, setRatings] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   // const [filterSelect, setFilterSelect] = useState<string>("Patient");
   const [patientTotal, setPatientTotal] = useState<any>({
     thisYear: 0,
@@ -62,22 +64,29 @@ const AdminPerformance = () => {
         link: "/doctor/appointments",
         icon: add,
         secondaryIcon: pinned,
-        count: patients.length,
+        count: appointments.length,
         modal: true,
+      },
+      {
+        title: "Total Patients",
+        icon: add,
+        star: true,
+        secondaryIcon: task_done,
+        count: patients.length,
       },
       {
         title: "Patient satisfaction ratings",
         icon: add,
         star: true,
         secondaryIcon: task_done,
-        count: patientTotal.thisMonth,
+        count: calculatePatientAverageRating(ratings, "patient"),
       },
       {
         title: "Doctor performance metrics",
         icon: add,
         star: true,
         secondaryIcon: task_done,
-        count: patientTotal.thisMonth,
+        count: calculatePatientAverageRating(ratings, "doctor"),
       },
       {
         title: "Number of prescriptions issued",
@@ -86,7 +95,7 @@ const AdminPerformance = () => {
         count: patientTotal.thisYear,
       },
     ],
-    [patientTotal.thisMonth, patientTotal.thisYear, patients.length]
+    [appointments.length, patientTotal.thisYear, ratings]
   );
 
   const queryParamsArray: QueryProps = useMemo(
@@ -102,6 +111,12 @@ const AdminPerformance = () => {
         url: "ratings",
         method: "post",
         payload: { user_id: userData.id },
+      },
+      {
+        id: "appointments",
+        url: `appointment/all/${userData.id}`,
+        method: "get",
+        payload: null,
       },
     ],
     []
@@ -148,7 +163,13 @@ const AdminPerformance = () => {
         thisYear: totals.thisYear,
       }));
     }
-  }, []);
+    if (queries[1] && queries[1].data && queries[1].data.status) {
+      setRatings(queries[1].data.data || []);
+    }
+    if (queries[2] && queries[2].data && queries[2].data.status) {
+      setAppointments(queries[2].data.data || []);
+    }
+  }, [queries[0].isPending, queries[1].isPending, queries[2].isPending]);
 
   return (
     <>

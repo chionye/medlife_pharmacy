@@ -8,7 +8,7 @@ import { getDateFormat } from "@/services/helpers";
 const AppointmentHistory: React.FC<AppointmentHistoryPropType> = (data) => {
   return (
     <>
-      <div className='flex justify-start md:gap-32 gap-20 items-center p-5'>
+      <div className='flex justify-between md:gap-32 gap-20 items-center p-5'>
         <div className='flex justify-start items-center gap-2'>
           <img src={user} alt='user image' />
           <div className='flex flex-col gap-1'>

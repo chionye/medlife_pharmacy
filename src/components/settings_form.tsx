@@ -4,9 +4,10 @@ import { FormInput, FormSelect } from "./form_input";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import Mutation from "@/api/mutation";
-import { getCookie } from "@/services/storage";
+import { getCookie, setCookie } from "@/services/storage";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNotifier } from "@/hooks/useNotifier";
+import { useNavigate } from "react-router";
 
 const ChangeUserForm = ({
   fieldName,
@@ -22,6 +23,7 @@ const ChangeUserForm = ({
   options?: string[];
 }) => {
   const user = getCookie("@user");
+  const navigate = useNavigate();
   const userData = user ? JSON.parse(user) : null;
   const [formData, setFormData] = useState({
     [fieldName]: userData?.[fieldName] || "",
@@ -31,8 +33,7 @@ const ChangeUserForm = ({
   const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
-    const updateData = { ...userData, ...formData, user_id: userData.id };
-    console.log(updateData);
+    const updateData = { ...formData, user_id: userData.id };
     const data = {
       method: "post",
       url: apiUrl,
@@ -46,6 +47,10 @@ const ChangeUserForm = ({
             text: `Your ${fieldName} has been successfully updated!`,
             status: "success",
           });
+          if (apiUrl === "user/updateany") {
+            setCookie("@user", JSON.stringify(data.data), 1);
+          }
+          navigate(0);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message
@@ -78,7 +83,7 @@ const ChangeUserForm = ({
       ...formData,
       [target.name]: target.value,
     });
-  };
+  }
 
   return (
     <div className='mt-10 w-full'>

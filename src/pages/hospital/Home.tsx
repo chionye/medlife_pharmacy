@@ -1,7 +1,7 @@
 /** @format */
 import { useEffect, useMemo, useState } from "react";
 import { getConfigByRole, getCookie } from "@/services/storage";
-import { toTitleCase } from "@/services/helpers";
+import { getMonthlyAppointmentSummary, getMonthlyTotalsForYear, getTopPatientsAndDoctors, getTotalForAllTime, toTitleCase } from "@/services/helpers";
 import Query from "@/api/query";
 import { QueryProps, TopDoctorsPropType } from "@/types";
 
@@ -17,14 +17,15 @@ import Chart from "@/components/chart";
 function AdminHome() {
   const user = JSON.parse(getCookie("@user") || "{}");
   const [patient, setPatient] = useState<any>([]);
+  const [appointments, setAppointments] = useState<any>([]);
   const [doctor, setDoctor] = useState<TopDoctorsPropType[]>([]);
   const [transactions, setTransactions] = useState<any>([]);
-  // const [topPatients, setTopPatients] = useState<
-  //   { name: string; count: number }[]
-  // >([]);
-  // const [topDoctors, setTopDoctors] = useState<
-  //   { name: string; count: number }[]
-  // >([]);
+  const [topPatients, setTopPatients] = useState<
+    { name: string; count: number }[]
+  >([]);
+  const [topDoctors, setTopDoctors] = useState<
+    { name: string; count: number }[]
+  >([]);
   const role = getConfigByRole();
 
   const cardValue = useMemo(
@@ -50,15 +51,17 @@ function AdminHome() {
         modal: true,
       },
       {
-        title: "Daily Transaction",
+        title: "Total Transactions",
         icon: add,
         secondaryIcon: pin,
-        count: "0",
-        buttonText: "Total Commission : #43,230",
+        count: transactions.length,
+        buttonText: `Total Commission: ₦${getTotalForAllTime(
+          transactions
+        ).toLocaleString()}`,
         link: "/doctor/appointments",
       },
     ],
-    [doctor.length, patient.length]
+    [doctor.length, patient.length, transactions]
   );
 
   const queryParamsArray: QueryProps = useMemo(
@@ -77,15 +80,15 @@ function AdminHome() {
       },
       {
         id: "transaction",
-        url: `user/transactions/${user.id}`,
+        url: `transactions/all/${user.id}`,
         method: "get",
         payload: null,
       },
       {
         id: "appointments",
-        url: "appointment/list",
-        method: "post",
-        payload: { user_id: user?.id },
+        url: `appointment/all/${user.id}`,
+        method: "get",
+        payload: null,
       },
     ],
     []
@@ -115,25 +118,29 @@ function AdminHome() {
     if (
       queries[2] &&
       queries[2].data &&
-      queries[2].data[0] &&
-      queries[2].data[0].status
+      queries[2].data &&
+      queries[2].data.status
     ) {
-      console.log(queries[2].data);
-      setTransactions(queries[2].data[0].data || []);
+      setTransactions(queries[2].data.data || []);
     }
     if (
       queries[3] &&
       queries[3].data &&
-      queries[3].data[0] &&
-      queries[3].data[0].status
+      queries[3].data &&
+      queries[3].data.status
     ) {
-      console.log(queries[3].data, transactions);
+      const { topPatients, topDoctors } = getTopPatientsAndDoctors(
+        queries[3].data.data
+      );
+      setAppointments(queries[3].data.data);
+      setTopPatients(topPatients);
+      setTopDoctors(topDoctors);
     }
   }, [
     queries[0].isPending,
     queries[1].isPending,
     queries[2].isPending,
-    queries[2].isPending,
+    queries[3].isPending,
   ]);
 
   return (
@@ -151,6 +158,7 @@ function AdminHome() {
               <CardWithButton key={index} {...item} />
             ))}
           </div>
+          {/* &8358; */}
         </div>
       </div>
 
@@ -159,31 +167,42 @@ function AdminHome() {
           <TitleBar title={"Transactions"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} xaxis={"newUsers"} yaxis={"month"} />
+            <Chart
+              data={getMonthlyTotalsForYear(
+                transactions,
+                new Date().getFullYear()
+              )}
+              xaxis={"month"}
+              yaxis={"total"}
+            />
           </Card>
         </div>
         <div>
           <TitleBar title={"Top Patient"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} xaxis={"name"} yaxis={"count"} />
+            <Chart data={topPatients} xaxis={"name"} yaxis={"count"} />
           </Card>
         </div>
         <div>
           <TitleBar title={"Top Physician"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>
-            <Chart data={undefined} xaxis={"name"} yaxis={"count"} />
-          </Card>
-        </div>
-        {/* <div>
-          <TitleBar title={"Medication"} link={"/admin/home"} />
-          <Divider className='mt-5' />
-          <Card className='mt-5'>
-            <Chart data={undefined} xaxis={"name"} />
+            <Chart data={topDoctors} xaxis={"name"} yaxis={"count"} />
           </Card>
         </div>
         <div>
+          <TitleBar title={"Appointments"} />
+          <Divider className='mt-5' />
+          <Card className='mt-5'>
+            <Chart
+              data={getMonthlyAppointmentSummary(appointments)}
+              xaxis={"month"}
+              yaxis={"total"}
+            />
+          </Card>
+        </div>
+        {/*  <div>
           <TitleBar title={"Top Patients Category"} link={"/admin/home"} />
           <Divider className='mt-5' />
           <Card className='mt-5'>

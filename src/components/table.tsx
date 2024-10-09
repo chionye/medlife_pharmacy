@@ -253,8 +253,8 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                                     </div>
                                   ),
                                 },
-                                { label: "Activate Physician" },
-                                { label: "Deactivate Physician" },
+                                // { label: "Activate Physician" },
+                                // { label: "Deactivate Physician" },
                               ]}
                             />
                           </div>

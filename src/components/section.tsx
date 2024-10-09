@@ -136,9 +136,9 @@ export const AppointmentSection = ({
               <Card>
                 <AppointmentHistory key={index} {...appointment} />
                 {buttons && (
-                  <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
+                  <div className='flex justify-between text-center items-center gap-2 pb-4 md:px-4 px-2'>
                     <button
-                      className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                      className='border border-[#D9D9D9] w-full text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("cancel", appointment.id)
                       }>
@@ -152,7 +152,7 @@ export const AppointmentSection = ({
                       )}
                     </button>
                     <button
-                      className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
+                      className='bg-[#4BB543] w-full text-white text-[11px] md:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("approve", appointment.id)
                       }>
@@ -169,7 +169,7 @@ export const AppointmentSection = ({
                       title={"Reschedule Appointment"}
                       label='Reschedule'
                       cn={
-                        "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
+                        "bg-[#D20606] text-white w-full text-[11px] md:px-14 px-8 py-[11px]"
                       }>
                       <div className='flex justify-center items-center'>
                         <RescheduleAppointmentForm appointment={appointment} />
@@ -224,11 +224,7 @@ export const AppointmentSection = ({
                   </div>
                 )}
               </Card>
-            ) : (
-              <p className='text-xs text-[#073131] font-semibold'>
-                No Appointments requests yet
-              </p>
-            );
+            ) : null;
           })
         ) : (
           <p className='text-xs text-[#073131] font-semibold'>

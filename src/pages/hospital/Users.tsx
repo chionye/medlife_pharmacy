@@ -17,7 +17,6 @@ import add from "@/assets/add.svg";
 import pin from "@/assets/pin.svg";
 
 const Users = () => {
-  // const user = JSON.parse(getCookie("@user") || "{}");
   const [patient, setPatient] = useState<any[]>([]);
   const [filterSelect, setFilterSelect] = useState<string>("Patient");
   const [searchQuery, setSearchQuery] = useState<string>("");

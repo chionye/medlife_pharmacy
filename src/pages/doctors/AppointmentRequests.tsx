@@ -44,6 +44,7 @@ const AppointmentRequests = () => {
           appointments={appointments}
           title='Appointment Request'
           buttons={true}
+          cn={"w-full"}
           appointmentRequest={true}
         />
       </div>

@@ -38,7 +38,11 @@ const Register = () => {
 
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "create_user", formData);
+      const registerData = {
+        ...formData,
+        photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
+      };
+      const data = await sendRequest("post", "create_user", registerData);
       if (data.status) {
         setCookie("@user", JSON.stringify(data.data), 1);
         setCookie("@token", JSON.stringify(data.token), 1);

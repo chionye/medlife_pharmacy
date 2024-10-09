@@ -140,6 +140,7 @@ export interface RegisterPropType {
   email: string;
   password: string;
   role: string;
+  photo?: string;
 }
 
 export interface ResetPasswordPropType {

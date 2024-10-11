@@ -3,10 +3,14 @@
 import calendar from "@/assets/calendar.svg";
 import clock from "@/assets/clock.svg";
 import user from "@/assets/user.svg";
-import { AppointmentHistoryPropType } from "@/types";
+// import { AppointmentHistoryPropType } from "@/types";
 import { getDateFormat } from "@/services/helpers";
+import { getConfigByRole } from "@/services/storage";
 
-const AppointmentHistory: React.FC<AppointmentHistoryPropType> = (data) => {
+const AppointmentHistory: React.FC<any> = (data) => {
+
+  const role = getConfigByRole();
+  const key = role === "doctor" ? "patient" : "doctor" ;
   return (
     <>
       <div className='flex justify-between lg:gap-32 gap-20 items-center p-5'>
@@ -14,11 +18,17 @@ const AppointmentHistory: React.FC<AppointmentHistoryPropType> = (data) => {
           <img src={user} alt='user image' />
           <div className='flex flex-col gap-1'>
             <p className='text-xs text-[#073131] font-semibold text-nowrap'>
-              {data.doctor.fullname || data.doctor.username}
+              {data[key].fullname || data[key].username}
             </p>
-            <p className='text-xs text-[#073131] font-normal'>
-              {data.doctor.specialization || "Physician"}
-            </p>
+            {key === "doctor" ? (
+              <p className='text-xs text-[#073131] font-normal'>
+                {data[key].specialization || "Physician"}
+              </p>
+            ) : (
+              <p className='text-xs text-[#073131] font-normal'>
+                {data.type}
+              </p>
+            )}
           </div>
         </div>
         <div className='flex flex-col gap-2'>

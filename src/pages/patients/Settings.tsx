@@ -57,7 +57,7 @@ const Settings = () => {
             defaultPhoto={userPhoto.photo}
             updatePhotoFunction={setUserPhoto}
           />
-          <div className='flex justify-between items-center mt-10 md:w-4/5 w-full'>
+          <div className='flex justify-between items-start md:mt-0 mt-5 md:w-3/5 w-full'>
             <div>
               <div>
                 {RenderUserInfo(
@@ -69,20 +69,20 @@ const Settings = () => {
               </div>
               <div>
                 {RenderUserInfo(
-                  "Email",
-                  toTitleCase(userData.email),
-                  "email",
-                  "user/updateany"
-                )}
-              </div>
-              <div>
-                {RenderUserInfo(
                   "Gender",
                   toTitleCase(userData.gender),
                   "gender",
                   "user/updateany",
                   "select",
                   ["male", "female"]
+                )}
+              </div>
+              <div>
+                {RenderUserInfo(
+                  "Email",
+                  toTitleCase(userData.email),
+                  "email",
+                  "user/updateany"
                 )}
               </div>
             </div>

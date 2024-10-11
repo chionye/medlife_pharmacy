@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import useAxiosRequest from "@/hooks/useAxiosRequest";
+import { useNotifier } from "@/hooks/useNotifier";
 import { setCookie } from "@/services/storage";
 import { RegisterPropType } from "@/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -23,8 +24,9 @@ const Register = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
+  const { showNotifier, NotifierComponent } = useNotifier();
 
-  const roles: string[] = ["patient", "doctor", "hospital"];
+  const roles: string[] = ["patient", "doctor"];
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -42,37 +44,84 @@ const Register = () => {
         ...formData,
         photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
       };
-      const data = await sendRequest("post", "create_user", registerData);
-      if (data.status) {
-        setCookie("@user", JSON.stringify(data.data), 1);
-        setCookie("@token", JSON.stringify(data.token), 1);
-        toast({
-          title: "Success",
-          description: data.message,
-          action: <ToastAction altText='done'>done</ToastAction>,
+      if (formData.role === "doctor") {
+        showNotifier({
+          title: "SIGNING UP AS A DOCTOR?",
+          text: "To ensure seamless integration of your practice, a one-time fee of #30,000 is required for every six-month period. This fee covers the cost of platform integration, maintenance, and support.",
+          status: "error",
+          button: true,
+          auth:true,
+          confirmText: "Continue",
+          cancelText: "Cancel",
+          confirmFunction: async () => {
+            const data = await sendRequest("post", "create_user", registerData);
+            if (data.status) {
+              setCookie("@user", JSON.stringify(data.data), 1);
+              setCookie("@token", JSON.stringify(data.token), 1);
+              toast({
+                title: "Success",
+                description: data.message,
+                action: <ToastAction altText='done'>done</ToastAction>,
+              });
+              if (data.data.role === "patient") {
+                navigate("/patient/home");
+              } else if (data.data.role === "doctor") {
+                navigate("/doctor/home");
+              } else if (data.data.role === "hospital") {
+                navigate("/hospital/home");
+              }
+            } else {
+              if (data.errors.length > 0) {
+                data.errors.forEach((err: string) => {
+                  toast({
+                    title: "Sorry",
+                    description: err,
+                    action: <ToastAction altText='done'>done</ToastAction>,
+                  });
+                });
+              } else {
+                toast({
+                  title: "Sorry",
+                  description: data.message,
+                  action: <ToastAction altText='done'>done</ToastAction>,
+                });
+              }
+            }
+          },
         });
-        if (data.data.role === "patient") {
-          navigate("/patient/home");
-        } else if (data.data.role === "doctor") {
-          navigate("/doctor/home");
-        } else if (data.data.role === "hospital") {
-          navigate("/hospital/home");
-        }
       } else {
-        if (data.errors.length > 0) {
-          data.errors.forEach((err: string) => {
-            toast({
-              title: "Sorry",
-              description: err,
-              action: <ToastAction altText='done'>done</ToastAction>,
-            });
-          });
-        } else {
+        const data = await sendRequest("post", "create_user", registerData);
+        if (data.status) {
+          setCookie("@user", JSON.stringify(data.data), 1);
+          setCookie("@token", JSON.stringify(data.token), 1);
           toast({
-            title: "Sorry",
+            title: "Success",
             description: data.message,
             action: <ToastAction altText='done'>done</ToastAction>,
           });
+          if (data.data.role === "patient") {
+            navigate("/patient/home");
+          } else if (data.data.role === "doctor") {
+            navigate("/doctor/home");
+          } else if (data.data.role === "hospital") {
+            navigate("/hospital/home");
+          }
+        } else {
+          if (data.errors.length > 0) {
+            data.errors.forEach((err: string) => {
+              toast({
+                title: "Sorry",
+                description: err,
+                action: <ToastAction altText='done'>done</ToastAction>,
+              });
+            });
+          } else {
+            toast({
+              title: "Sorry",
+              description: data.message,
+              action: <ToastAction altText='done'>done</ToastAction>,
+            });
+          }
         }
       }
     } catch (error: any) {
@@ -147,6 +196,7 @@ const Register = () => {
             "Sign Up"
           )}
         </Button>
+        {NotifierComponent}
       </div>
     </div>
   );

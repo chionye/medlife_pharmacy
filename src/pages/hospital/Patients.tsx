@@ -104,16 +104,6 @@ const AdminPatients = () => {
 
   const filterOptions = useMemo(() => [{ label: "Patient" }], []);
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   const handleFilterChange = (selectedValue: string) => {
     setFilterSelect(selectedValue);
   };
@@ -148,7 +138,7 @@ const AdminPatients = () => {
   return (
     <>
       {/* Header */}
-      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
+      <GreetingSection role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>

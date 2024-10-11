@@ -70,16 +70,6 @@ const AdminAppointments = () => {
     []
   );
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   // Function to count appointments based on their status
   const countAppointmentsByStatus = (appointments: any[], status: string) => {
     return appointments.filter((appointment) => appointment.status === status)
@@ -129,7 +119,13 @@ const AdminAppointments = () => {
         count: canceledCount,
       },
     ],
-    [activeCount, appointments.length, canceledCount, completedCount, pendingCount]
+    [
+      activeCount,
+      appointments.length,
+      canceledCount,
+      completedCount,
+      pendingCount,
+    ]
   );
 
   const queryParamsArray: QueryProps = useMemo(
@@ -190,7 +186,7 @@ const AdminAppointments = () => {
   return (
     <>
       {/* Header */}
-      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
+      <GreetingSection role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>

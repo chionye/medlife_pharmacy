@@ -1,3 +1,4 @@
+/** @format */
 
 import { useLocation } from "react-router-dom";
 import profile from "@/assets/profile.svg";
@@ -42,11 +43,13 @@ const Header = () => {
                 ? toTitleCase(userData.fullname || userData.username)
                 : "Guest"}
             </span>
-            <img
-              className='bg-center bg-cover bg-no-repeat rounded-full inline-block h-12 w-12 ml-2'
-              src={userData?.photo || profile}
-              alt='avatar'
-            />
+            <div className='rounded-full h-12 w-12 ml-2'>
+              <img
+                className='bg-center bg-cover bg-no-repeat inline-block h-12 w-12'
+                src={userData?.photo || profile}
+                alt='avatar'
+              />
+            </div>
           </div>
         </div>
       </div>

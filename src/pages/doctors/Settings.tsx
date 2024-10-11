@@ -144,7 +144,7 @@ const DoctorSettings = () => {
             <p className='text-[#00C2C2] text-[16px] font-semibold mt-10'>
               Professional Details
             </p>
-            <div className='flex justify-between items-center mt-10'>
+            <div className='flex justify-between items-start mt-10'>
               <div>
                 {RenderUserInfo(
                   "Specialty",
@@ -154,34 +154,28 @@ const DoctorSettings = () => {
                 )}
                 {RenderUserInfo(
                   "Board certifications",
-                  userData?.email,
+                  userData?.certifications,
                   "certifications",
                   "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Years of experience",
-                  toTitleCase(userData?.gender),
-                  "experience",
+                  toTitleCase(userData?.years_of_experience),
+                  "years_of_experience",
                   "user/updateany"
                 )}
               </div>
               <div>
                 {RenderUserInfo(
                   "Hospital/Clinic affiliation",
-                  userData?.phone,
-                  "clinic",
-                  "user/updateany"
-                )}
-                {RenderUserInfo(
-                  "Educational background",
-                  userData?.dob,
-                  "background",
+                  userData?.clinic_affiliation,
+                  "clinic_affiliation",
                   "user/updateany"
                 )}
                 {RenderUserInfo(
                   "Language Spoken",
                   "Change Language Spoken",
-                  "language_spoken",
+                  "languages",
                   "user/updateany"
                 )}
               </div>

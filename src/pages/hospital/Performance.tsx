@@ -8,7 +8,10 @@ import { QueryProps } from "@/types";
 import Query from "@/api/query";
 import { getConfigByRole, getCookie } from "@/services/storage";
 import { CardWithButton } from "@/components/custom_cards";
-import { calculatePatientAverageRating, getTotalAddedThisMonthAndYear } from "@/services/helpers";
+import {
+  calculatePatientAverageRating,
+  getTotalAddedThisMonthAndYear,
+} from "@/services/helpers";
 import { GreetingSection } from "@/components/section";
 
 const AdminPerformance = () => {
@@ -124,16 +127,6 @@ const AdminPerformance = () => {
 
   // const filterOptions = useMemo(() => [{ label: "Patient" }], []);
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   // const handleFilterChange = (selectedValue: string) => {
   //   setFilterSelect(selectedValue);
   // };
@@ -174,7 +167,7 @@ const AdminPerformance = () => {
   return (
     <>
       {/* Header */}
-      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
+      <GreetingSection role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>

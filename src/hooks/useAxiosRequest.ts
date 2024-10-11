@@ -1,4 +1,3 @@
-/** @format */
 
 import { useState } from "react";
 import axios, { Method } from "axios";

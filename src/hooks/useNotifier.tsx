@@ -1,4 +1,3 @@
-/** @format */
 
 import { useState, useCallback } from "react";
 import Notifier from "@/components/notifier";
@@ -27,6 +26,7 @@ export const useNotifier = () => {
       text={notifierProps.text}
       status={notifierProps.status}
       button={notifierProps?.button}
+      auth={notifierProps?.auth}
       confirmText={notifierProps?.confirmText}
       cancelText={notifierProps?.cancelText}
       isModalOpen={isModalOpen}

@@ -42,6 +42,7 @@ import VideoCall from "@/pages/call/Call";
 import AppointmentRequests from "@/pages/doctors/AppointmentRequests";
 import DoctorMedication from "@/pages/doctors/Medication";
 import AdminMedication from "@/pages/hospital/Medication";
+import Subscribe from "@/pages/patients/Subscribe";
 
 const Routes = [
   {
@@ -113,6 +114,10 @@ const Routes = [
       {
         path: "/patient/wallet/transactions",
         element: <Transactions />,
+      },
+      {
+        path: "/patient/wallet/subscribe",
+        element: <Subscribe />,
       },
       {
         path: "/patient/medication",

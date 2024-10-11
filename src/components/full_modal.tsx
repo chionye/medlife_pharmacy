@@ -52,9 +52,11 @@ const FullModal: React.FC<FullModalPropType> = ({
           <ModalHeader>&nbsp;</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className='py-4 border-[#00C2C2] border bg-[#F3FCFC] flex items-center px-2'>
-              <p className='font-normal text-sm'>{title}</p>
-            </div>
+            {title && (
+              <div className='py-4 border-[#00C2C2] border bg-[#F3FCFC] flex items-center px-2'>
+                <p className='font-normal text-sm'>{title}</p>
+              </div>
+            )}
             {children}
           </ModalBody>
           {footer ? (

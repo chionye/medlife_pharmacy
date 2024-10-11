@@ -71,16 +71,6 @@ const DoctorsAppointments = () => {
     []
   );
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   const cardValue = useMemo(
     () => [
       {
@@ -88,6 +78,8 @@ const DoctorsAppointments = () => {
         buttonText: "Create Appointment",
         link: "/doctor/appointments",
         icon: add,
+        modal: true,
+        type: "doctor_appointment",
         secondaryIcon: pinned,
         count: appointments.length,
       },
@@ -95,13 +87,6 @@ const DoctorsAppointments = () => {
         title: "No of Appointments",
         icon: add,
         subtitle: "This Month",
-        secondaryIcon: task_done,
-        count: appointments.length,
-      },
-      {
-        title: "No of Appointments",
-        icon: add,
-        subtitle: "This Year",
         secondaryIcon: task_done,
         count: appointments.length,
       },
@@ -161,11 +146,11 @@ const DoctorsAppointments = () => {
   return (
     <>
       {/* Header */}
-      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
+      <GreetingSection role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='grid md:grid-flow-col gap-2'>
+        <div className='grid md:grid-flow-col gap-2 md:w-2/3'>
           {cardValue.map((item: any) => (
             <CardWithButton
               title={item.title ? item.title : ""}
@@ -174,6 +159,8 @@ const DoctorsAppointments = () => {
               icon={item.icon ? item.icon : ""}
               secondaryIcon={item.secondaryIcon ? item.secondaryIcon : ""}
               count={item.count ? item.count : "0"}
+              modal={item.modal && item.modal}
+              type={item.type ? item.type : ""}
             />
           ))}
         </div>

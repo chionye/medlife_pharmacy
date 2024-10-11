@@ -4,10 +4,11 @@ import { useState } from "react";
 import { FormInput, FormSelect } from "./form_input";
 import { Button } from "./ui/button";
 import { FundingPropType } from "@/types";
-import { getCookie } from "@/services/storage";
+import { getCookie, setCookie } from "@/services/storage";
 import { useNotifier } from "@/hooks/useNotifier";
 import { PaystackButton } from "react-paystack";
 import Mutation from "@/api/mutation";
+import { useNavigate } from "react-router-dom";
 
 const FundingForm = () => {
   const payment_method: string[] = [
@@ -20,6 +21,7 @@ const FundingForm = () => {
   const { showNotifier, NotifierComponent } = useNotifier();
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FundingPropType>({
     amount: "",
     user_id: userData.id,
@@ -39,13 +41,15 @@ const FundingForm = () => {
     };
     mutation.mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
         if (data.status) {
           showNotifier({
             title: "TRANSACTION SUCCESS",
             text: "",
             status: "success",
           });
+          const newData = { ...userData, balance: data.data.new_balance };
+          setCookie("@user", JSON.stringify(newData), 1);
+          navigate(0);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message
@@ -124,15 +128,30 @@ const FundingForm = () => {
           changeFunction={handleFormChange}
         />
       </div>
-      <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
-        disabled={formData.gateway === "Select Payment Method"}>
-        {formData.gateway === "Credit Card" ? (
-          <PaystackButton {...componentProps} />
-        ) : (
-          <>Pay Now</>
-        )}
-      </Button>
+      {parseFloat(formData.amount) < 1000 ? (
+        <Button
+          className='bg-[#D20606] w-full mt-6 p-7'
+          disabled={formData.gateway === "Select Payment Method"}
+          onClick={() =>
+            showNotifier({
+              title: "Error",
+              text: "Amount must be 1000 and above",
+              status: "error",
+            })
+          }>
+          Pay Now
+        </Button>
+      ) : (
+        <Button
+          className='bg-[#D20606] w-full mt-6 p-7'
+          disabled={formData.gateway === "Select Payment Method"}>
+          {formData.gateway === "Credit Card" ? (
+            <PaystackButton {...componentProps} />
+          ) : (
+            <>Pay Now</>
+          )}
+        </Button>
+      )}
       {NotifierComponent}
     </div>
   );

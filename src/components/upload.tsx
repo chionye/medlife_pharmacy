@@ -7,6 +7,12 @@ import edit from "@/assets/edit.svg";
 import upload from "@/assets/upload.svg";
 import MyContext from "@/context/context";
 import { ContextValue, UploadPropType } from "@/types";
+import { useNotifier } from "@/hooks/useNotifier";
+import Mutation from "@/api/mutation";
+import { getCookie, setCookie } from "@/services/storage";
+import { Button } from "./ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 
 const Upload: React.FC<UploadPropType> = ({
   uploadType = "default",
@@ -127,30 +133,103 @@ const Upload: React.FC<UploadPropType> = ({
 };
 
 export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
+  const user = getCookie("@user");
+  const userData = user ? JSON.parse(user) : null;
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const navigate = useNavigate();
+
   const handleEditImageClick = () => {
     document.getElementById("file-input")?.click();
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
-    if (e.target.files && e.target.files[0]) {
+    // Check if files exist and if the first file is available
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
       const reader = new FileReader();
+
+      console.log(file);
+      setSelectedFile(file);
+
       reader.onload = () => {
+        setImageUrl(file.name || null);
         updatePhotoFunction((prevData: any) => ({
           ...prevData,
           photo: reader.result as string,
         }));
       };
-      reader.readAsDataURL(e.target.files[0]);
+
+      reader.readAsDataURL(file);
     }
   };
+
+  const { showNotifier, NotifierComponent } = useNotifier();
+  const { mutation } = Mutation();
+
+  const handleFormSubmit = () => {
+    if (!selectedFile || !userData) {
+      showNotifier({
+        title: "Error",
+        text: "Please select a file and make sure user data is available.",
+        status: "error",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", selectedFile); // Append the file to the FormData
+    formData.append("id", userData.id); // Append the user ID
+
+    const data = {
+      method: "post",
+      url: "user/updatephoto",
+      content: formData, // Pass the formData as content
+    };
+
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: `Image has been successfully updated!`,
+            status: "success",
+          });
+          const updatedData = {
+            ...userData,
+            photo: ` https://api.medlifelink.life/images/profiles/${data.data.photo}`,
+          };
+          setCookie("@user", JSON.stringify(updatedData), 1);
+          navigate(0);
+        } else {
+          const errorMessage =
+            data.message ||
+            data.error ||
+            data.errors?.join("\n") ||
+            data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Error submitting data:", error);
+        showNotifier({
+          title: "Error",
+          text: "There was an error submitting your data. Please try again.",
+          status: "error",
+        });
+      },
+    });
+  };
+
   return (
     <div className='flex flex-col items-center gap-3'>
-      <img
-        src={defaultPhoto}
-        alt='user'
-        className='rounded-full w-[170px]'
-      />
+      <div className='w-[170px] h-[170px] rounded-full overflow-hidden'>
+        <img src={defaultPhoto} alt='user' className='rounded-full' />
+      </div>
       <input
         type='file'
         id='file-input'
@@ -162,6 +241,21 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
         <span className='text-[#00C2C2] text-xl'>Edit</span>
         <img src={edit} alt='edit image' />
       </button>
+      {imageUrl && (
+        <Button
+          className='bg-[#D20606] text-white py-2 px-4 rounded-lg mt-3'
+          onClick={handleFormSubmit}>
+          {mutation.isPending ? (
+            <>
+              <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+              Saving
+            </>
+          ) : (
+            "Upload Image"
+          )}
+        </Button>
+      )}
+      {NotifierComponent}
     </div>
   );
 };

@@ -88,16 +88,6 @@ const DoctorNotifications = () => {
     []
   );
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   const { queries } = Query(queryParamsArray);
 
   useEffect(() => {
@@ -117,7 +107,7 @@ const DoctorNotifications = () => {
   return (
     <>
       {/* Header */}
-      <GreetingSection timeOptions={timeOptions} role={role} dropdown={true} />
+      <GreetingSection role={role} dropdown={true} />
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>

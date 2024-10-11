@@ -17,9 +17,6 @@ const OnboardPatientForm = () => {
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
   const [allergies, setAllergies] = useState<string[]>([""]);
-  const [userPhoto, setUserPhoto] = useState<Record<string, string | null>>({
-    photo: userData?.photo || checker,
-  });
 
   const [formData, setFormData] = useState<OnboardPatientPropType>({
     doctor_id: userData.id.toString(),
@@ -44,17 +41,23 @@ const OnboardPatientForm = () => {
   const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
+    const username = formData.email.split("@");
     const data = {
       method: "post",
       url: `doctor/create_patient`,
-      content: { ...formData, allergies, photo: userPhoto.photo },
+      content: {
+        ...formData,
+        username: username[0],
+        password: username[0],
+        allergies,
+        photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
+      },
     };
 
     console.log(data);
 
     mutation.mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
         if (data.status) {
           showNotifier({
             title: "Success",
@@ -131,12 +134,6 @@ const OnboardPatientForm = () => {
   return (
     <div className='mt-10 w-full'>
       <div className='flex justify-start items-center gap-1'>
-        <div>
-          <UploadSingle
-            defaultPhoto={userPhoto.photo}
-            updatePhotoFunction={setUserPhoto}
-          />
-        </div>
         <div className='w-full'>
           <div className='flex gap-2'>
             <FormInput
@@ -156,13 +153,6 @@ const OnboardPatientForm = () => {
           </div>
           <div className='flex gap-2 mt-3'>
             <FormInput
-              type='password'
-              name='password'
-              label='Password'
-              value={formData.password}
-              changeFunction={handleFormChange}
-            />
-            <FormInput
               type='text'
               name='phone'
               label='Phone number'
@@ -171,13 +161,6 @@ const OnboardPatientForm = () => {
             />
           </div>
           <div className='flex gap-2 mt-3'>
-            <FormInput
-              type='text'
-              name='username'
-              label='Username'
-              value={formData.username}
-              changeFunction={handleFormChange}
-            />
             <FormSelect
               options={["male", "female"]}
               name='gender'
@@ -270,10 +253,6 @@ const OnboardDoctorForm = () => {
     specialization: "",
   });
 
-  const [userPhoto, setUserPhoto] = useState<Record<string, string | null>>({
-    photo: userData?.photo || "",
-  });
-
   const [formData, setFormData] = useState({
     admin_id: userData.id,
     role: "doctor",
@@ -296,6 +275,7 @@ const OnboardDoctorForm = () => {
   const { mutation } = Mutation();
 
   const handleFormSubmit = () => {
+    const username = formData.email.split("@");
     const data = {
       method: "post",
       url: `website/settings`,
@@ -304,7 +284,9 @@ const OnboardDoctorForm = () => {
         certifications,
         languages,
         specialization,
-        photo: userPhoto.photo,
+        username: username[0],
+        password: username[0],
+        photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
       },
     };
     console.log(data);
@@ -395,12 +377,6 @@ const OnboardDoctorForm = () => {
     <div className='mt-10 w-full'>
       {/* Upload and basic form */}
       <div className='flex justify-start items-center gap-1'>
-        <div>
-          <UploadSingle
-            defaultPhoto={userPhoto.photo || checker}
-            updatePhotoFunction={setUserPhoto}
-          />
-        </div>
         <div className='w-full'>
           <div className='flex gap-2'>
             <FormInput
@@ -420,13 +396,6 @@ const OnboardDoctorForm = () => {
           </div>
           <div className='flex gap-2 mt-3'>
             <FormInput
-              type='password'
-              name='password'
-              label='Password'
-              value={formData.password}
-              changeFunction={handleFormChange}
-            />
-            <FormInput
               type='text'
               name='phone'
               label='Phone number'
@@ -435,13 +404,6 @@ const OnboardDoctorForm = () => {
             />
           </div>
           <div className='flex gap-2 mt-3'>
-            <FormInput
-              type='text'
-              name='username'
-              label='username'
-              value={formData.username}
-              changeFunction={handleFormChange}
-            />
             <FormSelect
               options={["male", "female"]}
               name='gender'

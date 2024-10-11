@@ -42,7 +42,7 @@ const Wallet = () => {
           }
           subtitle={getDateFormat()}
         />
-        <WalletCard balance={userData.balance} />
+        <WalletCard balance={userData.balance} showSubscribe={true} />
         {wallet.length > 0 ? (
           <WalletTransaction data={wallet} number={"4"} />
         ) : (

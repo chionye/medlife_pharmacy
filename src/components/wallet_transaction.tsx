@@ -2,30 +2,19 @@
 
 import { Card } from "./ui/card";
 import { NavLink, useLocation } from "react-router-dom";
-import Dropdown from "./dropdown";
 import { WalletHistoryPropType } from "@/types";
 import { formatAmount, getDateFormat, toTitleCase } from "@/services/helpers";
-import { useMemo } from "react";
+import { DateSection } from "./section";
 
 const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
   const location = useLocation();
   const { pathname } = location;
 
-  const timeOptions = useMemo(
-    () => [
-      { label: "Today" },
-      { label: "Tomorrow" },
-      { label: "This Week" },
-      { label: "Next Week" },
-    ],
-    []
-  );
-
   return (
     <Card className='mt-10'>
       <div>
         <div className='md:px-5 md:py-6 px-3 py-3 border-b'>
-          <Dropdown label='Today' cn='w-24' options={timeOptions} />
+          <DateSection />
           <div className='flex items-center justify-between  mt-5'>
             <h4 className='text-xl font-medium'>Transaction Details</h4>
             {pathname === "/patient/wallet" && (

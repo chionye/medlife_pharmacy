@@ -57,6 +57,7 @@ export interface UseNotifierPropType {
   text: string;
   status: string;
   button?: boolean;
+  auth?: boolean;
   confirmText?: string;
   cancelText?: string;
   isModalOpen?: boolean;
@@ -68,6 +69,7 @@ export interface NotifierPropType {
   title: string;
   text: string;
   status: string;
+  auth?: boolean;
   button?: boolean;
   confirmText?: string;
   cancelText?: string;
@@ -119,6 +121,12 @@ export interface FundingPropType {
   reference: string;
   gateway: string;
   description: string;
+}
+
+export interface SubscriptionPropType {
+  plan_id: string;
+  user_id: string;
+  plan_name: string;
 }
 
 export interface ConsultationFeePropType {
@@ -366,13 +374,13 @@ export interface PaginationProps {
 }
 
 export interface PrescriptionFormProps {
-  user_id:string;
+  user_id: string;
   prescribed_by: string;
-  medicine_name:string;
-  dosage:string;
-  frequency:string;
-  start_date:string;
-  note:string;
+  medicine_name: string;
+  dosage: string;
+  frequency: string;
+  start_date: string;
+  note: string;
 }
 
 export type Transaction = {
@@ -470,3 +478,11 @@ export type MonthlyAppointmentSummary = {
   month: string;
   total: number;
 };
+
+export interface SubscriptioPlansProp {
+  id?: string;
+  name?: string;
+  amount?: string;
+  total_bookings?: string;
+  duration?: string;
+}

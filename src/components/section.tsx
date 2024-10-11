@@ -12,10 +12,16 @@ import Mutation from "@/api/mutation";
 import { useNotifier } from "@/hooks/useNotifier";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { RescheduleAppointmentForm } from "./appointment_form";
-import Dropdown from "@/components/dropdown";
 import bell from "@/assets/bell.svg";
+import chevron_down from "@/assets/chevron_down.svg";
 import empty_user from "@/assets/empty_user.svg";
 import { NotificationCardPropType, NotificationPropType } from "@/types";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { Calendar } from "./ui/calendar";
+import { useState } from "react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export const Section = ({ children, cn = null }: any) => (
   <div className={`${cn ? cn : "sm:w-full md:w-1/2"}`}>{children}</div>
@@ -31,11 +37,7 @@ export const DoctorPatientSection = ({
     <TitleBar title={title} link={link} />
     <div className='grid md:grid-flow-row col-span-4 gap-2 mt-5'>
       {doctors.length ? (
-        doctors
-          .slice(0, 5)
-          .map((doctor: any) => (
-            <TopDoctors {...doctor} />
-          ))
+        doctors.slice(0, 5).map((doctor: any) => <TopDoctors {...doctor} />)
       ) : (
         <p className='text-xs text-[#073131] font-semibold'>
           No {title.indexOf("doctor") != -1 ? "Doctors" : "Patients"} yet
@@ -242,17 +244,15 @@ export const GreetingSection = ({
   subtitle,
   role,
   dropdown,
-  timeOptions,
 }: {
   name?: string;
   subtitle?: string;
   role?: string | null;
   dropdown?: boolean;
-  timeOptions?: any;
 }) => {
   return dropdown ? (
     <div className='flex justify-between items-center'>
-      <Dropdown label='Today' options={timeOptions} />
+      <DateSection />
       <NavLink to={`/${role}/notifications`} className='mt-2'>
         <img src={bell} alt='bell icon' />
       </NavLink>
@@ -273,10 +273,43 @@ export const GreetingSection = ({
 };
 
 export const ProfileSection = ({ children }: any) => (
-  <div className='flex md:flex-row flex-col px-5 md:gap-20 mt-5'>
+  <div className='flex md:flex-row flex-col md:items-start md:gap-20 mt-5'>
     {children}
   </div>
 );
+
+export const DateSection = () => {
+  const [field, setField] = useState<Date | undefined>();
+  const handleChangeDate = (e: Date | undefined) => {
+    setField(e);
+  };
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-fit pl-3 text-left text-[22.5px] rounded-[9px] text-[#00C2C2] flex items-center gap-2 font-normal",
+            !field && "text-muted-foreground"
+          )}>
+          {field ? format(field, "PPP") : <span>Today</span>}
+          <img src={chevron_down} alt='chevron down' />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className='w-auto p-0' align='start'>
+        <Calendar
+          mode='single'
+          selected={field}
+          onSelect={handleChangeDate}
+          disabled={(date) =>
+            date > new Date() || date < new Date("1900-01-01")
+          }
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 export const NotificationSection = ({
   notifications,
@@ -325,7 +358,7 @@ const renderModalForm = (
   <FullModal
     label={`Change ${label}`}
     title={`Change ${label}`}
-    cn='text-xs text-[#00C2C2] font-normal mt-3'>
+    cn='text-xs text-[#00C2C2] text-left font-normal mt-3'>
     <div className='flex justify-center items-center'>
       <ChangeUserForm
         fieldName={fieldName}
@@ -347,8 +380,10 @@ export const RenderUserInfo = (
   options?: string[]
 ) => (
   <div className='mt-5'>
-    <p className='text-lg text-[#073131] font-semibold'>{label}</p>
-    <p className='text-[16px] text-[#073131] font-normal mt-2'>
+    <p className='md:text-lg text-[16px] text-[#073131] font-semibold'>
+      {label}
+    </p>
+    <p className='md:text-[16px] text-sm text-[#073131] font-normal mt-2'>
       {value || `Change your ${label}`}
     </p>
     {renderModalForm(fieldName, label, apiUrl, formType, options)}

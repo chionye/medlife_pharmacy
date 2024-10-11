@@ -35,7 +35,7 @@ const ChangeUserForm = ({
   const handleFormSubmit = () => {
     const updateData =
       apiUrl === "user/updateany"
-        ? { ...formData, user_id: userData.id }
+        ? { ...formData, id: userData.id }
         : { settings: { ...formData }, id: userData.id };
     const data = {
       method: "post",
@@ -51,9 +51,12 @@ const ChangeUserForm = ({
             status: "success",
           });
           if (apiUrl === "user/updateany") {
-            setCookie("@user", JSON.stringify(data.data), 1);
+            const newData = { ...userData, ...data.data };
+            setCookie("@user", JSON.stringify(newData), 1);
           }
-          navigate(0);
+          setTimeout(() => {
+            navigate(0);
+          }, 2000);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message

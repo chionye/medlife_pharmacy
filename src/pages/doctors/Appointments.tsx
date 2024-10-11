@@ -47,7 +47,7 @@ const DoctorsAppointments = () => {
   const keys = useMemo(
     () => [
       "SN",
-      "doctor.fullname",
+      "patient.fullname",
       "appointment_date",
       "appointment_time",
       "type",

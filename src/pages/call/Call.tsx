@@ -22,6 +22,7 @@ export default function VideoCall() {
   
   const user_id = `${userData.username}`;
   const user = { id: user_id };
+  console.log(user, user_id);
 
   const apiKey = "mmhfdzb5evj2";
   const tokenProvider = async () => {

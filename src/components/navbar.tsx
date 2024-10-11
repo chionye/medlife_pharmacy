@@ -43,7 +43,9 @@ const Navbar = () => {
       <div className='w-full pr-3'>
         <div className='flex justify-center items-center my-8'>
           <div className='w-20 h-20 flex justify-center items-center bg-[#FF2C330A] rounded-full'>
-            <img src={logo} alt='logo' className='rounded-full' />
+            <NavLink to={"https://medlife-frontend-i1bz.vercel.app/"}>
+              <img src={logo} alt='logo' className='rounded-full' />
+            </NavLink>
           </div>
         </div>
         {settings.map((item: any, index: number) => (

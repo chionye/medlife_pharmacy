@@ -13,17 +13,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Verify = () => {
   const location = useLocation();
-  const [formData] = useState<OTPPropType>({
+  const [formData, setFormData] = useState<OTPPropType>({
     email: location.state?.email || "",
     otp: "",
   });
-  const [value, setValue] = useState<string>("");
+  // const [value, setValue] = useState<string>("");
 
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
 
+  const handleChangeOtp = (value: string) => {
+    setFormData({
+      ...formData,
+      otp: value,
+    });
+  }
+
   const handleFormSubmit = async () => {
+    console.log(formData);
     try {
       const data = await sendRequest("post", "otp/confirm", formData);
       if (data.status) {
@@ -62,9 +70,9 @@ const Verify = () => {
       <p className='text-3xl font-bold'>Verify OTP</p>
       <div className='mt-5'>
         <FormPinInput
-          value={value}
+          value={formData.otp}
           label='Enter OTP'
-          changeFunction={setValue}
+          changeFunction={handleChangeOtp}
         />
       </div>
       <div className='mt-10'>

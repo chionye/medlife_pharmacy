@@ -33,7 +33,7 @@ const Login = () => {
       const data = await sendRequest("post", "login_user", formData);
       if (data.status) {
         const fulluser = data.data;
-        if (fulluser.photo.indexOf("dicebear") != -1) {
+        if (fulluser.photo.indexOf("dicebear") == -1) {
           fulluser.photo = `https://api.medlifelink.life/images/profiles/${fulluser.photo}`;
         }
         setCookie("@user", JSON.stringify(fulluser), 1);

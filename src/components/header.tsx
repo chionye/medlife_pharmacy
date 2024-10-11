@@ -43,7 +43,7 @@ const Header = () => {
                 ? toTitleCase(userData.fullname || userData.username)
                 : "Guest"}
             </span>
-            <div className='rounded-full h-12 w-12 ml-2'>
+            <div className='rounded-full h-12 w-12 ml-2 overflow-hidden'>
               <img
                 className='bg-center bg-cover bg-no-repeat inline-block h-12 w-12'
                 src={userData?.photo || profile}

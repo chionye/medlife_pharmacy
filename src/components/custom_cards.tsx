@@ -169,7 +169,7 @@ export const WalletCard = ({
                 withdraw
                   ? "bg-none text-white border border-[#FAFAFA]"
                   : "bg-white text-[#D20606]"
-              } lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
+              } lg:text-2xl text-[16px] flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={withdraw ? plus_white : plus_red} alt='plus' />
                 <span>Fund Wallet</span>

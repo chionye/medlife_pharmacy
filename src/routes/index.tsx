@@ -43,6 +43,8 @@ import AppointmentRequests from "@/pages/doctors/AppointmentRequests";
 import DoctorMedication from "@/pages/doctors/Medication";
 import AdminMedication from "@/pages/hospital/Medication";
 import Subscribe from "@/pages/patients/Subscribe";
+import DoctorSupport from "@/pages/doctors/Support";
+import AdminSupport from "@/pages/hospital/Support";
 
 const Routes = [
   {
@@ -160,7 +162,7 @@ const Routes = [
       },
       {
         path: "/doctor/settings/support-center",
-        element: <Support />,
+        element: <DoctorSupport />,
       },
       {
         path: "/doctor/settings/rate-patients-performance",
@@ -218,7 +220,7 @@ const Routes = [
       },
       {
         path: "/hospital/settings/support-center",
-        element: <Support />,
+        element: <AdminSupport />,
       },
       {
         path: "/hospital/settings/rate-patients-performance",

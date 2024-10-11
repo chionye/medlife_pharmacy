@@ -32,7 +32,11 @@ const Login = () => {
     try {
       const data = await sendRequest("post", "login_user", formData);
       if (data.status) {
-        setCookie("@user", JSON.stringify(data.data), 1);
+        const fulluser = data.data;
+        if (fulluser.photo.indexOf("dicebear") != -1) {
+          fulluser.photo = `https://api.medlifelink.life/images/profiles/${fulluser.photo}`;
+        }
+        setCookie("@user", JSON.stringify(fulluser), 1);
         setCookie("@token", JSON.stringify(data.token), 1);
         toast({
           title: "Success",

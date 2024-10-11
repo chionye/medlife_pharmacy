@@ -197,7 +197,7 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
           });
           const updatedData = {
             ...userData,
-            photo: ` https://api.medlifelink.life/images/profiles/${data.data.photo}`,
+            photo: `https://api.medlifelink.life/images/profiles/${data.data.photo}`,
           };
           setCookie("@user", JSON.stringify(updatedData), 1);
           navigate(0);

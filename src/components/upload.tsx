@@ -57,7 +57,7 @@ const Upload: React.FC<UploadPropType> = ({
       <div className={`w-full mx-6 relative text-center`}>
         <p className='text-sm font-normal m-3'>Update Your Profile Pic</p>
         <section
-          className={`px-3 py-10 mx-3 my-3 md:w-full w-fit rounded-lg flex flex-col h-fit relative bg-white`}>
+          className={`px-3 py-10 mx-3 my-3 lg:w-full w-fit rounded-lg flex flex-col h-fit relative bg-white`}>
           <input
             type='file'
             onChange={handleFileChange}

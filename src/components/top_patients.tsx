@@ -25,7 +25,7 @@ const PatientsDetails: React.FC<TopDoctorsPropType> = ({
       <p className='text-[#008080] text-[16px] font-semibold mb-3'>
         Demographic Details
       </p>
-      <div className='flex md:flex-row flex-col gap-2 justify-center md:items-start items-center'>
+      <div className='flex lg:flex-row flex-col gap-2 justify-center lg:items-start items-center'>
         {" "}
         {/* Changed items-center to items-start */}
         <div>
@@ -36,7 +36,7 @@ const PatientsDetails: React.FC<TopDoctorsPropType> = ({
           />
         </div>
         {/* Removed unnecessary large margin here */}
-        <div className='flex justify-between items-start md:w-4/5 w-full'>
+        <div className='flex justify-between items-start lg:w-4/5 w-full'>
           <div>
             <div>
               <p className='text-lg text-[#073131] font-semibold'>Name</p>
@@ -123,7 +123,7 @@ const PatientsDetails: React.FC<TopDoctorsPropType> = ({
         Patient Reviews and Ratings:
       </p>
       <div className='flex ml-5'>
-        <div className='flex justify-between items-center md:w-4/5 w-full'>
+        <div className='flex justify-between items-center lg:w-4/5 w-full'>
           <div>
             <p className='text-lg text-[#073131] font-semibold'>Rating</p>
             <p className='text-[16px] text-[#073131] font-normal mt-2'>

@@ -1,15 +1,17 @@
+/** @format */
+
 import { MedicationHistoryPropType } from "@/types";
 import { Card } from "./ui/card";
 
-const MedicationHistory:React.FC<MedicationHistoryPropType> = ({
+const MedicationHistory: React.FC<MedicationHistoryPropType> = ({
   medicine_name,
   dosage,
   frequency,
-  note
+  note,
 }) => {
   return (
-    <div className='grid md:grid-flow-row gap-2 mt-5'>
-      <div className='md:col-span-2 col-span-2'>
+    <div className='grid lg:grid-flow-row gap-2 mt-5'>
+      <div className='lg:col-span-2 col-span-2'>
         <Card className='border rounded-xl p-4'>
           <p className='text-xs text-[#073131] font-semibold text-nowrap'>
             {medicine_name} {dosage}
@@ -21,6 +23,6 @@ const MedicationHistory:React.FC<MedicationHistoryPropType> = ({
       </div>
     </div>
   );
-}
+};
 
 export default MedicationHistory;

@@ -1,3 +1,4 @@
+/** @format */
 
 import { useEffect, useState } from "react";
 import { EmptyWallet } from "@/components/empty";
@@ -32,7 +33,7 @@ const AdminWallet = () => {
 
   return (
     <>
-      <div className='md:px-20 py-10'>
+      <div className='lg:px-20 py-10'>
         <GreetingSection
           name={
             userData
@@ -41,7 +42,7 @@ const AdminWallet = () => {
           }
           subtitle={getDateFormat()}
         />
-        <WalletCard balance={userData.balance} withdraw showFund={false}/>
+        <WalletCard balance={userData.balance} withdraw showFund={false} />
         {wallet.length > 0 ? (
           <WalletTransaction data={wallet} number={"4"} />
         ) : (

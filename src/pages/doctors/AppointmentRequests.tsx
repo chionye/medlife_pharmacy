@@ -39,7 +39,7 @@ const AppointmentRequests = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Appointment Requests</p>
       </NavLink>
-      <div className='md:px-20 py-5'>
+      <div className='lg:px-20 py-5'>
         <AppointmentSection
           appointments={appointments}
           title='Appointment Request'

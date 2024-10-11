@@ -55,7 +55,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className='md:pr-28 md:px-0 px-3 mt-10'>
+    <div className='lg:pr-28 lg:px-0 px-3 mt-10'>
       <p className='text-3xl font-bold'>Forgot Password?</p>
       <div className='mt-5'>
         <FormInput

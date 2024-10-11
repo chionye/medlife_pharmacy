@@ -50,7 +50,7 @@ const Register = () => {
           text: "To ensure seamless integration of your practice, a one-time fee of #30,000 is required for every six-month period. This fee covers the cost of platform integration, maintenance, and support.",
           status: "error",
           button: true,
-          auth:true,
+          auth: true,
           confirmText: "Continue",
           cancelText: "Cancel",
           confirmFunction: async () => {
@@ -130,7 +130,7 @@ const Register = () => {
   };
 
   return (
-    <div className='md:pr-28 md:px-0 px-3 mt-7'>
+    <div className='lg:pr-28 lg:px-0 px-3 mt-7'>
       <p className='text-3xl font-bold'>Sign Up</p>
       <div className='mt-5'>
         <FormSelect

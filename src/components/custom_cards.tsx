@@ -129,13 +129,13 @@ export const WalletCard = ({
   return (
     <Card className={`bg-[url('/images/bg.png')] mt-4`}>
       <div
-        className={`w-full md:py-14 md:px-6 py-6 px-3 bg-[#D20606E5] rounded-xl`}>
+        className={`w-full lg:py-14 lg:px-6 py-6 px-3 bg-[#D20606E5] rounded-xl`}>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <p className='text-xl font-medium text-white'>
               Current e-Wallet Balance
             </p>
-            <button onClick={handleToggleBalance} className="text-white">
+            <button onClick={handleToggleBalance} className='text-white'>
               {isBalanceVisible ? (
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -169,7 +169,7 @@ export const WalletCard = ({
                 withdraw
                   ? "bg-none text-white border border-[#FAFAFA]"
                   : "bg-white text-[#D20606]"
-              } md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
+              } lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={withdraw ? plus_white : plus_red} alt='plus' />
                 <span>Fund Wallet</span>
@@ -178,7 +178,7 @@ export const WalletCard = ({
           )}
         </div>
         <div className='mt-8 flex items-center justify-between'>
-          <p className='md:text-5xl text-4xl font-semibold text-white'>
+          <p className='lg:text-5xl text-4xl font-semibold text-white'>
             {isBalanceVisible
               ? `₦${formatAmount(parseFloat(balance || "0.00"))}` // Show balance if visible
               : "*****"}{" "}
@@ -187,7 +187,7 @@ export const WalletCard = ({
           {withdraw && (
             <NavLink
               to={`/${getConfigByRole()}/wallet/withdraw`}
-              className={`bg-white text-[#D20606] md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
+              className={`bg-white text-[#D20606] lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={plus_red} alt='plus' />
                 <span>Withdraw Funds</span>
@@ -197,7 +197,7 @@ export const WalletCard = ({
           {showSubscribe && (
             <NavLink
               to={`/${getConfigByRole()}/wallet/subscribe`}
-              className={`bg-none text-white border border-[#FAFAFA]] md:text-2xl text-lg flex justify-center md:py-2 pr-3 md:w-56 rounded-lg`}>
+              className={`bg-none text-white border border-[#FAFAFA]] lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={plus_white} alt='plus' />
                 <span>Subscribe</span>

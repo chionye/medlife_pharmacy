@@ -148,7 +148,7 @@ const Patients = () => {
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='grid md:grid-flow-col gap-2'>
+        <div className='grid lg:grid-flow-col gap-2'>
           {cardValue.map((item: any) => (
             <CardWithButton
               title={item.title ? item.title : ""}
@@ -166,8 +166,8 @@ const Patients = () => {
       </div>
 
       {/* Search and Filter */}
-      <div className='mt-10 grid md:grid-flow-col gap-2'>
-        <div className='bg-[#00808026] border-[#00808026] flex justify-start p-2 border rounded-lg md:col-span-3'>
+      <div className='mt-10 grid lg:grid-flow-col gap-2'>
+        <div className='bg-[#00808026] border-[#00808026] flex justify-start p-2 border rounded-lg lg:col-span-3'>
           <img src={search} alt='search icon' />
           <Input
             type='text'

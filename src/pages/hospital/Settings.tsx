@@ -82,13 +82,13 @@ const AdminSettings = () => {
 
   return (
     <>
-      <div className='flex justify-center items-center md:px-10 px-5 mt-10'>
+      <div className='flex justify-center items-center lg:px-10 px-5 mt-10'>
         <button
           className={`border-2 w-1/2 border-[#00C2C2] py-4 ${
             !tab
               ? "bg-[#F4F6FF] text-[#ADAFB5]"
               : "bg-[#00C2C2E5] text-[#FFFFFF]"
-          } font-semibold md:text-lg text-sm rounded-s-lg`}
+          } font-semibold lg:text-lg text-sm rounded-s-lg`}
           onClick={() => setTab(true)}>
           Website Settings
         </button>
@@ -97,12 +97,12 @@ const AdminSettings = () => {
             !tab
               ? "bg-[#00C2C2E5] text-[#FFFFFF]"
               : "bg-[#F4F6FF] text-[#ADAFB5]"
-          } font-semibold md:text-lg text-sm rounded-e-lg`}
+          } font-semibold lg:text-lg text-sm rounded-e-lg`}
           onClick={() => setTab(false)}>
           Admin Profile Settings
         </button>
       </div>
-      <div className='md:px-10 px-5 mt-10'>
+      <div className='lg:px-10 px-5 mt-10'>
         {tab ? (
           <>
             <p className='text-[#00C2C2] text-[16px] font-semibold mt-10'>
@@ -161,7 +161,7 @@ const AdminSettings = () => {
                 defaultPhoto={userPhoto?.photo}
                 updatePhotoFunction={setUserPhoto}
               />
-              <div className='flex justify-between items-center mt-10 md:w-4/5 w-full'>
+              <div className='flex justify-between items-center mt-10 lg:w-4/5 w-full'>
                 <div>
                   <div>
                     {RenderUserInfo(
@@ -226,7 +226,7 @@ const AdminSettings = () => {
             title === "Logout" ? (
               <button
                 key={title}
-                className='flex justify-between items-center mt-6 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+                className='flex justify-between items-center mt-6 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
                 onClick={logout}>
                 <span className='flex items-center gap-3'>
                   <img src={icon} alt='icon' />
@@ -237,7 +237,7 @@ const AdminSettings = () => {
             ) : (
               <NavLink
                 key={title}
-                className='flex justify-between items-center mt-6 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+                className='flex justify-between items-center mt-6 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
                 to={link}>
                 <span className='flex items-center gap-3'>
                   <img src={icon} alt='icon' />

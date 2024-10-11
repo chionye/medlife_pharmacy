@@ -25,7 +25,6 @@ const persister = createSyncStoragePersister({
 });
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-
   return (
     <PersistQueryClientProvider
       client={queryClient}
@@ -49,12 +48,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             icon={<img src={camera} alt='open modal' />}
             title={"Book Appointment"}
             cn={
-              "fixed md:bottom-10 bottom-20 right-10 bg-[#D20606CC] w-16 h-16 flex justify-center items-center rounded-full"
+              "fixed lg:bottom-10 bottom-20 right-10 bg-[#D20606CC] w-16 h-16 flex justify-center items-center rounded-full"
             }>
-            <div className='flex justify-center items-center'>
-            </div>
+            <div className='flex justify-center items-center'></div>
           </FullModal>
-          <div className='fixed bottom-0 md:hidden visible w-full'>
+          <div className='fixed bottom-0 lg:hidden visible w-full'>
             <BottomNav />
           </div>
           {/* {NotifierComponent} */}

@@ -63,7 +63,7 @@ const Login = () => {
   };
 
   return (
-    <div className='md:pr-28 md:px-0 px-3 mt-7'>
+    <div className='lg:pr-28 lg:px-0 px-3 mt-7'>
       <p className='text-3xl font-bold'>Welcome Back</p>
       <div className='mt-5'>
         <FormInput

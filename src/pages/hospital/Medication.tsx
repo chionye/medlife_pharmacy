@@ -32,8 +32,8 @@ const AdminMedication = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Medications</p>
       </NavLink>
-      <div className='md:px-20 py-5'>
-        <div className='grid md:grid-flow-row gap-2 mt-5'>
+      <div className='lg:px-20 py-5'>
+        <div className='grid lg:grid-flow-row gap-2 mt-5'>
           {medications.length > 0 ? (
             medications.map((medication: MedicationHistoryPropType) => (
               <MedicationHistory

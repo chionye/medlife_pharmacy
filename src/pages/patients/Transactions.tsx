@@ -35,7 +35,7 @@ const Transactions = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Wallet Dashboard</p>
       </NavLink>
-      <div className='md:px-20 py-5'>
+      <div className='lg:px-20 py-5'>
         {wallet.length > 0 ? (
           <WalletTransaction data={wallet} />
         ) : (

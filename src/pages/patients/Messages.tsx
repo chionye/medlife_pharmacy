@@ -39,7 +39,7 @@ const Messages = () => {
   }, [queries]);
 
   return (
-    <div className='md:px-5 py-5'>
+    <div className='lg:px-5 py-5'>
       <div>
         <h4 className='text-3xl font-bold'>
           Welcome,{" "}
@@ -52,9 +52,9 @@ const Messages = () => {
         </p>
       </div>
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='md:w-[67%] w-full'>
-          <div className='grid md:grid-flow-col gap-2'>
-            <div className='md:col-span-3 col-span-3'>
+        <div className='lg:w-[67%] w-full'>
+          <div className='grid lg:grid-flow-col gap-2'>
+            <div className='lg:col-span-3 col-span-3'>
               <Card className='border flex justify-between rounded-xl p-6'>
                 <div>
                   <p className='text-sm text-[#073131] font-[600]'>
@@ -70,7 +70,7 @@ const Messages = () => {
                 <img src={video_icon} alt='logo' className=' rounded-full' />
               </Card>
             </div>
-            <div className='md:col-span-3 col-span-3'>
+            <div className='lg:col-span-3 col-span-3'>
               <Card className='border flex justify-between rounded-xl p-6'>
                 <div>
                   <p className='text-sm text-[#073131] font-[600]'>
@@ -92,12 +92,12 @@ const Messages = () => {
       </div>
       <NavLink
         to={"/patient/home"}
-        className='flex items-center md:gap-5 gap-2 text-[#333333CC] w-fit mt-3'>
+        className='flex items-center lg:gap-5 gap-2 text-[#333333CC] w-fit mt-3'>
         <ChevronLeft size={34} />
         <p className='text-5xl font-normal'>Chats</p>
       </NavLink>
-      <div className='mt-3 grid md:grid-flow-col gap-2'>
-        <div className='bg-[#00808026] border-[#00808026] flex justify-start p-2 border rounded-lg md:col-span-11 col-span-11'>
+      <div className='mt-3 grid lg:grid-flow-col gap-2'>
+        <div className='bg-[#00808026] border-[#00808026] flex justify-start p-2 border rounded-lg lg:col-span-11 col-span-11'>
           <img src={search} alt='search' />
           <Input
             type='text'
@@ -105,12 +105,12 @@ const Messages = () => {
             className='border-0 bg-transparent shadow-none outline-none focus:outline-none'
           />
         </div>
-        <button className='flex justify-center items-center md:col-span-1 col-span-1'>
+        <button className='flex justify-center items-center lg:col-span-1 col-span-1'>
           <img src={sort} alt='sort' />
         </button>
       </div>
-      <div className='grid md:grid-flow-row gap-2 mt-5'>
-        <NavLink to={"/"} className='md:col-span-2 col-span-2'>
+      <div className='grid lg:grid-flow-row gap-2 mt-5'>
+        <NavLink to={"/"} className='lg:col-span-2 col-span-2'>
           <div className='flex justify-between gap-20 items-end border-b border-[#3333331F] p-4'>
             <div className='flex justify-start items-center gap-2'>
               <img src={userImage} alt='user image' />

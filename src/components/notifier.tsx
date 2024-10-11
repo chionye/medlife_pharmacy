@@ -49,7 +49,7 @@ const Notifier: React.FC<NotifierPropType> = ({
             <>
               {auth ? (
                 <div className='flex justify-center items-center bg-none w-full h-screen'>
-                  <div className='px-14 py-5 md:w-[684px] w-full bg-white rounded-[18px]'>
+                  <div className='px-14 py-5 lg:w-[684px] w-full bg-white rounded-[18px]'>
                     <div className='flex justify-end'>
                       <Button
                         variant={"ghost"}
@@ -66,7 +66,7 @@ const Notifier: React.FC<NotifierPropType> = ({
                       <p className='mt-5 text-center text-[#333333] text-2xl'>
                         {title}
                       </p>
-                      <p className='mt-3 text-center text-[#838A93] text-[16px] md:w-4/5'>
+                      <p className='mt-3 text-center text-[#838A93] text-[16px] lg:w-4/5'>
                         {text}
                       </p>
                     </div>

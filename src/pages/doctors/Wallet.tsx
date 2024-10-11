@@ -33,7 +33,7 @@ const DoctorWallet = () => {
 
   return (
     <>
-      <div className='md:px-20 py-10'>
+      <div className='lg:px-20 py-10'>
         <GreetingSection
           name={
             userData

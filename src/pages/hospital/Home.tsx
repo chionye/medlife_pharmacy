@@ -1,7 +1,13 @@
 /** @format */
 import { useEffect, useMemo, useState } from "react";
 import { getConfigByRole, getCookie } from "@/services/storage";
-import { getMonthlyAppointmentSummary, getMonthlyTotalsForYear, getTopPatientsAndDoctors, getTotalForAllTime, toTitleCase } from "@/services/helpers";
+import {
+  getMonthlyAppointmentSummary,
+  getMonthlyTotalsForYear,
+  getTopPatientsAndDoctors,
+  getTotalForAllTime,
+  toTitleCase,
+} from "@/services/helpers";
 import Query from "@/api/query";
 import { QueryProps, TopDoctorsPropType } from "@/types";
 
@@ -153,7 +159,7 @@ function AdminHome() {
 
       <div className='flex flex-col space-y-6 mt-5'>
         <div className='w-full'>
-          <div className='grid md:grid-flow-col gap-2'>
+          <div className='grid lg:grid-flow-col gap-2'>
             {cardValue.map((item: any, index: number) => (
               <CardWithButton key={index} {...item} />
             ))}
@@ -162,7 +168,7 @@ function AdminHome() {
         </div>
       </div>
 
-      <div className='flex flex-col md:flex-row flex-wrap sm:px-0 md:px-8 sm:gap-5 md:gap-20 mt-5'>
+      <div className='flex flex-col lg:flex-row flex-wrap sm:px-0 lg:px-8 sm:gap-5 lg:gap-20 mt-5'>
         <div>
           <TitleBar title={"Transactions"} />
           <Divider className='mt-5' />

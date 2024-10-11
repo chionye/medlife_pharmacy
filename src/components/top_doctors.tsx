@@ -47,14 +47,14 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
           />
         </div>
         {/* Removed unnecessary large margin here */}
-        <div className='flex justify-between items-start md:w-4/5 w-full'>
+        <div className='flex justify-between items-start lg:w-4/5 w-full'>
           <div>
             <div>
               <p className='text-lg text-[#073131] font-semibold'>Name</p>
               <p className='text-[16px] text-[#073131] font-normal mt-1'>
                 {fullname || username}
               </p>
-            </div>  
+            </div>
             <div className='mt-3'>
               <p className='text-lg text-[#073131] font-semibold'>Specialty</p>
               <p className='text-[16px] text-[#073131] font-normal mt-1'>
@@ -142,7 +142,7 @@ const DoctorsDetails: React.FC<TopDoctorsPropType> = ({
         Patient Reviews and Ratings:
       </p>
       <div className='flex ml-5'>
-        <div className='flex justify-between items-center md:w-4/5 w-full'>
+        <div className='flex justify-between items-center lg:w-4/5 w-full'>
           <div>
             <p className='text-lg text-[#073131] font-semibold'>Rating</p>
             <p className='text-[16px] text-[#073131] font-normal mt-2'>
@@ -196,7 +196,7 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
         const errorMessage = Array.isArray(mutation.data.errors)
           ? mutation.data.errors.join("\n")
           : mutation.data.errors;
-          // console.log(errorMessage)
+        // console.log(errorMessage)
         showNotifier({
           title: "Error",
           text: errorMessage,
@@ -208,7 +208,7 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
   }
 
   return (
-    <div className='md:col-span-2 col-span-2'>
+    <div className='lg:col-span-2 col-span-2'>
       <Card className='border flex justify-between items-end rounded-xl p-4'>
         <div className='flex justify-start items-center gap-2'>
           <img

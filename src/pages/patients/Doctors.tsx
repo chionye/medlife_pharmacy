@@ -32,7 +32,7 @@ const Doctors = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Top Doctors</p>
       </NavLink>
-      <div className='md:px-20 py-5'>
+      <div className='lg:px-20 py-5'>
         <DoctorPatientSection
           doctors={doctors}
           title='Top Doctors'

@@ -11,17 +11,17 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='bg-white flex justify-center'>
       <div
-        className={`md:w-full md:flex flex-col hidden h-screen md:pl-10 md:pt-10 pl-5 pt-5 ${
+        className={`lg:w-full lg:flex flex-col hidden h-screen lg:pl-10 lg:pt-10 pl-5 pt-5 ${
           location.pathname === "/"
             ? "bg-[url('/images/bg_2.png')]"
             : "bg-[url('/images/bg_1.png')]"
         } bg-cover`}>
-        <img src={logo_2} alt='Logo' className=' md:w-16' />
+        <img src={logo_2} alt='Logo' className=' lg:w-16' />
       </div>
       <div className='w-full'>
         {(location.pathname === "/" || location.pathname === "/register") && (
-          <div className='flex md:justify-end justify-center md:shadow-none shadow-lg'>
-            <div className='flex md:gap-10 gap-10 md:justify-start justify-center items-center md:w-4/6 w-full py-5'>
+          <div className='flex lg:justify-end justify-center lg:shadow-none shadow-lg'>
+            <div className='flex lg:gap-10 gap-10 lg:justify-start justify-center items-center lg:w-4/6 w-full py-5'>
               <p className='font-normal text-lg'>
                 {location.pathname === "/"
                   ? "Don’t Have an Account?"
@@ -30,7 +30,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               <NavLink
                 to={location.pathname === "/" ? "/register" : "/"}
                 className={
-                  "bg-[#D20606] py-3 md:px-9 px-5 md:text-lg text-white flex justify-center"
+                  "bg-[#D20606] py-3 lg:px-9 px-5 lg:text-lg text-white flex justify-center"
                 }>
                 {location.pathname === "/" ? "Register" : "Login"}
               </NavLink>
@@ -43,7 +43,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               ? "mt-10"
               : " mt-32"
           }`}>
-          <div className='md:hidden flex justify-center'>
+          <div className='lg:hidden flex justify-center'>
             <img src={logo} alt='logo' />
           </div>
           {children}

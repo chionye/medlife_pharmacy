@@ -171,7 +171,7 @@ const AdminPerformance = () => {
 
       {/* Stats Cards */}
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='grid md:grid-flow-col gap-2'>
+        <div className='grid lg:grid-flow-col gap-2'>
           {cardValue.map((item: any) => (
             <CardWithButton
               title={item.title ? item.title : ""}

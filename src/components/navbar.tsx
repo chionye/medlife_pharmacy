@@ -39,7 +39,7 @@ const Navbar = () => {
   const settings = role ? NavbarItems[role] : [];
 
   return (
-    <div className='auto-rows-max text-sm md:flex hidden bg-[#F3FCFC] relative h-screen w-full shadow-lg'>
+    <div className='auto-rows-max text-sm lg:flex hidden bg-[#F3FCFC] relative h-screen w-full shadow-lg'>
       <div className='w-full pr-3'>
         <div className='flex justify-center items-center my-8'>
           <div className='w-20 h-20 flex justify-center items-center bg-[#FF2C330A] rounded-full'>

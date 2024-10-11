@@ -38,7 +38,7 @@ const AdminWithdraw = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>Wallet Dashboard</p>
       </NavLink>
-      <div className='md:px-20 py-5'>
+      <div className='lg:px-20 py-5'>
         <h4 className='text-3xl font-bold'>Withdraw Funds</h4>
         <p className='text-sm font-thin'>
           Current Balance:{" "}

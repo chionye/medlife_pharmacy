@@ -24,7 +24,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 export const Section = ({ children, cn = null }: any) => (
-  <div className={`${cn ? cn : "sm:w-full md:w-1/2"}`}>{children}</div>
+  <div className={`${cn ? cn : "sm:w-full lg:w-1/2"}`}>{children}</div>
 );
 
 export const DoctorPatientSection = ({
@@ -35,7 +35,7 @@ export const DoctorPatientSection = ({
 }: any) => (
   <Section cn={cn}>
     <TitleBar title={title} link={link} />
-    <div className='grid md:grid-flow-row col-span-4 gap-2 mt-5'>
+    <div className='grid lg:grid-flow-row col-span-4 gap-2 mt-5'>
       {doctors.length ? (
         doctors.slice(0, 5).map((doctor: any) => <TopDoctors {...doctor} />)
       ) : (
@@ -50,7 +50,7 @@ export const DoctorPatientSection = ({
 export const MedicationSection = ({ medications, title, link }: any) => (
   <>
     <TitleBar title={title} link={link} />
-    <div className='grid md:grid-flow-row gap-2 mt-5'>
+    <div className='grid lg:grid-flow-row gap-2 mt-5'>
       {medications.length ? (
         medications
           .slice(0, 5)
@@ -129,7 +129,7 @@ export const AppointmentSection = ({
     <>
       <TitleBar title={title} link={link} />
       <div
-        className={`grid md:grid-flow-row mt-5 space-y-2 ${
+        className={`grid lg:grid-flow-row mt-5 space-y-2 ${
           buttons && "rounded-none"
         }`}>
         {appointments.length ? (
@@ -138,9 +138,9 @@ export const AppointmentSection = ({
               <Card>
                 <AppointmentHistory key={index} {...appointment} />
                 {buttons && (
-                  <div className='flex justify-between text-center items-center gap-2 pb-4 md:px-4 px-2'>
+                  <div className='flex justify-between text-center items-center gap-2 pb-4 lg:px-4 px-2'>
                     <button
-                      className='border border-[#D9D9D9] w-full text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                      className='border border-[#D9D9D9] w-full text-[#0000008C] text-[11px] lg:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("cancel", appointment.id)
                       }>
@@ -154,7 +154,7 @@ export const AppointmentSection = ({
                       )}
                     </button>
                     <button
-                      className='bg-[#4BB543] w-full text-white text-[11px] md:px-14 px-8 py-[11px]'
+                      className='bg-[#4BB543] w-full text-white text-[11px] lg:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("approve", appointment.id)
                       }>
@@ -171,7 +171,7 @@ export const AppointmentSection = ({
                       title={"Reschedule Appointment"}
                       label='Reschedule'
                       cn={
-                        "bg-[#D20606] text-white w-full text-[11px] md:px-14 px-8 py-[11px]"
+                        "bg-[#D20606] text-white w-full text-[11px] lg:px-14 px-8 py-[11px]"
                       }>
                       <div className='flex justify-center items-center'>
                         <RescheduleAppointmentForm appointment={appointment} />
@@ -184,9 +184,9 @@ export const AppointmentSection = ({
               <Card>
                 <AppointmentHistory key={index} {...appointment} />
                 {buttons && (
-                  <div className='flex justify-center text-center items-center gap-2 pb-4 md:px-4'>
+                  <div className='flex justify-center text-center items-center gap-2 pb-4 lg:px-4'>
                     <button
-                      className='border border-[#D9D9D9] text-[#0000008C] text-[11px] md:px-14 px-8 py-[11px]'
+                      className='border border-[#D9D9D9] text-[#0000008C] text-[11px] lg:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("cancel", appointment.id)
                       }>
@@ -200,7 +200,7 @@ export const AppointmentSection = ({
                       )}
                     </button>
                     <button
-                      className='bg-[#4BB543] text-white text-[11px] md:px-14 px-8 py-[11px]'
+                      className='bg-[#4BB543] text-white text-[11px] lg:px-14 px-8 py-[11px]'
                       onClick={() =>
                         handleButtonClick("approve", appointment.id)
                       }>
@@ -217,7 +217,7 @@ export const AppointmentSection = ({
                       title={"Reschedule Appointment"}
                       label='Reschedule'
                       cn={
-                        "bg-[#D20606] text-white text-[11px] md:px-14 px-8 py-[11px]"
+                        "bg-[#D20606] text-white text-[11px] lg:px-14 px-8 py-[11px]"
                       }>
                       <div className='flex justify-center items-center'>
                         <RescheduleAppointmentForm appointment={appointment} />
@@ -273,7 +273,7 @@ export const GreetingSection = ({
 };
 
 export const ProfileSection = ({ children }: any) => (
-  <div className='flex md:flex-row flex-col md:items-start md:gap-20 mt-5'>
+  <div className='flex lg:flex-row flex-col lg:items-start lg:gap-20 mt-5'>
     {children}
   </div>
 );
@@ -380,10 +380,10 @@ export const RenderUserInfo = (
   options?: string[]
 ) => (
   <div className='mt-5'>
-    <p className='md:text-lg text-[16px] text-[#073131] font-semibold'>
+    <p className='lg:text-lg text-[16px] text-[#073131] font-semibold'>
       {label}
     </p>
-    <p className='md:text-[16px] text-sm text-[#073131] font-normal mt-2'>
+    <p className='lg:text-[16px] text-sm text-[#073131] font-normal mt-2'>
       {value || `Change your ${label}`}
     </p>
     {renderModalForm(fieldName, label, apiUrl, formType, options)}

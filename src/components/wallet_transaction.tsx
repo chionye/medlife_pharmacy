@@ -13,7 +13,7 @@ const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
   return (
     <Card className='mt-10'>
       <div>
-        <div className='md:px-5 md:py-6 px-3 py-3 border-b'>
+        <div className='lg:px-5 lg:py-6 px-3 py-3 border-b'>
           <DateSection />
           <div className='flex items-center justify-between  mt-5'>
             <h4 className='text-xl font-medium'>Transaction Details</h4>

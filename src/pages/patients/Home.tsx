@@ -130,8 +130,8 @@ function Home() {
       />
 
       <div className='flex flex-col space-y-6 mt-5'>
-        <div className='md:w-[67%] w-full'>
-          <div className='grid md:grid-flow-col gap-2'>
+        <div className='lg:w-[67%] w-full'>
+          <div className='grid lg:grid-flow-col gap-2'>
             {cardValue.map((item: any) => (
               <CardWithButton
                 title={item.title ? item.title : ""}
@@ -149,7 +149,7 @@ function Home() {
       <div className='mt-10'>
         <h4 className='text-xl font-medium'>My Vitals</h4>
         <div className='flex flex-col space-y-6 mt-5'>
-          <div className='grid md:grid-flow-col gap-2'>
+          <div className='grid lg:grid-flow-col gap-2'>
             {vitals.map((vital, index) => (
               <VitalCard
                 key={index}
@@ -163,7 +163,7 @@ function Home() {
         </div>
       </div>
 
-      <div className='flex flex-col md:flex-row sm:px-0 md:px-8 sm:gap-5 md:gap-20 mt-5'>
+      <div className='flex flex-col lg:flex-row sm:px-0 lg:px-8 sm:gap-5 lg:gap-20 mt-5'>
         <DoctorPatientSection
           doctors={doctors}
           link='/patient/top-doctors'

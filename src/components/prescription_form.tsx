@@ -83,7 +83,7 @@ const PrescriptionForm = ({
 
   return (
     <>
-      <div className='flex flex-col mt-10 px-5 md:gap-4'>
+      <div className='flex flex-col mt-10 px-5 lg:gap-4'>
         <div className='w-full'>
           <FormSelect
             value={formData.user_id}
@@ -93,7 +93,7 @@ const PrescriptionForm = ({
             changeFunction={handleFormChange}
           />
         </div>
-        <div className='flex md:flex-row flex-col justify-between gap-3'>
+        <div className='flex lg:flex-row flex-col justify-between gap-3'>
           <FormInput
             type='text'
             name='medicine_name'
@@ -111,7 +111,7 @@ const PrescriptionForm = ({
             changeFunction={handleFormChange}
           />
         </div>
-        <div className='flex md:flex-row flex-col justify-between gap-3 md:mt-0 mt-2'>
+        <div className='flex lg:flex-row flex-col justify-between gap-3 lg:mt-0 mt-2'>
           <FormInput
             type='text'
             name='frequency'
@@ -128,7 +128,7 @@ const PrescriptionForm = ({
             changeFunction={handleFormChange}
           />
         </div>
-        <div className='flex justify-between gap-3 md:mt-0 mt-3'>
+        <div className='flex justify-between gap-3 lg:mt-0 mt-3'>
           <FormTextArea
             name='note'
             label='Note'

@@ -51,13 +51,13 @@ const Settings = () => {
         <ChevronLeft size={18} />
         <p className='text-sm font-normal'>My Profile</p>
       </NavLink>
-      <div className='mt-10 px-5 md:gap-20'>
+      <div className='mt-10 px-5 lg:gap-20'>
         <ProfileSection userData={userData}>
           <UploadSingle
             defaultPhoto={userPhoto.photo}
             updatePhotoFunction={setUserPhoto}
           />
-          <div className='flex justify-between items-start md:mt-0 mt-5 md:w-3/5 w-full'>
+          <div className='flex justify-between items-start lg:mt-0 mt-5 lg:w-3/5 w-full'>
             <div>
               <div>
                 {RenderUserInfo(
@@ -115,7 +115,7 @@ const Settings = () => {
           </div>
         </ProfileSection>
       </div>
-      <div className='mt-14 md:px-10 px-5'>
+      <div className='mt-14 lg:px-10 px-5'>
         {settings.map(
           (setting: {
             title: string;
@@ -125,7 +125,7 @@ const Settings = () => {
           }) => {
             return setting.title === "Logout" ? (
               <button
-                className='flex text-sm justify-between items-center mt-6 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+                className='flex text-sm justify-between items-center mt-6 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
                 onClick={logout}>
                 <span className='flex items-center gap-3'>
                   <img src={setting.icon} alt='star icon' />
@@ -135,7 +135,7 @@ const Settings = () => {
               </button>
             ) : (
               <NavLink
-                className='flex text-sm justify-between items-center mt-6 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+                className='flex text-sm justify-between items-center mt-6 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
                 to={setting.link}>
                 <span className='flex items-center gap-3'>
                   <img src={setting.icon} alt='star icon' />

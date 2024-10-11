@@ -31,7 +31,7 @@ const Support = () => {
   ];
   return (
     <>
-      <div className='flex md:flex-row flex-col mt-20 px-5 md:gap-20'>
+      <div className='flex lg:flex-row flex-col mt-20 px-5 lg:gap-20'>
         <div className='flex flex-col items-center gap-3'>
           <img src={support} alt='Support Icon' />
         </div>
@@ -48,7 +48,7 @@ const Support = () => {
                 link: string;
               }) => (
                 <NavLink
-                  className='flex text-sm justify-between items-center mt-10 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+                  className='flex text-sm justify-between items-center mt-10 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
                   to={setting.link}>
                   <span className='flex items-center gap-3'>
                     <img src={setting.icon} alt='star icon' />
@@ -63,7 +63,7 @@ const Support = () => {
       </div>
       <div className='mt-28'>
         <NavLink
-          className='flex text-sm justify-between items-center mt-6 md:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
+          className='flex text-sm justify-between items-center mt-6 lg:w-[482px] w-full bg-[#F3FCFC] border border-[#10375C] px-4 py-4 rounded'
           to={"/"}>
           <span className='flex items-center gap-3'>
             <img src={logout} alt='star icon' />

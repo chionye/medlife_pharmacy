@@ -1,3 +1,4 @@
+/** @format */
 
 import {
   CallControls,
@@ -14,13 +15,14 @@ import {
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { getCookie } from "@/services/storage";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
-
+import { Button } from "@/components/ui/button";
 
 export default function VideoCall() {
   const apiKey = "mmhfdzb5evj2";
+  const navigate = useNavigate();
   const userData = JSON.parse(getCookie("@user") || "{}");
   const [client, setClient] = useState<StreamVideoClient>();
   const [call, setCall] = useState<Call>();
@@ -45,7 +47,6 @@ export default function VideoCall() {
       userData.fullname || userData.username
     }`,
   };
-
 
   useEffect(() => {
     const myClient = new StreamVideoClient({ apiKey, user, tokenProvider });
@@ -73,14 +74,19 @@ export default function VideoCall() {
     };
   }, [client, callId]);
 
-  if (!client || !call){
+  if (!client || !call) {
     return (
-      <div className='w-full h-screen flex justify-center items-center'>
-        <ReloadIcon className='mr-2 h-20 w-20 animate-spin' />
+      <div className='w-full h-screen flex flex-col justify-center items-center'>
+        <p>Call Ended...</p>
+        <Button
+          className='bg-[#D20606] text-white w-full py-7'
+          onClick={() => navigate(-1)}>
+          Go Back
+        </Button>
       </div>
     );
   }
-  
+
   return (
     <div className={`bg-[url('/images/video_bg.jpeg')] bg-cover h-screen`}>
       <StreamVideo client={client}>
@@ -95,8 +101,7 @@ export default function VideoCall() {
 }
 
 export const MyUILayout = () => {
-  const { useCallCallingState } =
-    useCallStateHooks();
+  const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
 
   if (callingState !== CallingState.JOINED) {

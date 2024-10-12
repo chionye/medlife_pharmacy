@@ -1,40 +1,51 @@
-/** @format */
 
-import { useEffect, useState } from "react";
 import {
-  Call,
   CallControls,
+  CallingState,
+  SpeakerLayout,
   StreamCall,
   StreamTheme,
   StreamVideo,
-  SpeakerLayout,
   StreamVideoClient,
+  useCallStateHooks,
+  User,
+  Call,
 } from "@stream-io/video-react-sdk";
+
 import "@stream-io/video-react-sdk/dist/css/styles.css";
-import { useParams } from "react-router-dom";
 import { getCookie } from "@/services/storage";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
 
 export default function VideoCall() {
-  const { callId } = useParams();
+  const apiKey = "mmhfdzb5evj2";
   const userData = JSON.parse(getCookie("@user") || "{}");
   const [client, setClient] = useState<StreamVideoClient>();
   const [call, setCall] = useState<Call>();
-  
-  const user_id = `${userData.username}`;
-  const user = { id: user_id };
-  console.log(user, user_id);
+  const userId = userData.username;
+  const { callId } = useParams();
 
-  const apiKey = "mmhfdzb5evj2";
   const tokenProvider = async () => {
     const { token } = await fetch(
       "https://pronto.getstream.io/api/auth/create-token?" +
         new URLSearchParams({
           api_key: apiKey,
-          user_id: user_id,
+          user_id: userId,
         })
     ).then((res) => res.json());
     return token as string;
   };
+
+  const user: User = {
+    id: userId,
+    name: userData.fullname || userData.username,
+    image: `https://getstream.io/random_svg/?id=${userId}&name=${
+      userData.fullname || userData.username
+    }`,
+  };
+
 
   useEffect(() => {
     const myClient = new StreamVideoClient({ apiKey, user, tokenProvider });
@@ -62,18 +73,44 @@ export default function VideoCall() {
     };
   }, [client, callId]);
 
-  if (!client || !call) return null;
-
+  if (!client || !call){
+    return (
+      <div className='w-full h-screen flex justify-center items-center'>
+        <ReloadIcon className='mr-2 h-20 w-20 animate-spin' />
+      </div>
+    );
+  }
+  
   return (
     <div className={`bg-[url('/images/video_bg.jpeg')] bg-cover h-screen`}>
       <StreamVideo client={client}>
         <StreamTheme className='my-theme-overrides'>
           <StreamCall call={call}>
-            <SpeakerLayout />
-            <CallControls />
+            <MyUILayout />
           </StreamCall>
         </StreamTheme>
       </StreamVideo>
     </div>
   );
 }
+
+export const MyUILayout = () => {
+  const { useCallCallingState } =
+    useCallStateHooks();
+  const callingState = useCallCallingState();
+
+  if (callingState !== CallingState.JOINED) {
+    return (
+      <div className='w-full h-screen flex justify-center items-center'>
+        <ReloadIcon className='mr-2 h-20 w-20 animate-spin' />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <SpeakerLayout participantsBarPosition='bottom' />
+      <CallControls />
+    </>
+  );
+};

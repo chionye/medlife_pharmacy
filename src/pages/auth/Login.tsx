@@ -43,13 +43,7 @@ const Login = () => {
           description: data.message,
           action: <ToastAction altText='done'>done</ToastAction>,
         });
-        if (data.data.role === "patient") {
-          navigate("/patient/home");
-        } else if (data.data.role === "doctor") {
-          navigate("/doctor/home");
-        } else if (data.data.role === "hospital") {
-          navigate("/hospital/home");
-        }
+        navigate(`/${data.data.role}/home`);
       } else {
         if (data.errors.length > 0) {
           data.errors.forEach((err: string) => {

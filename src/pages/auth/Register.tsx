@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import useAxiosRequest from "@/hooks/useAxiosRequest";
-import { useNotifier } from "@/hooks/useNotifier";
+// import { useNotifier } from "@/hooks/useNotifier";
 import { setCookie } from "@/services/storage";
 import { RegisterPropType } from "@/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -24,7 +24,7 @@ const Register = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { loading, sendRequest } = useAxiosRequest<any>();
-  const { showNotifier, NotifierComponent } = useNotifier();
+  // const { showNotifier, NotifierComponent } = useNotifier();
 
   const roles: string[] = ["patient", "doctor"];
 
@@ -90,39 +90,33 @@ const Register = () => {
       //     },
       //   });
       // } else {
-        const data = await sendRequest("post", "create_user", registerData);
-        if (data.status) {
-          setCookie("@user", JSON.stringify(data.data), 1);
-          setCookie("@token", JSON.stringify(data.token), 1);
+      const data = await sendRequest("post", "create_user", registerData);
+      if (data.status) {
+        setCookie("@user", JSON.stringify(data.data), 1);
+        setCookie("@token", JSON.stringify(data.token), 1);
+        toast({
+          title: "Success",
+          description: data.message,
+          action: <ToastAction altText='done'>done</ToastAction>,
+        });
+        navigate(`/${data.data.role}/home`);
+      } else {
+        if (data.errors.length > 0) {
+          data.errors.forEach((err: string) => {
+            toast({
+              title: "Sorry",
+              description: err,
+              action: <ToastAction altText='done'>done</ToastAction>,
+            });
+          });
+        } else {
           toast({
-            title: "Success",
+            title: "Sorry",
             description: data.message,
             action: <ToastAction altText='done'>done</ToastAction>,
           });
-          if (data.data.role === "patient") {
-            navigate("/patient/home");
-          } else if (data.data.role === "doctor") {
-            navigate("/doctor/home");
-          } else if (data.data.role === "hospital") {
-            navigate("/hospital/home");
-          }
-        } else {
-          if (data.errors.length > 0) {
-            data.errors.forEach((err: string) => {
-              toast({
-                title: "Sorry",
-                description: err,
-                action: <ToastAction altText='done'>done</ToastAction>,
-              });
-            });
-          } else {
-            toast({
-              title: "Sorry",
-              description: data.message,
-              action: <ToastAction altText='done'>done</ToastAction>,
-            });
-          }
         }
+      }
       // }
     } catch (error: any) {
       console.error("Error occurred during registration:", error.message);
@@ -196,7 +190,7 @@ const Register = () => {
             "Sign Up"
           )}
         </Button>
-        {NotifierComponent}
+        {/* {NotifierComponent} */}
       </div>
     </div>
   );

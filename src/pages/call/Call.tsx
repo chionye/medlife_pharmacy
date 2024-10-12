@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 
 export default function VideoCall() {
   const apiKey = "mmhfdzb5evj2";
+  const navigate = useNavigate();
   const userData = JSON.parse(getCookie("@user") || "{}");
   const [client, setClient] = useState<StreamVideoClient>();
   const [call, setCall] = useState<Call>();
@@ -77,7 +78,12 @@ export default function VideoCall() {
   if (!client || !call){
     return (
       <div className='w-full h-screen flex flex-col justify-center items-center'>
-        <ReloadIcon className='mr-2 h-20 w-20 animate-spin' />
+        <p>Call Ended...</p>
+        <Button
+          className='bg-[#D20606] text-white w-full py-7'
+          onClick={() => navigate(-1)}>
+          Go Back
+        </Button>
       </div>
     );
   }
@@ -96,20 +102,14 @@ export default function VideoCall() {
 }
 
 export const MyUILayout = () => {
-  const navigate = useNavigate();
   const { useCallCallingState } =
     useCallStateHooks();
   const callingState = useCallCallingState();
 
   if (callingState !== CallingState.JOINED) {
     return (
-      <div className='w-full h-screen flex flex-col justify-center items-center'>
-        <p>Call Ended...</p>
-        <Button
-          className='bg-[#D20606] text-white w-full py-7'
-          onClick={() => navigate(-1)}>
-          Go Back
-        </Button>
+      <div className='w-full h-screen flex justify-center items-center'>
+        <ReloadIcon className='mr-2 h-20 w-20 animate-spin' />
       </div>
     );
   }

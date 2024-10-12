@@ -11,7 +11,6 @@ import { Badge, Divider } from "@chakra-ui/react";
 import video_call from "@/assets/video_call.svg";
 import { Button } from "./ui/button";
 import Mutation from "@/api/mutation";
-import { useNavigate } from "react-router-dom";
 import { useNotifier } from "@/hooks/useNotifier";
 import { getCookie } from "@/services/storage";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -174,7 +173,6 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
   >(undefined);
 
   const { mutation } = Mutation();
-  const navigate = useNavigate();
   const { showNotifier, NotifierComponent } = useNotifier();
 
   function createCallSession(index: number | undefined) {
@@ -186,24 +184,34 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
       url: `callogs/create`,
       content: { call_id: callId, doctor_id: id, patient_id: userData.id },
     };
-    // console.log(data);
-    mutation.mutate(data);
-    if (mutation.isSuccess) {
-      console.log(mutation.data);
-      if (mutation.data.status) {
-        navigate(`/call/${callId}`);
-      } else {
-        const errorMessage = Array.isArray(mutation.data.errors)
-          ? mutation.data.errors.join("\n")
-          : mutation.data.errors;
-        // console.log(errorMessage)
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        if (data.status) {
+          window.open(`/call/${callId}`, "_blank", "noopener,noreferrer");
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting data:", error);
         showNotifier({
           title: "Error",
-          text: errorMessage,
+          text: "There was an error submitting your data. Please try again.",
           status: "error",
         });
-      }
-    }
+      },
+    });
     // Redirect the patient and doctor to the call page
   }
 

@@ -39,6 +39,7 @@ const Appointments = () => {
       "Appointment Details",
       "Appointment Link",
       "Status",
+      "Cancel Appointment",
     ],
     []
   );
@@ -54,6 +55,7 @@ const Appointments = () => {
       "description",
       "link",
       "status",
+      "cancel",
     ],
     []
   );

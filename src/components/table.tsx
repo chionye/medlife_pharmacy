@@ -24,6 +24,7 @@ import { PatientsDetails } from "./top_patients";
 import CustomModal from "./custom_modal";
 import { DoctorsDetails } from "@/components/top_doctors";
 import { EditDoctorForm } from "./onboard_form";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
   const user = getCookie("@user");
@@ -34,6 +35,7 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
   const navigate = useNavigate();
   // State to manage the selected patient for modal
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [loadingItem, setLoadingItem] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
   // Ref to trigger FullModal programmatically
   const modalRef = useRef<HTMLButtonElement>(null);
@@ -70,6 +72,52 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
             text: `You have marked this appointment as completed`,
             status: "success",
           });
+        } else if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          showNotifier({
+            title: "Error",
+            text: errorMessage,
+            status: "error",
+          });
+        }
+      },
+      onError: (error) => {
+        console.log("Error submitting feedback:", error);
+        showNotifier({
+          title: "Error",
+          text: "There was an error submitting your feedback. Please try again.",
+          status: "error",
+        });
+      },
+    });
+  };
+
+  const handleCancelAppointment = (id: string) => {
+    const data = {
+      method: "post",
+      url: "appointment/cancel",
+      content: {
+        appointment_id: id,
+        action: "cancel",
+      },
+    };
+    setLoadingItem(id);
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data.status) {
+          showNotifier({
+            title: "Success",
+            text: `You have canceled this appointment`,
+            status: "success",
+          });
+          navigate(0);
         } else if (data.error || data.errors || data.message) {
           const errorMessage = data.message
             ? data.message
@@ -271,6 +319,25 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
                               <DoctorsDetails {...item} />
                             </div>
                           </FullModal>
+                        </td>
+                      ) : key === "cancel" ? (
+                        <td className='px-4 py-3 text-xs font-normal'>
+                          <p className='truncate w-24'>{item[key]}</p>
+                          <Button
+                            variant={"ghost"}
+                            className={"underline text-[#333333]"}
+                            onClick={() => handleCancelAppointment(item.id)}>
+                            <div className='flex justify-center items-center'>
+                              {mutation.isPending && loadingItem === item.id ? (
+                                <>
+                                  <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                                  Canceling
+                                </>
+                              ) : (
+                                "Cancel Appointment"
+                              )}
+                            </div>
+                          </Button>
                         </td>
                       ) : (
                         <td className='px-4 py-3 text-xs font-normal'>

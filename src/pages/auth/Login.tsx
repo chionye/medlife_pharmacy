@@ -45,13 +45,18 @@ const Login = () => {
         });
         navigate(`/${data.data.role}/home`);
       } else {
-        if (data.errors.length > 0) {
-          data.errors.forEach((err: string) => {
-            toast({
-              title: "Sorry",
-              description: err,
-              action: <ToastAction altText='done'>done</ToastAction>,
-            });
+        if (data.error || data.errors || data.message) {
+          const errorMessage = data.message
+            ? data.message
+            : data.error
+            ? data.error
+            : Array.isArray(data.errors)
+            ? data.errors.join("\n")
+            : data.errors;
+          toast({
+            title: "Sorry",
+            description: errorMessage,
+            action: <ToastAction altText='done'>done</ToastAction>,
           });
         }
       }

@@ -9,6 +9,9 @@ import { toTitleCase } from "@/services/helpers";
 
 const Header = () => {
   const [userData, setUserData] = useState<Record<string, string> | null>(null);
+  const [userPhoto, setUserPhoto] = useState<string | null>(
+    null
+  );
   const location = useLocation();
   const role = getConfigByRole();
   const settings = role ? NavbarItems[role] : [];
@@ -16,7 +19,13 @@ const Header = () => {
   useEffect(() => {
     const user = getCookie("@user");
     if (user) {
-      setUserData(JSON.parse(user));
+      const userData = JSON.parse(user);
+      setUserData(userData);
+      setUserPhoto(
+        userData.photo.indexOf("http") !== -1
+          ? userData.photo
+          : `https://api.medlifelink.life/images/profiles/${userData.photo}`
+      );
     }
   }, []);
 
@@ -46,7 +55,7 @@ const Header = () => {
             <div className='rounded-full h-12 w-12 ml-2 overflow-hidden'>
               <img
                 className='bg-center bg-cover bg-no-repeat inline-block h-12 w-12'
-                src={userData?.photo || profile}
+                src={userPhoto || profile}
                 alt='avatar'
               />
             </div>

@@ -251,7 +251,7 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
               Saving
             </>
           ) : (
-            "Upload Image"
+            "Save Image"
           )}
         </Button>
       )}

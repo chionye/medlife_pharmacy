@@ -17,7 +17,9 @@ const Settings = () => {
   const navigate = useNavigate();
   const user = getCookie("@user");
   const userData = user ? JSON.parse(user) : null;
-  const [userPhoto, setUserPhoto] = useState<string | null>(null);
+  const [userPhoto, setUserPhoto] = useState<Record<string, string | null>>({
+    photo: userData.photo || checker,
+  });
   const { showNotifier, NotifierComponent } = useNotifier();
 
   const logout = () => {
@@ -47,16 +49,17 @@ const Settings = () => {
     const user = getCookie("@user");
     if (user) {
       const userData = JSON.parse(user);
-      setUserPhoto(
-        userData.photo.indexOf("http") !== -1
-          ? userData.photo
-          : userData.photo
-          ? `https://api.medlifelink.life/images/profiles/${userData.photo}`
-          : checker
-      );
+      setUserPhoto({
+        ...userPhoto,
+        photo:
+          userData.photo.indexOf("http") !== -1
+            ? userData.photo
+            : userData.photo
+            ? `https://api.medlifelink.life/images/profiles/${userData.photo}`
+            : checker,
+      });
     }
   }, []);
-
   return (
     <>
       <NavLink to={"/patient/home"} className='flex items-center'>
@@ -66,7 +69,7 @@ const Settings = () => {
       <div className='mt-10 px-5 lg:gap-20'>
         <ProfileSection userData={userData}>
           <UploadSingle
-            defaultPhoto={userPhoto}
+            defaultPhoto={userPhoto.photo}
             updatePhotoFunction={setUserPhoto}
           />
           <div className='flex justify-between items-start lg:mt-0 mt-5 lg:w-3/5 w-full'>

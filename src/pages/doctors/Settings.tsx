@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { SettingsItems } from "@/utils/settings/settingsitems";
@@ -44,6 +44,22 @@ const DoctorSettings = () => {
 
   const role = getConfigByRole();
   const settings = role ? SettingsItems[role] : [];
+
+  useEffect(() => {
+    const user = getCookie("@user");
+    if (user) {
+      const userData = JSON.parse(user);
+      setUserPhoto({
+        ...userPhoto,
+        photo:
+          userData.photo.indexOf("http") !== -1
+            ? userData.photo
+            : userData.photo
+            ? `https://api.medlifelink.life/images/profiles/${userData.photo}`
+            : checker,
+      });
+    }
+  }, []);
 
   return (
     <>

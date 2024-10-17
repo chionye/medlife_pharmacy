@@ -80,6 +80,22 @@ const AdminSettings = () => {
     if (queries[0].data) setWebsiteSettings(queries[0].data.data);
   }, [queries]);
 
+  useEffect(() => {
+    const user = getCookie("@user");
+    if (user) {
+      const userData = JSON.parse(user);
+      setUserPhoto({
+        ...userPhoto,
+        photo:
+          userData.photo.indexOf("http") !== -1
+            ? userData.photo
+            : userData.photo
+            ? `https://api.medlifelink.life/images/profiles/${userData.photo}`
+            : checker,
+      });
+    }
+  }, []);
+
   return (
     <>
       <div className='flex justify-center items-center lg:px-10 px-5 mt-10'>

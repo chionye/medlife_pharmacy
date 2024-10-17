@@ -34,7 +34,7 @@ const BookAppointmentForm = () => {
   const userData = user ? JSON.parse(user) : null;
   const [doctors, setDoctors] = useState<any>([]);
   const [formData, setFormData] = useState<AppointmentPropType>({
-    title: "",
+    title: "Appointment",
     link: "",
     description: "",
     type: "none",
@@ -149,14 +149,14 @@ const BookAppointmentForm = () => {
 
   return (
     <div className='mt-10 w-full'>
-      <div className='flex justify-between gap-3'>
-        <FormInput
+      <div className='mt-4'>
+        {/* <FormInput
           type='text'
           name='title'
           label='Title'
           value={formData.title}
           changeFunction={handleFormChange}
-        />
+        /> */}
         <FormSelect
           options={doctors}
           name='doctor_id'

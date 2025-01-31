@@ -19,7 +19,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
                   ? "bg-[#585BA8]" // Active step
                   : "bg-gray-300" // Pending step
               }`}>
-            {index < currentStep ? <img src={check} alt="check icon" /> : `0${index + 1}`}
+            {index < currentStep ? <img src={check} alt="check icon" /> : `0${step}`}
           </div>
 
           {/* Step Connector (Line) */}

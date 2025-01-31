@@ -1,14 +1,14 @@
 /** @format */
 
 import { FormInput } from "@/components/form_input";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
+// import { ToastAction } from "@/components/ui/toast";
+// import { useToast } from "@/components/ui/use-toast";
 import useAxiosRequest from "@/hooks/useAxiosRequest";
 // import { useNotifier } from "@/hooks/useNotifier";
-import { setCookie } from "@/services/storage";
+// import { setCookie } from "@/services/storage";
 import { RegisterPropType } from "@/types";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import user from "@/assets/user-circle.svg";
 import phone from "@/assets/phone.svg";
 import envelope from "@/assets/mail.svg";
@@ -26,12 +26,12 @@ const Register = () => {
   });
   const [currentStep, setCurrentStep] = useState(0);
 
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const { loading, sendRequest } = useAxiosRequest<any>();
+  // const { toast } = useToast();
+  // const navigate = useNavigate();
+  const { loading } = useAxiosRequest<any>();
   // const { showNotifier, NotifierComponent } = useNotifier();
 
-  const steps = ["Step 1", "Step 2", "Step 3"];
+  const steps = ["1", "2", "3"];
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -47,48 +47,48 @@ const Register = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
 
-  const prevStep = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
-  };
+  // const prevStep = () => {
+  //   if (currentStep > 0) setCurrentStep(currentStep - 1);
+  // };
 
-  const handleFormSubmit = async () => {
-    try {
-      const registerData = {
-        ...formData,
-        photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
-      };
-      const data = await sendRequest("post", "creuser", registerData);
-      if (data.status) {
-        setCookie("@user", JSON.stringify(data.data), 1);
-        setCookie("@token", JSON.stringify(data.token), 1);
-        toast({
-          title: "Success",
-          description: data.message,
-          action: <ToastAction altText='done'>done</ToastAction>,
-        });
-        navigate(`/${data.data.role}/home`);
-      } else {
-        if (data.errors.length > 0) {
-          data.errors.forEach((err: string) => {
-            toast({
-              title: "Sorry",
-              description: err,
-              action: <ToastAction altText='done'>done</ToastAction>,
-            });
-          });
-        } else {
-          toast({
-            title: "Sorry",
-            description: data.message,
-            action: <ToastAction altText='done'>done</ToastAction>,
-          });
-        }
-      }
-      // }
-    } catch (error: any) {
-      console.error("Error occurred during registration:", error.message);
-    }
-  };
+  // const handleFormSubmit = async () => {
+  //   try {
+  //     const registerData = {
+  //       ...formData,
+  //       photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
+  //     };
+  //     const data = await sendRequest("post", "creuser", registerData);
+  //     if (data.status) {
+  //       setCookie("@user", JSON.stringify(data.data), 1);
+  //       setCookie("@token", JSON.stringify(data.token), 1);
+  //       toast({
+  //         title: "Success",
+  //         description: data.message,
+  //         action: <ToastAction altText='done'>done</ToastAction>,
+  //       });
+  //       navigate(`/${data.data.role}/home`);
+  //     } else {
+  //       if (data.errors.length > 0) {
+  //         data.errors.forEach((err: string) => {
+  //           toast({
+  //             title: "Sorry",
+  //             description: err,
+  //             action: <ToastAction altText='done'>done</ToastAction>,
+  //           });
+  //         });
+  //       } else {
+  //         toast({
+  //           title: "Sorry",
+  //           description: data.message,
+  //           action: <ToastAction altText='done'>done</ToastAction>,
+  //         });
+  //       }
+  //     }
+  //     // }
+  //   } catch (error: any) {
+  //     console.error("Error occurred during registration:", error.message);
+  //   }
+  // };
 
   return (
     <div className='flex justify-center'>

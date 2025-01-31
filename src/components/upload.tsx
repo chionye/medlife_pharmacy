@@ -243,7 +243,7 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
       </button>
       {imageUrl && (
         <Button
-          className='bg-[#D20606] text-white py-2 px-4 rounded-lg mt-3'
+          className='bg-[#585BA8] text-white py-2 px-4 rounded-lg mt-3'
           onClick={handleFormSubmit}>
           {mutation.isPending ? (
             <>

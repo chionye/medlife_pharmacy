@@ -171,7 +171,7 @@ export const AppointmentSection = ({
                       title={"Reschedule Appointment"}
                       label='Reschedule'
                       cn={
-                        "bg-[#D20606] text-white w-full text-[11px] lg:px-14 px-8 py-[11px]"
+                        "bg-[#585BA8] text-white w-full text-[11px] lg:px-14 px-8 py-[11px]"
                       }>
                       <div className='flex justify-center items-center'>
                         <RescheduleAppointmentForm appointment={appointment} />
@@ -217,7 +217,7 @@ export const AppointmentSection = ({
                       title={"Reschedule Appointment"}
                       label='Reschedule'
                       cn={
-                        "bg-[#D20606] text-white text-[11px] lg:px-14 px-8 py-[11px]"
+                        "bg-[#585BA8] text-white text-[11px] lg:px-14 px-8 py-[11px]"
                       }>
                       <div className='flex justify-center items-center'>
                         <RescheduleAppointmentForm appointment={appointment} />

@@ -20,7 +20,7 @@ const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
             {pathname === "/patient/wallet" && (
               <NavLink
                 to={"/patient/wallet/transactions"}
-                className={"text-[#D20606] flex gap-2 items-center"}>
+                className={"text-[#585BA8] flex gap-2 items-center"}>
                 <span>View all</span>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -28,7 +28,7 @@ const WalletTransaction: React.FC<any> = ({ data, number = null }) => {
                   height='1.3em'
                   viewBox='0 0 24 24'>
                   <path
-                    fill='#d20606'
+                    fill='#585BA8'
                     d='m13.292 12l-4.6-4.6l.708-.708L14.708 12L9.4 17.308l-.708-.708z'></path>
                 </svg>
               </NavLink>

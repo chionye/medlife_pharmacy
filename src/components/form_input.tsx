@@ -1,9 +1,6 @@
 /** @format */
 
-import {
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
+import { Input, Textarea } from "@chakra-ui/react";
 import { Label } from "./ui/label";
 import { Select } from "@chakra-ui/react";
 import {
@@ -20,6 +17,8 @@ const FormInput: React.FC<FormInputPropType> = ({
   name,
   placeholder,
   value,
+  icon,
+  rightIcon,
   disabled = false,
   cn = "border-[#D9D9D9]",
   changeFunction,
@@ -29,17 +28,25 @@ const FormInput: React.FC<FormInputPropType> = ({
       <Label htmlFor={name} className='text-sm font-normal'>
         {label}
       </Label>
-      <Input
-        type={type}
-        id={name}
-        name={name}
-        className={cn}
-        value={value}
-        placeholder={placeholder}
-        onChange={changeFunction}
-        disabled={disabled}
-        size={"lg"}
-      />
+      <div className={`${icon && cn} flex items-center gap-3`}>
+        {icon}
+        <Input
+          type={type}
+          id={name}
+          name={name}
+          className={
+            icon
+              ? "bg-transparent w-full py-3 focus:border-none outline-none"
+              : cn
+          }
+          value={value}
+          placeholder={placeholder}
+          onChange={changeFunction}
+          disabled={disabled}
+          size={"lg"}
+        />
+        <button>{rightIcon}</button>
+      </div>
     </div>
   );
 };

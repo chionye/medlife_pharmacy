@@ -20,7 +20,7 @@ const EmptyAppointment = () => {
         </p>
         <FullModal
           cn={
-            "bg-[#D20606] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
+            "bg-[#585BA8] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
           }
           label={
             role === "patient" ? "Book Appointment" : "Create Appointment"
@@ -58,7 +58,7 @@ const EmptyPatients = () => {
           btnTitle='Onboard New Patients'
           scrollBehavior='outside'
           cn={
-            "bg-[#D20606] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
+            "bg-[#585BA8] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
           }>
           <div className='flex justify-center items-center'>
             <OnboardPatientForm />
@@ -83,7 +83,7 @@ const EmptyDoctors = () => {
           title={"Onboard a Doctor"}
           btnTitle='Onboard New Doctor'
           cn={
-            "bg-[#D20606] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
+            "bg-[#585BA8] lg:w-[400px] w-full mt-6 h-[72px] rounded  text-white"
           }>
           <div className='flex justify-center items-center'>
             <OnboardDoctorForm />

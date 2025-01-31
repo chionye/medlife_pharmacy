@@ -78,7 +78,7 @@ const Notifier: React.FC<NotifierPropType> = ({
                           {cancelText}
                         </button>
                         <button
-                          className='bg-[#D20606] px-10 py-3 text-white rounded'
+                          className='bg-[#585BA8] px-10 py-3 text-white rounded'
                           onClick={() => {
                             confirmFunction?.();
                           }}>
@@ -86,7 +86,7 @@ const Notifier: React.FC<NotifierPropType> = ({
                         </button>
                       </div>
                     ) : (
-                      <div className='text-center text-[#D20606] text-sm  w-full'>
+                      <div className='text-center text-[#585BA8] text-sm  w-full'>
                         <NavLink to={"/patient/home"}>
                           Back to Dashboard
                         </NavLink>
@@ -117,7 +117,7 @@ const Notifier: React.FC<NotifierPropType> = ({
                         {cancelText}
                       </button>
                       <button
-                        className='bg-[#D20606] px-10 py-3 text-white rounded'
+                        className='bg-[#585BA8] px-10 py-3 text-white rounded'
                         onClick={() => {
                           confirmFunction?.();
                         }}>
@@ -125,7 +125,7 @@ const Notifier: React.FC<NotifierPropType> = ({
                       </button>
                     </div>
                   ) : (
-                    <div className='text-center text-[#D20606] text-sm'>
+                    <div className='text-center text-[#585BA8] text-sm'>
                       <NavLink to={"/patient/home"}>Back to Dashboard</NavLink>
                     </div>
                   )}

@@ -37,7 +37,7 @@ export const CardWithButton = ({
       {buttonText && !modal ? (
         <NavLink
           to={link}
-          className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1'>
+          className='bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1'>
           <img src={icon} alt='icon' />
           <strong>{buttonText}</strong>
         </NavLink>
@@ -47,7 +47,7 @@ export const CardWithButton = ({
           title={"Onboard a Patient"}
           btnTitle='Onboard New Patients'
           cn={
-            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+            "bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
           }>
           <div className='flex justify-center items-center'>
             <OnboardPatientForm />
@@ -59,7 +59,7 @@ export const CardWithButton = ({
           title={"Book Appointment"}
           btnTitle='Book Appointment'
           cn={
-            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+            "bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
           }>
           <div className='flex justify-center items-center'>
             <BookAppointmentForm />
@@ -71,7 +71,7 @@ export const CardWithButton = ({
           title={"Create Appointment"}
           btnTitle='Create Appointment'
           cn={
-            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+            "bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
           }>
           <div className='flex justify-center items-center'>
             <BookAppointmentForm />
@@ -84,7 +84,7 @@ export const CardWithButton = ({
           btnTitle='Onboard New Doctor'
           scrollBehavior='outside'
           cn={
-            "bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
+            "bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1"
           }>
           <div className='flex justify-center items-center'>
             <OnboardDoctorForm />
@@ -129,7 +129,7 @@ export const WalletCard = ({
   return (
     <Card className={`bg-[url('/images/bg.png')] mt-4`}>
       <div
-        className={`w-full lg:py-14 lg:px-6 py-6 px-3 bg-[#D20606E5] rounded-xl`}>
+        className={`w-full lg:py-14 lg:px-6 py-6 px-3 bg-[#585BA8E5] rounded-xl`}>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <p className='text-xl font-medium text-white'>
@@ -168,7 +168,7 @@ export const WalletCard = ({
               className={`${
                 withdraw
                   ? "bg-none text-white border border-[#FAFAFA]"
-                  : "bg-white text-[#D20606]"
+                  : "bg-white text-[#585BA8]"
               } lg:text-2xl text-[16px] flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={withdraw ? plus_white : plus_red} alt='plus' />
@@ -187,7 +187,7 @@ export const WalletCard = ({
           {withdraw && (
             <NavLink
               to={`/${getConfigByRole()}/wallet/withdraw`}
-              className={`bg-white text-[#D20606] lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
+              className={`bg-white text-[#585BA8] lg:text-2xl text-lg flex justify-center lg:py-2 pr-3 lg:w-56 rounded-lg`}>
               <span className='flex items-center'>
                 <img src={plus_red} alt='plus' />
                 <span>Withdraw Funds</span>

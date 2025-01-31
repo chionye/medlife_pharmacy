@@ -80,7 +80,7 @@ const ResetPassword = () => {
       </div>
       <div className='mt-10'>
         <Button
-          className='bg-[#D20606] text-white w-full py-7'
+          className='bg-[#585BA8] text-white w-full py-7'
           onClick={handleFormSubmit}
           disabled={loading}>
           {loading ? (
@@ -92,7 +92,7 @@ const ResetPassword = () => {
             "Submit"
           )}
         </Button>
-        <div className='text-center text-[#D20606] text-lg mt-10'>
+        <div className='text-center text-[#585BA8] text-lg mt-10'>
           <NavLink to={"/"}>Back to Login</NavLink>
         </div>
       </div>

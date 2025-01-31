@@ -255,7 +255,7 @@ const TopDoctors: React.FC<TopDoctorsPropType> = ({
           <FullModal
             title='Doctors Details'
             label='View Profile'
-            cn='text-[#D20606] text-xs'>
+            cn='text-[#585BA8] text-xs'>
             <div className='flex justify-center items-center'>
               <DoctorsDetails
                 username={username}

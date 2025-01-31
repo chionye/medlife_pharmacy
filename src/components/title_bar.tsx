@@ -8,7 +8,7 @@ const TitleBar: React.FC<TitleBarPropType> = ({ title, link = null }) => {
     <div className='flex justify-between lg:mt-0 mt-5'>
       <h4 className='text-xl font-medium'>{title}</h4>
       {link && (
-        <NavLink to={link} className={"text-[#D20606] flex gap-2 items-center"}>
+        <NavLink to={link} className={"text-[#585BA8] flex gap-2 items-center"}>
           <span>View all</span>
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -16,7 +16,7 @@ const TitleBar: React.FC<TitleBarPropType> = ({ title, link = null }) => {
             height='1.3em'
             viewBox='0 0 24 24'>
             <path
-              fill='#d20606'
+              fill='#585BA8'
               d='m13.292 12l-4.6-4.6l.708-.708L14.708 12L9.4 17.308l-.708-.708z'></path>
           </svg>
         </NavLink>

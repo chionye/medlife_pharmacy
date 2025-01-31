@@ -48,7 +48,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             icon={<img src={camera} alt='open modal' />}
             title={"Book Appointment"}
             cn={
-              "fixed lg:bottom-10 bottom-20 right-10 bg-[#D20606CC] w-16 h-16 flex justify-center items-center rounded-full"
+              "fixed lg:bottom-10 bottom-20 right-10 bg-[#585BA8CC] w-16 h-16 flex justify-center items-center rounded-full"
             }>
             <div className='flex justify-center items-center'></div>
           </FullModal>

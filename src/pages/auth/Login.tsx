@@ -10,6 +10,9 @@ import { LoginPropType } from "@/types";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import envelope from "@/assets/mail.svg";
+import lock from "@/assets/lock.svg";
+import eye from "@/assets/view-off.svg";
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginPropType>({
@@ -66,42 +69,50 @@ const Login = () => {
   };
 
   return (
-    <div className='lg:pr-28 lg:px-0 px-3 mt-7'>
-      <p className='text-3xl font-bold'>Welcome Back</p>
-      <div className='mt-5'>
-        <FormInput
-          type='email'
-          name='email'
-          label='Email'
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
-        />
-      </div>
-      <div className='mt-5'>
-        <FormInput
-          type='password'
-          name='password'
-          label='Password'
-          cn={"border border-[#000000] py-3 px-2"}
-          changeFunction={handleFormChange}
-        />
-      </div>
-      <div className='mt-10'>
-        <Button
-          className='bg-[#D20606] text-white w-full py-7'
-          onClick={handleFormSubmit}
-          disabled={loading}>
-          {loading ? (
-            <>
-              <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-              Please wait
-            </>
-          ) : (
-            "Sign In"
-          )}
-        </Button>
-        <div className='text-center text-[#D20606] text-lg mt-10'>
-          <NavLink to={"/reset-password"}>Reset your password here</NavLink>
+    <div className='flex justify-center'>
+      <div className='lg:px-0 px-3 mt-7 lg:w-3/4'>
+        <div className='mt-5'>
+          <FormInput
+            type='email'
+            name='email'
+            label='Email'
+            placeholder='mina@gmail.com'
+            icon={<img src={envelope} alt='envelope image' />}
+            cn={"border-b-2 border-b-[#585BA8] px-2 bg-[#F2F2F280]"}
+            changeFunction={handleFormChange}
+          />
+        </div>
+        <div className='mt-5'>
+          <FormInput
+            type='password'
+            name='password'
+            label='Password'
+            placeholder='*****************'
+            icon={<img src={lock} alt='lock image' />}
+            rightIcon={<img src={eye} alt='eye image' />}
+            cn={"border-b-2 border-b-[#585BA8] px-2 bg-[#F2F2F280]"}
+            changeFunction={handleFormChange}
+          />
+        </div>
+        <div className='flex justify-end mt-3'>
+          <NavLink to={""} className={"text-lg font-light"}>
+            Forgot your password?
+          </NavLink>
+        </div>
+        <div className='mt-10'>
+          <Button
+            className='bg-[#585BA8] text-white w-full py-7'
+            onClick={handleFormSubmit}
+            disabled={loading}>
+            {loading ? (
+              <>
+                <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+                Please wait
+              </>
+            ) : (
+              "Log In"
+            )}
+          </Button>
         </div>
       </div>
     </div>

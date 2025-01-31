@@ -221,7 +221,7 @@ const OnboardPatientForm = () => {
         />
       </div>
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}
         disabled={mutation.isPending}>
         {mutation.isPending ? (
@@ -544,7 +544,7 @@ const OnboardDoctorForm = () => {
       </div>
       {/* Submit Button */}
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}
         disabled={mutation.isPending}>
         {mutation.isPending ? (
@@ -703,9 +703,7 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
   };
 
   // Function to handle array input updates
-  const handleAddArrayItem = (
-    field: "certification" | "language"
-  ) => {
+  const handleAddArrayItem = (field: "certification" | "language") => {
     const inputValue = formInput[field];
     if (inputValue.trim() === "") return;
 
@@ -918,7 +916,7 @@ const EditDoctorForm = ({ doctor }: { doctor: any }) => {
 
       {/* Submit Button */}
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}
         disabled={mutation.isPending}>
         {mutation.isPending ? (

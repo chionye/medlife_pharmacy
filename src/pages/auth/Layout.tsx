@@ -2,51 +2,65 @@
 
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import logo_2 from "@/assets/logo_2.svg";
 import logo from "@/assets/logo.svg";
+import image from "@/assets/auth.svg";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   return (
-    <div className='bg-white flex justify-center'>
+    <div className='bg-[#585BA8] flex justify-center'>
       <div
-        className={`lg:w-full lg:flex flex-col hidden h-screen lg:pl-10 lg:pt-10 pl-5 pt-5 ${
-          location.pathname === "/"
-            ? "bg-[url('/images/bg_2.png')]"
-            : "bg-[url('/images/bg_1.png')]"
-        } bg-cover`}>
-        <img src={logo_2} alt='Logo' className=' lg:w-16' />
+        className={`lg:w-2/5 lg:flex flex-col items-center justify-center hidden h-screen lg:pl-10 lg:pt-10 pl-5 pt-5`}>
+        <img src={image} alt='Logo' className='w-3/5' />
+        <div className='px-10 text-center pb-10'>
+          <p className='text-white text-4xl font-bold'>
+            Welcome Back to <br /> Medlife Link Pharmacy
+          </p>
+          <p className='text-white text-2xl font-normal mt-5'>
+            Log in to grow your store, boost revenue, and reach a larger
+            customer base while managing orders effortlessly.
+          </p>
+          <p className='mt-10 text-[10px] text-white'>
+            Powered By <br />
+            MedLife Link <br /> All Right Reserved
+          </p>
+        </div>
       </div>
-      <div className='w-full'>
-        {(location.pathname === "/" || location.pathname === "/register") && (
-          <div className='flex lg:justify-end justify-center lg:shadow-none shadow-lg'>
-            <div className='flex lg:gap-10 gap-10 lg:justify-start justify-center items-center lg:w-4/6 w-full py-5'>
-              <p className='font-normal text-lg'>
-                {location.pathname === "/"
-                  ? "Don’t Have an Account?"
-                  : "Already Have an Account?"}
-              </p>
-              <NavLink
-                to={location.pathname === "/" ? "/register" : "/"}
-                className={
-                  "bg-[#D20606] py-3 lg:px-9 px-5 lg:text-lg text-white flex justify-center"
-                }>
-                {location.pathname === "/" ? "Register" : "Login"}
-              </NavLink>
-            </div>
-          </div>
-        )}
+      <div className='lg:w-3/5 bg-white px-10 lg:rounded-l-[80px]'>
         <div
           className={`${
             location.pathname === "/" || location.pathname === "/register"
               ? "mt-10"
               : " mt-32"
           }`}>
-          <div className='lg:hidden flex justify-center'>
+          <div className='flex justify-center'>
             <img src={logo} alt='logo' />
           </div>
+          <div>
+            <p className='text-center text-5xl font-semibold text-[#585BA8] leading-10'>
+              Welcome{" "}
+              {location.pathname === "/" || location.pathname === "/login"
+                ? "Back"
+                : ""}{" "}
+              to <br /> Medlife Link Pharmacy
+            </p>
+            <p className='text-center text-3xl font-medium text-[#585BA8]'>
+              {location.pathname === "/" || location.pathname === "/login"
+                ? "Log In"
+                : "Register"}
+            </p>
+          </div>
           {children}
+        </div>
+
+        <div className='text-center text-[#585BA8] text-lg mt-10'>
+          {(location.pathname === "/" || location.pathname === "/login") && (
+            <p>
+              You don't have an account?{" "}
+              <NavLink to={"/register"}>Register Account</NavLink>
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -83,6 +83,8 @@ export interface FormInputPropType {
   type: string;
   name: string;
   cn?: string;
+  icon?: any;
+  rightIcon?: any;
   disabled?: boolean;
   value?: string;
   placeholder?: string;

@@ -130,7 +130,7 @@ const FundingForm = () => {
       </div>
       {parseFloat(formData.amount) < 1000 ? (
         <Button
-          className='bg-[#D20606] w-full mt-6 p-7'
+          className='bg-[#585BA8] w-full mt-6 p-7'
           disabled={formData.gateway === "Select Payment Method"}
           onClick={() =>
             showNotifier({
@@ -143,7 +143,7 @@ const FundingForm = () => {
         </Button>
       ) : (
         <Button
-          className='bg-[#D20606] w-full mt-6 p-7'
+          className='bg-[#585BA8] w-full mt-6 p-7'
           disabled={formData.gateway === "Select Payment Method"}>
           {formData.gateway === "Credit Card" ? (
             <PaystackButton {...componentProps} />

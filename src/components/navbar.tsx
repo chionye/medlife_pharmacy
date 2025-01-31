@@ -17,8 +17,8 @@ const NavbarItem = ({
   location: string;
 }) => (
   <div
-    className={`rounded-e-3xl pl-10 py-3 group hover:bg-[#D20606] ${
-      location.indexOf(to) !== -1 && "bg-[#D20606]"
+    className={`rounded-e-3xl pl-10 py-3 group hover:bg-[#585BA8] ${
+      location.indexOf(to) !== -1 && "bg-[#585BA8]"
     } transition-all mb-2`}>
     <NavLink
       to={to}

@@ -18,11 +18,11 @@ const BottomNavItem = ({
 }) => (
   <NavLink
     to={to}
-    className={`flex flex-col items-center hover:text-[#D20606] ${
-      location.indexOf(to) !== -1 && "text-[#D20606]"
+    className={`flex flex-col items-center hover:text-[#585BA8] ${
+      location.indexOf(to) !== -1 && "text-[#585BA8]"
     }`}>
     {icon}
-    <span className="hidden">{label}</span>
+    <span className='hidden'>{label}</span>
   </NavLink>
 );
 
@@ -30,7 +30,7 @@ function BottomNav() {
   const location = useLocation();
   const role = getConfigByRole();
   const settings = role ? NavbarItems[role] : [];
-  
+
   return (
     <Card className='bg-white text-[#908787] px-5 z-10 w-full rounded-lg py-3'>
       <div className='py-2 text-5x1 flex justify-between'>

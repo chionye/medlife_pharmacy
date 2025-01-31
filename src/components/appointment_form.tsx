@@ -173,7 +173,7 @@ const BookAppointmentForm = () => {
           value={formData.link}
           changeFunction={handleFormChange}
         />
-        <Button onClick={createCallSession} className='bg-[#D20606] mt-6'>
+        <Button onClick={createCallSession} className='bg-[#585BA8] mt-6'>
           Generate Link
         </Button>
       </div>
@@ -212,7 +212,7 @@ const BookAppointmentForm = () => {
         />
       </div>
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
         {mutation.isPending ? (
           <>
@@ -383,7 +383,7 @@ const CreateAppointmentForm = () => {
         />
       </div>
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
         {mutation.isPending ? (
           <>
@@ -482,10 +482,8 @@ const AppointmentDetails = ({ appointment }: any) => {
         <p className='text-[12px] font-normal'>
           Date and Time:
           <br />{" "}
-          {appointment.patient?.created_at && getDateFormat(
-            appointment.patient.created_at,
-            "date"
-          )}
+          {appointment.patient?.created_at &&
+            getDateFormat(appointment.patient.created_at, "date")}
         </p>
       </div>
       <div className='mt-4'>
@@ -520,7 +518,7 @@ const AppointmentDetails = ({ appointment }: any) => {
       </div>
       {role !== "patient" && (
         <Button
-          className='bg-[#D20606] w-full mt-6 p-7'
+          className='bg-[#585BA8] w-full mt-6 p-7'
           onClick={handleFormSubmit}>
           {mutation.isPending ? (
             <>
@@ -653,7 +651,7 @@ const RescheduleAppointmentForm = ({ appointment }: any) => {
         />
       </div>
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
         {mutation.isPending ? (
           <>

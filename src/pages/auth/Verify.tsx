@@ -28,7 +28,7 @@ const Verify = () => {
       ...formData,
       otp: value,
     });
-  }
+  };
 
   const handleFormSubmit = async () => {
     console.log(formData);
@@ -77,7 +77,7 @@ const Verify = () => {
       </div>
       <div className='mt-10'>
         <Button
-          className='bg-[#D20606] text-white w-full py-7'
+          className='bg-[#585BA8] text-white w-full py-7'
           onClick={handleFormSubmit}
           disabled={loading}>
           {loading ? (
@@ -91,7 +91,7 @@ const Verify = () => {
         </Button>
         <div className='text-center text-lg mt-10'>
           <p className='text-lg font-normal'>Haven’t Received Code?</p>
-          <button className='text-[#D20606]'>Resend</button>
+          <button className='text-[#585BA8]'>Resend</button>
         </div>
       </div>
     </div>

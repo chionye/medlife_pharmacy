@@ -62,7 +62,7 @@ const Messages = () => {
                   </p>
                   <NavLink
                     to='/patient/message'
-                    className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between mt-10 px-8 py-1'>
+                    className='bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between mt-10 px-8 py-1'>
                     <img src={add} alt='logo' />
                     <strong>Call A Doctor</strong>
                   </NavLink>
@@ -79,7 +79,7 @@ const Messages = () => {
                   <p className='text-[26px]'>{appointments.length}</p>
                   <NavLink
                     to='/patient/appointments'
-                    className='bg-[#D20606] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1 '>
+                    className='bg-[#585BA8] text-sm text-white hover:no-underline rounded-xl flex items-center justify-between px-8 py-1 '>
                     <img src={add} alt='plus icon' />
                     <strong>Book Appointment</strong>
                   </NavLink>

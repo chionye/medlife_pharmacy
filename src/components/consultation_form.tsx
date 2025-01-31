@@ -96,7 +96,7 @@ const ConsultationForm = () => {
         />
       </div>
       <Button
-        className='bg-[#D20606] w-full mt-6 p-7'
+        className='bg-[#585BA8] w-full mt-6 p-7'
         onClick={handleFormSubmit}>
         Save
       </Button>

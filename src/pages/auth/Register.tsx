@@ -57,7 +57,7 @@ const Register = () => {
         ...formData,
         photo: `https://api.dicebear.com/7.x/initials/svg?seed=${formData.fullname}`,
       };
-      const data = await sendRequest("post", "create_user", registerData);
+      const data = await sendRequest("post", "creuser", registerData);
       if (data.status) {
         setCookie("@user", JSON.stringify(data.data), 1);
         setCookie("@token", JSON.stringify(data.token), 1);

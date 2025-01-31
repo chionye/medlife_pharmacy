@@ -33,7 +33,7 @@ const Login = () => {
 
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "login_user", formData);
+      const data = await sendRequest("post", "login_uer", formData);
       if (data.status) {
         const fulluser = data.data;
         if (fulluser.photo.indexOf("dicebear") == -1) {

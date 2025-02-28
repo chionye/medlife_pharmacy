@@ -22,6 +22,9 @@ import { Calendar } from "./ui/calendar";
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/constants/svgs";
+import { getFormattedDate, getFormattedTime } from "@/services/helpers";
+import { FormSelect } from "./form_input";
 
 export const Section = ({ children, cn = null }: any) => (
   <div className={`${cn ? cn : "sm:w-full lg:w-1/2"}`}>{children}</div>
@@ -389,3 +392,143 @@ export const RenderUserInfo = (
     {renderModalForm(fieldName, label, apiUrl, formType, options)}
   </div>
 );
+
+export const TopSellingProductSection = ({
+  data,
+  title,
+  link,
+  cn = null,
+}: any) => (
+  <Section cn={cn}>
+    <TitleBar title={title} link={link} />
+    <div className='flex flex-col gap-2 mt-5'>
+      {data.length ? (
+        data.slice(0, 5).map((item: any) => (
+          <div className='flex justify-between items-center border border-[#0111A280] bg-[#0111A205] p-2 rounded-[7px]'>
+            <div className='flex items-center gap-4'>
+              <img src={item.imgSrc} alt='' className='w-[84px]' />
+              <div>
+                <p className='text-[15px] font-medium text-[#333333]'>
+                  {item.title}
+                </p>
+                <p className='text-[13px] font-regular text-[#333333] mt-2'>
+                  Serving : {item.subtitle}
+                </p>
+              </div>
+            </div>
+
+            <div className='flex flex-col items-end'>
+              <p className='text-[15px] font-regular text-[#137C43]'>
+                {item.availability}
+              </p>
+              <p className='text-[13px] font-regular text-[#6E4C31] mt-2'>
+                Unit Price: #{item.price}
+              </p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className='text-xs text-[#073131] font-semibold'>No data yet</p>
+      )}
+    </div>
+  </Section>
+);
+
+export const ExpireyProductSection = ({
+  data,
+  title,
+  link,
+  cn = null,
+}: any) => (
+  <Section cn={cn}>
+    <TitleBar title={title} link={link} />
+    <div className='flex flex-col gap-2 mt-5'>
+      {data.length ? (
+        data.slice(0, 5).map((item: any) => (
+          <div className='flex justify-between items-center border border-[#0111A280] bg-[#0111A205] p-2 rounded-[7px]'>
+            <div className='flex items-center gap-4'>
+              <img src={item.imgSrc} alt='' className='w-[84px]' />
+              <div>
+                <p className='text-[15px] font-medium text-[#333333]'>
+                  {item.title}
+                </p>
+                <p className='text-[13px] font-regular text-[#333333] mt-2'>
+                  Expiry Date: {item.subtitle}
+                </p>
+              </div>
+            </div>
+
+            <div className='flex flex-col items-end'>
+              <p className='text-[15px] font-regular text-[#137C43]'>
+                {item.availability}
+              </p>
+              <p className='text-[13px] font-regular text-[#6E4C31] mt-2'>
+                Unit Price: #{item.price}
+              </p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className='text-xs text-[#073131] font-semibold'>No data yet</p>
+      )}
+    </div>
+  </Section>
+);
+
+export const TopFilterSection = ({
+  months,
+  changeFunc,
+}: {
+  months: any;
+  changeFunc: (e: string) => void;
+}) => {
+  const [field, setField] = useState<string>("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    setField(target.value);
+    changeFunc(target.value);
+  };
+  return (
+    <div className='flex lg:flex-row flex-col gap-3 items-center w-fit'>
+      <p className='text-lg font-extrabold text-[#2E3A59] text-nowrap'>
+        Real Time Data
+      </p>
+      <div className='flex gap-3 items-center w-fit'>
+        <FormSelect
+          options={months}
+          name={"date"}
+          value={field}
+          cn={
+            "border border-[#5F66E9] px-[20px] bg-white hover:outline-none w-full py-[13px] rounded-[10px]"
+          }
+          label={""}
+          changeFunction={handleChange}
+        />
+        <p className='flex items-center text-nowrap gap-2'>
+          <Icons.calendar /> <span>{getFormattedDate()}</span>
+        </p>
+        <p className='flex items-center text-nowrap gap-2'>
+          <Icons.clock /> <span>{getFormattedTime()}</span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export const TopSummaryAndTitleSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className='flex flex-col items-center justify-center bg-[#5F66E91A] rounded-[20px] p-7 mt-5'>
+      <div className='flex justify-center items-center gap-4 '>
+        <Icons.lightBulb />
+        <p className='text-xl font-extrabold'>{title}</p>
+      </div>
+      <div className='flex w-full justify-center mt-2'>{children}</div>
+    </div>
+  );
+};

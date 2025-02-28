@@ -2,7 +2,6 @@
 
 import { Input, Textarea } from "@chakra-ui/react";
 import { Label } from "./ui/label";
-import { Select } from "@chakra-ui/react";
 import {
   FormInputPropType,
   FormPinPropType,
@@ -21,6 +20,7 @@ const FormInput: React.FC<FormInputPropType> = ({
   rightIcon,
   disabled = false,
   cn = "border-[#D9D9D9]",
+  cn1 = "",
   changeFunction,
 }) => {
   return (
@@ -28,15 +28,18 @@ const FormInput: React.FC<FormInputPropType> = ({
       <Label htmlFor={name} className='text-sm font-normal'>
         {label}
       </Label>
-      <div className={`${icon && cn} flex items-center gap-3`}>
+      <div
+        className={`${icon && cn} ${rightIcon && cn1} flex items-center gap-3`}>
         {icon}
         <Input
           type={type}
           id={name}
           name={name}
           className={
-            icon
+            icon && !cn
               ? "bg-transparent w-full py-3 focus:border-none outline-none"
+              : (icon || rightIcon) && cn
+              ? `bg-transparent w-full py-3 focus:border-none outline-none ${cn}`
               : cn
           }
           value={value}
@@ -51,10 +54,51 @@ const FormInput: React.FC<FormInputPropType> = ({
   );
 };
 
+const FormPassInput: React.FC<FormInputPropType> = ({
+  label,
+  type,
+  name,
+  placeholder,
+  value,
+  icon,
+  rightIcon,
+  disabled = false,
+  cn = "border-[#D9D9D9]",
+  cn1 = "border-[#D9D9D9]",
+  changeFunction,
+}) => {
+  return (
+    <div className='grid w-full items-center gap-1.5'>
+      <Label htmlFor={name} className='text-sm font-normal'>
+        {label}
+      </Label>
+      <div className={`${rightIcon && cn1} flex items-center gap-3`}>
+        {icon}
+        <input
+          type={type}
+          id={name}
+          name={name}
+          className={
+            icon && !cn
+              ? "bg-transparent w-full py-3 focus:border-none outline-none"
+              : (icon || rightIcon) && cn
+              ? `bg-transparent w-full py-3 focus:border-none outline-none ${cn}`
+              : cn
+          }
+          value={value}
+          placeholder={placeholder}
+          onChange={changeFunction}
+          disabled={disabled}
+        />
+        <button>{rightIcon}</button>
+      </div>
+    </div>
+  );
+};
+
 const FormSelect: React.FC<FormSelectPropType> = ({
   label,
   name,
-  placeholder,
   value,
   cn,
   options,
@@ -65,19 +109,18 @@ const FormSelect: React.FC<FormSelectPropType> = ({
       <Label htmlFor={name} className='text-sm font-normal'>
         {label}
       </Label>
-      <Select
-        placeholder={placeholder}
+      <select
+        title={label}
         className={cn}
         name={name}
         onChange={changeFunction as React.ChangeEventHandler<HTMLSelectElement>}
-        value={value}
-        size='lg'>
+        value={value}>
         {options.map((option: any, index: number) => (
           <option key={index} value={option.id ? option.id : option}>
             {option.name ? option.name : option}
           </option>
         ))}
-      </Select>
+      </select>
     </div>
   );
 };
@@ -134,4 +177,4 @@ const FormPinInput: React.FC<FormPinPropType> = ({
   );
 };
 
-export { FormInput, FormSelect, FormTextArea, FormPinInput };
+export { FormInput, FormSelect, FormTextArea, FormPinInput, FormPassInput };

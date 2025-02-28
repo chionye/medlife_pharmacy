@@ -33,7 +33,7 @@ const Login = () => {
 
   const handleFormSubmit = async () => {
     try {
-      const data = await sendRequest("post", "login_uer", formData);
+      const data = await sendRequest("post", "login_user", formData);
       if (data.status) {
         const fulluser = data.data;
         if (fulluser.photo.indexOf("dicebear") == -1) {
@@ -46,7 +46,7 @@ const Login = () => {
           description: data.message,
           action: <ToastAction altText='done'>done</ToastAction>,
         });
-        navigate(`/${data.data.role}/home`);
+        navigate(`/pharmacy/home`);
       } else {
         if (data.error || data.errors || data.message) {
           const errorMessage = data.message

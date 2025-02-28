@@ -83,6 +83,7 @@ export interface FormInputPropType {
   type: string;
   name: string;
   cn?: string;
+  cn1?: string;
   icon?: any;
   rightIcon?: any;
   disabled?: boolean;
@@ -146,11 +147,15 @@ export interface WithdrawPropType {
 
 export interface RegisterPropType {
   username: string;
-  fullname: string;
+  fullname?: string;
+  user_id?: string;
+  business_name: string;
   email: string;
   password: string;
-  role: string;
+  confirm_password?: string;
+  role?: string;
   photo?: string;
+  phone_number?: string;
 }
 
 export interface ResetPasswordPropType {
@@ -171,6 +176,24 @@ export interface OTPPropType {
 export interface LoginPropType {
   email: string;
   password: string;
+}
+
+export interface OnboardingPropType {
+  cac_number?: string;
+  owners_name?: string;
+  home_address?: string;
+  business_number?: string;
+  business_location?: string;
+  bank_name?: string;
+  account_number?: string;
+  opening_day?: string;
+  closing_day?: string;
+  opening_time?: string;
+  closing_time?: string;
+  number_of_employees?: string;
+  user_id?: string;
+  business_name?: string;
+  phone_number?: string;
 }
 
 export interface TopDoctorsPropType {
@@ -240,6 +263,15 @@ export interface PatientPropType {
   icon: string;
   value: string;
   unit: string;
+}
+
+export interface ShopPropType {
+  title: string;
+  iconColor: string;
+  value: string;
+  bgColor: string;
+  textColor: string;
+  link?: string;
 }
 
 export interface TitleBarPropType {

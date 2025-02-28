@@ -11,6 +11,7 @@ import FullModal from "./full_modal";
 import { OnboardDoctorForm, OnboardPatientForm } from "./onboard_form";
 import { getConfigByRole } from "@/services/storage";
 import { BookAppointmentForm } from "./appointment_form";
+import { Icons } from "@/constants/svgs";
 
 export const CardWithButton = ({
   title,
@@ -209,3 +210,35 @@ export const WalletCard = ({
     </Card>
   );
 };
+
+export const ColoredCard = ({
+  title,
+  index,
+  value,
+  link,
+  iconColor,
+  bgColor,
+  textColor,
+}: any) => (
+  <NavLink to={link}>
+    <Card
+      className={`border flex justify-between items-center rounded-xl px-6 py-8`}
+      key={index}
+      style={{ backgroundColor: bgColor }}>
+      <Icons.openFolder color={iconColor} />
+      <div>
+        <p
+          className={`text-sm font-bold text-center`}
+          style={{ color: textColor }}>
+          {value}
+        </p>
+        <p
+          className='text-[11px] mt-1 font-medium'
+          style={{ color: textColor }}>
+          {title}
+        </p>
+      </div>
+      <Icons.chevronRight />
+    </Card>
+  </NavLink>
+);

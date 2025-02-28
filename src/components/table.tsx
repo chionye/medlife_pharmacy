@@ -163,7 +163,7 @@ const Table: React.FC<TablePropType> = ({ thead, tbody, keys }) => {
       <div className='w-full overflow-x-auto'>
         <table className='w-full'>
           <thead>
-            <tr className='text-sm h-[66px] font-semibold tracking-wide text-left text-[#FFFFFF] bg-[#585BA8] border-b border-[#585BA8]'>
+            <tr className='text-sm h-[66px] font-semibold tracking-wide text-left text-[#FFFFFF] bg-[#5F66E9] border-b border-[#5F66E9]'>
               {thead &&
                 thead.map((item: string) => (
                   <th className='px-4 py-3'>{item}</th>

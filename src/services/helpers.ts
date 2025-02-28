@@ -1,6 +1,12 @@
 /** @format */
 
-import { Appointment, MonthlyAppointmentSummary, Rating, Transaction, User } from "@/types";
+import {
+  Appointment,
+  MonthlyAppointmentSummary,
+  Rating,
+  Transaction,
+  User,
+} from "@/types";
 import { format, subDays } from "date-fns";
 import moment from "moment";
 
@@ -53,7 +59,9 @@ export const encodeIfURL = (str: string): string => {
 };
 
 export const toTitleCase = (str: string): string => {
-  return str ? str.replace(/(^[a-z])|(\s+[a-z])/g, (txt) => txt.toUpperCase()) : str;
+  return str
+    ? str.replace(/(^[a-z])|(\s+[a-z])/g, (txt) => txt.toUpperCase())
+    : str;
 };
 
 export const getAgeFromDOB = (dob: string): number => {
@@ -224,8 +232,24 @@ export const getTotalForAllTime = (transactions: Transaction[]): number => {
 };
 
 // Function to get totals for all months in the current year
-export const getMonthlyTotalsForYear = (transactions: Transaction[], year: number): { month: string, total: number }[] => {
-  const monthsAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const getMonthlyTotalsForYear = (
+  transactions: Transaction[],
+  year: number
+): { month: string; total: number }[] => {
+  const monthsAbbr = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const monthlyTotals = Array.from({ length: 12 }, (_, i) => {
     const total = getTotalForMonth(transactions, i, year);
     return {
@@ -237,7 +261,10 @@ export const getMonthlyTotalsForYear = (transactions: Transaction[], year: numbe
   return monthlyTotals;
 };
 
-export const calculatePatientAverageRating = (ratings: Rating[], user: string): number => {
+export const calculatePatientAverageRating = (
+  ratings: Rating[],
+  user: string
+): number => {
   // Filter only the raters whose role is "patient"
   const patientRaters = ratings.filter(
     (rating) => rating.rater_details.role === user
@@ -301,3 +328,45 @@ export const getMonthlyAppointmentSummary = (
 
   return result;
 };
+
+export const handleCheckEmail = (text: string) => {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(text);
+};
+
+export const getGreeting = (): string => {
+  const hours = new Date().getHours();
+
+  if (hours < 12) {
+    return "Good Morning";
+  } else if (hours < 18) {
+    return "Good Afternoon";
+  } else if (hours < 21) {
+    return "Good Evening";
+  } else {
+    return "Good Night";
+  }
+};
+
+
+export const getFormattedDate = (): string => {
+  const now = new Date();
+  const day = now.getDate().toString().padStart(2, "0");
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const year = now.getFullYear();
+
+  return `${day}.${month}. ${year}`;
+}
+
+export const getFormattedTime = (): string => {
+  const now = new Date();
+  let hours = now.getHours();
+  const minutes = now.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+
+  hours = hours % 12 || 12;
+  const minutesStr = minutes < 10 ? `0${minutes}` : minutes;
+  const hoursStr = hours < 10 ? `0${hours}` : hours;
+
+  return `${hoursStr}:${minutesStr}${ampm}`;
+}

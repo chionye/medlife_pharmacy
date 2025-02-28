@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import clip from "@/assets/clip.svg";
 import doc from "@/assets/doc.svg";
-import edit from "@/assets/edit.svg";
+import cloudUpload from "@/assets/cloud-upload.svg";
 import upload from "@/assets/upload.svg";
 import MyContext from "@/context/context";
 import { ContextValue, UploadPropType } from "@/types";
@@ -13,6 +13,7 @@ import { getCookie, setCookie } from "@/services/storage";
 import { Button } from "./ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
+import { Icons } from "@/constants/svgs";
 
 const Upload: React.FC<UploadPropType> = ({
   uploadType = "default",
@@ -104,6 +105,46 @@ const Upload: React.FC<UploadPropType> = ({
         </section>
       </div>
     </div>
+  ) : uploadType === "single" ? (
+    <>
+      <p className='text-sm font-normal m-3 text-left'>{tag}</p>
+      <div className={`flex items-center flex-col pb-5 w-full`}>
+        <section
+          className={`px-3 py-1 mx-3 w-full rounded-lg flex flex-col h-fit relative bg-[#585BA80A]`}>
+          <input
+            type='file'
+            onChange={handleFileChange}
+            id={id}
+            className='hidden'
+          />
+          <label htmlFor={id} className='cursor-pointer w-full'>
+            <div className='flex justify-center w-full'>
+              <div className='w-full text-center text-[#838384]'>
+                {selectedFile ? (
+                  <div>
+                    {imageUrl !== null ? (
+                      <div className='flex flex-col items-center py-2'>
+                        <p>{imageUrl}</p>
+                        <img src={doc} alt='image' />
+                      </div>
+                    ) : (
+                      <p>No image selected</p>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <p className='text-sm my-2'>Upload pictures</p>
+                    <div className='flex justify-center'>
+                      <img src={cloudUpload} alt='' />
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </label>
+        </section>
+      </div>
+    </>
   ) : (
     <div
       className={`flex justify-center border-[#D9D9D9] border-2 bg-[#F8F9F9] border-dashed py-4 cursor-pointer`}>
@@ -226,9 +267,18 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
   };
 
   return (
-    <div className='flex flex-col items-center gap-3'>
-      <div className='w-[170px] h-[170px] rounded-full overflow-hidden'>
-        <img src={defaultPhoto} alt='user' className='rounded-full' />
+    <div className='flex'>
+      <div className='w-[111.74px] h-[111.74px] relative rounded-full'>
+        <button className='relative' onClick={handleEditImageClick}>
+          <img
+            src={defaultPhoto}
+            alt='user'
+            className='rounded-full relative'
+          />
+          <span className='h-[22.98px] w-[22.98px] rounded-full bg-[#FAC1D9] absolute bottom-0 right-2 flex items-center justify-center'>
+            <Icons.pencil width='12.77' height='12.77' />
+          </span>
+        </button>
       </div>
       <input
         type='file'
@@ -237,10 +287,6 @@ export const UploadSingle = ({ defaultPhoto, updatePhotoFunction }: any) => {
         className='hidden'
         onChange={handleImageChange}
       />
-      <button className='flex gap-1' onClick={handleEditImageClick}>
-        <span className='text-[#00C2C2] text-xl'>Edit</span>
-        <img src={edit} alt='edit image' />
-      </button>
       {imageUrl && (
         <Button
           className='bg-[#585BA8] text-white py-2 px-4 rounded-lg mt-3'

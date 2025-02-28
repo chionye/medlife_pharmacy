@@ -1,64 +1,70 @@
-/** @format */
 
-import { useLocation } from "react-router-dom";
-import profile from "@/assets/profile.svg";
-import { NavbarItems } from "@/utils/navbar/navbarItems";
-import { getConfigByRole, getCookie } from "@/services/storage";
+import { getCookie } from "@/services/storage";
 import { useEffect, useState } from "react";
-import { toTitleCase } from "@/services/helpers";
+import { getGreeting, toTitleCase } from "@/services/helpers";
+import { Button } from "./ui/button";
 
 const Header = () => {
   const [userData, setUserData] = useState<Record<string, string> | null>(null);
-  const [userPhoto, setUserPhoto] = useState<string | null>(
-    null
-  );
-  const location = useLocation();
-  const role = getConfigByRole();
-  const settings = role ? NavbarItems[role] : [];
+  // const role = getConfigByRole();
+  // const settings = role ? NavbarItems[role] : [];
 
   useEffect(() => {
     const user = getCookie("@user");
     if (user) {
       const userData = JSON.parse(user);
       setUserData(userData);
-      setUserPhoto(
-        userData.photo.indexOf("http") !== -1
-          ? userData.photo
-          : `https://api.medlifelink.life/images/profiles/${userData.photo}`
-      );
     }
   }, []);
 
   return (
-    <div className='pb-5'>
-      <div className='bg-white text-[#000000] px-6 z-10 w-full border-b border-[#3333331F]'>
+    <div className='pb-5 lg:px-5'>
+      <div className='bg-white text-[#000000] px-6 z-10 w-full border-b border-[#F7F9FC] py-3'>
         <div className='flex items-center justify-between py-2 text-5x1'>
           <div className='font-bold text-[#000000] text-xl flex items-center'>
-            {settings.map(
-              (item: any) =>
-                location.pathname.indexOf(item.to) !== -1 && (
-                  <div key={item.to} className='flex items-center'>
-                    {item.icon}
-                    <span className='ml-2 font-[500] text-sm'>
-                      {item.label}
-                    </span>
-                  </div>
-                )
-            )}
-          </div>
-          <div className='flex items-center text-[#000000]'>
-            <span className='ml-2 font-[500] text-sm'>
+            <svg
+              width='15'
+              height='16'
+              viewBox='0 0 15 16'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'>
+              <path
+                d='M0.833333 8.83333H5.83333C6.05435 8.83333 6.26631 8.74554 6.42259 8.58926C6.57887 8.43297 6.66667 8.22101 6.66667 8V1.33333C6.66667 1.11232 6.57887 0.900358 6.42259 0.744078C6.26631 0.587797 6.05435 0.5 5.83333 0.5H0.833333C0.61232 0.5 0.400358 0.587797 0.244078 0.744078C0.0877973 0.900358 0 1.11232 0 1.33333V8C0 8.22101 0.0877973 8.43297 0.244078 8.58926C0.400358 8.74554 0.61232 8.83333 0.833333 8.83333ZM0 14.6667C0 14.8877 0.0877973 15.0996 0.244078 15.2559C0.400358 15.4122 0.61232 15.5 0.833333 15.5H5.83333C6.05435 15.5 6.26631 15.4122 6.42259 15.2559C6.57887 15.0996 6.66667 14.8877 6.66667 14.6667V11.3333C6.66667 11.1123 6.57887 10.9004 6.42259 10.7441C6.26631 10.5878 6.05435 10.5 5.83333 10.5H0.833333C0.61232 10.5 0.400358 10.5878 0.244078 10.7441C0.0877973 10.9004 0 11.1123 0 11.3333V14.6667ZM8.33333 14.6667C8.33333 14.8877 8.42113 15.0996 8.57741 15.2559C8.73369 15.4122 8.94565 15.5 9.16667 15.5H14.1667C14.3877 15.5 14.5996 15.4122 14.7559 15.2559C14.9122 15.0996 15 14.8877 15 14.6667V8.83333C15 8.61232 14.9122 8.40036 14.7559 8.24408C14.5996 8.0878 14.3877 8 14.1667 8H9.16667C8.94565 8 8.73369 8.0878 8.57741 8.24408C8.42113 8.40036 8.33333 8.61232 8.33333 8.83333V14.6667ZM9.16667 6.33333H14.1667C14.3877 6.33333 14.5996 6.24554 14.7559 6.08926C14.9122 5.93297 15 5.72101 15 5.5V1.33333C15 1.11232 14.9122 0.900358 14.7559 0.744078C14.5996 0.587797 14.3877 0.5 14.1667 0.5H9.16667C8.94565 0.5 8.73369 0.587797 8.57741 0.744078C8.42113 0.900358 8.33333 1.11232 8.33333 1.33333V5.5C8.33333 5.72101 8.42113 5.93297 8.57741 6.08926C8.73369 6.24554 8.94565 6.33333 9.16667 6.33333Z'
+                fill='#2E3A59'
+              />
+            </svg>
+            <span className='ml-2 font-[500] text-lg'>
+              {getGreeting()}
+              {", "}
               {userData
                 ? toTitleCase(userData.fullname || userData.username)
-                : "Guest"}
+                : "Guest"}{" "}
+              👋
             </span>
-            <div className='rounded-full h-12 w-12 ml-2 overflow-hidden'>
-              <img
-                className='bg-center bg-cover bg-no-repeat inline-block h-12 w-12'
-                src={userPhoto || profile}
-                alt='avatar'
-              />
-            </div>
+          </div>
+          <div className='flex items-center text-[#000000]'>
+            <Button className='bg-transparent shadow-none w-fit hover:bg-transparent'>
+              <svg
+                width='40'
+                height='40'
+                viewBox='0 0 40 40'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'>
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M16.8966 3.02335C17.6431 2.7994 18.4316 2.75308 19.1992 2.88807C19.9669 3.02306 20.6923 3.33562 21.3176 3.80081C21.9429 4.26601 22.4509 4.87094 22.8008 5.56734C23.1508 6.26373 23.3331 7.03229 23.3333 7.81168V32.185C23.3331 32.9644 23.1508 33.733 22.8008 34.4294C22.4509 35.1257 21.9429 35.7307 21.3176 36.1959C20.6923 36.6611 19.9669 36.9736 19.1992 37.1086C18.4316 37.2436 17.6431 37.1973 16.8966 36.9733L6.89659 33.9733C5.86675 33.6644 4.96393 33.0317 4.32205 32.1692C3.68018 31.3067 3.33343 30.2602 3.33325 29.185V10.8117C3.33343 9.73651 3.68018 8.69003 4.32205 7.82749C4.96393 6.96494 5.86675 6.33228 6.89659 6.02335L16.8966 3.02335ZM24.9999 6.66501C24.9999 6.22299 25.1755 5.79906 25.4881 5.4865C25.8006 5.17394 26.2246 4.99835 26.6666 4.99835H31.6666C32.9927 4.99835 34.2644 5.52513 35.2021 6.46281C36.1398 7.4005 36.6666 8.67226 36.6666 9.99835V11.665C36.6666 12.107 36.491 12.531 36.1784 12.8435C35.8659 13.1561 35.4419 13.3317 34.9999 13.3317C34.5579 13.3317 34.134 13.1561 33.8214 12.8435C33.5088 12.531 33.3333 12.107 33.3333 11.665V9.99835C33.3333 9.55632 33.1577 9.1324 32.8451 8.81984C32.5325 8.50728 32.1086 8.33168 31.6666 8.33168H26.6666C26.2246 8.33168 25.8006 8.15609 25.4881 7.84352C25.1755 7.53096 24.9999 7.10704 24.9999 6.66501ZM34.9999 26.665C35.4419 26.665 35.8659 26.8406 36.1784 27.1532C36.491 27.4657 36.6666 27.8897 36.6666 28.3317V29.9983C36.6666 31.3244 36.1398 32.5962 35.2021 33.5339C34.2644 34.4716 32.9927 34.9983 31.6666 34.9983H26.6666C26.2246 34.9983 25.8006 34.8228 25.4881 34.5102C25.1755 34.1976 24.9999 33.7737 24.9999 33.3317C24.9999 32.8897 25.1755 32.4657 25.4881 32.1532C25.8006 31.8406 26.2246 31.665 26.6666 31.665H31.6666C32.1086 31.665 32.5325 31.4894 32.8451 31.1769C33.1577 30.8643 33.3333 30.4404 33.3333 29.9983V28.3317C33.3333 27.8897 33.5088 27.4657 33.8214 27.1532C34.134 26.8406 34.5579 26.665 34.9999 26.665ZM14.9999 18.3317C14.5579 18.3317 14.134 18.5073 13.8214 18.8198C13.5088 19.1324 13.3333 19.5563 13.3333 19.9983C13.3333 20.4404 13.5088 20.8643 13.8214 21.1769C14.134 21.4894 14.5579 21.665 14.9999 21.665H15.0016C15.4436 21.665 15.8675 21.4894 16.1801 21.1769C16.4927 20.8643 16.6683 20.4404 16.6683 19.9983C16.6683 19.5563 16.4927 19.1324 16.1801 18.8198C15.8675 18.5073 15.4436 18.3317 15.0016 18.3317H14.9999Z'
+                  fill='#292D32'
+                />
+                <path
+                  d='M34.9998 19.9974L31.6665 23.3307M26.6665 19.9974H34.9998H26.6665ZM34.9998 19.9974L31.6665 16.6641L34.9998 19.9974Z'
+                  stroke='#5F66E9'
+                  stroke-width='3.33333'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </svg>
+            </Button>
           </div>
         </div>
       </div>

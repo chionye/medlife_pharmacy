@@ -80,3 +80,18 @@ svg.star-svg {
   min-width: 0;
   max-width: 100%;
 }
+
+.scrollable-y::-webkit-scrollbar {
+  width: 9px; /* Adjust width as needed */
+}
+
+.scrollable-y::-webkit-scrollbar-thumb {
+  background-color: #292C2D; /* Thumb color */
+  border-radius: 10px;
+}
+
+.scrollable-y::-webkit-scrollbar-track {
+  background: #3D4142; /* Track color */
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
